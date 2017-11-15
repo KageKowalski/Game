@@ -1,14 +1,9 @@
-//
-//  main.cpp
-//  GameFirstDraft
-//
-//  Created by Joshua Seelye on 11/13/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
-
-#include <iostream>
-#include "Player.hpp"
+#include "System.hpp"
 
 int main()
 {
+	System system;
+	int retCode = system.run();
+	system.shutDown();
+	return retCode;
 }
