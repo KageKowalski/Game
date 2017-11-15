@@ -10,12 +10,12 @@
 #define Inventory_h
 
 #include <list>
-#include "Combatant.hpp"
+#include "Item.hpp"
 
 class Inventory
 {
 private:
-    std::list<Combatant> inv;
+    std::list<Item> inv;
     int maxSize;
     int currentSize;
 public:

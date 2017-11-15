@@ -6,7 +6,7 @@
 
 #include "Combatant.hpp"
 #include "Inventory.hpp"
-#include "Monster.hpp"
+
 
 class Player : public Combatant
 {
@@ -14,11 +14,22 @@ class Player : public Combatant
 private:
     Inventory inv;
     int level;
+    int pp;
+    //discrete distributions only returns 1 or 0 based on if you crit/dodged
     DiscreteDistribution<int> crit;
+    DiscreteDistribution<int> dodge;
 
 //public Functions
 public:
-    int getLevel()          { return level; }
+    int getLevel()          { return level;  }
+    
+    int getPp()             { return pp;     }
+    
+    void setPp(int x)       { pp += x;       }
+    
+    bool rollCrit()         { updateCrit(); return crit();   }
+    
+    bool rollDodge()        { updateDodge(); return dodge(); }
     
     double getCritPercent()
     {
@@ -26,10 +37,20 @@ public:
         return crit.probability(1);
     }
     
-    int attack(Monster& mo)
+    double getDodge()
     {
-        int roll = crit();
-        if(roll == 1){ return (2*str-mo.getDef())>0?(2*str-mo.getDef()):1; }
+        updateDodge();
+        return dodge.probability(1);
+    }
+    
+    int attack(Combatant& mo)
+    {
+        if(rollCrit())
+        {
+            mo.setHp(-((2*str-mo.getDef())>0?(2*str-mo.getDef()):1));
+            return (2*str-mo.getDef())>0?(2*str-mo.getDef()):1;
+        }
+        mo.setHp(-((str-mo.getDef())>0?(str-mo.getDef()):1));
         return (str-mo.getDef())>0?(str-mo.getDef()):1;
     }
   
@@ -55,6 +76,12 @@ private:
     {
         crit.add(0, 100-lck);
         crit.add(1, lck);
+    }
+    
+    void updateDodge()
+    {
+        dodge.add(0, 230-lck-spd);
+        dodge.add(1, lck+spd);
     }
     
     void levelUp()

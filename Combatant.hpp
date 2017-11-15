@@ -18,8 +18,6 @@ public:
     
 	int getHp() { return hp;       }
 
-	int getPp() { return pp;       }
-
 	int getStr() { return str;     }
 
 	int getDef() { return def;     }
@@ -32,8 +30,6 @@ public:
 
 	void setHp(int x) { hp += x;   }
 
-	void setPp(int x) { pp += x;   }
-
 	void setStr(int x) { str += x; }
 
 	void setDef(int x) { def += x; }
@@ -44,9 +40,14 @@ public:
     
     void setGold(int x){ gold +=x; }
     
+    virtual int attack(Combatant& mo)
+    {
+        mo.setHp(-((str-mo.getDef())>0?(str-mo.getDef()):1));
+        return (str-mo.getDef())>0?(str-mo.getDef()):1;
+    }
+    
 protected:
     int hp;
-    int pp;
     int spd;
     int str;
     int def;
