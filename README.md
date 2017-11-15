@@ -6,4 +6,5 @@ Kage Kowalski
 Klayton Kowalski
 Josh Seelye
 
-Our attempt at making a basic RPG
+Our attempt at making a basic RPG maybe
+
