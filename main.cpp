@@ -1,5 +1,7 @@
 #include "System.hpp"
 
+#define PLAYER Player::get()
+
 int main()
 {
 	System system;

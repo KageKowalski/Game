@@ -9,11 +9,15 @@
 #ifndef Monster_h
 #define Monster_h
 
-#include "Combatant.hpp"
+#include "Player.hpp"
 
 class Monster : public Combatant
 {
-    
+public:
+    void death()
+    {
+        
+    }
 };
 
 #endif /* Monster_h */

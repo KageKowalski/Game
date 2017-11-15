@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "DiscreteDistribution.hpp"
-#include "Types.h"
+
 
 //
 // Map-based distribution <KEY, WEIGHT>
@@ -32,10 +32,10 @@ class IterableDiscreteDistribution : public DiscreteDistribution<KEY_T>
     class Iterator
     {
     private:
-        typename std::vector<std::pair<KEY_T, WEIGHT_T> >::iterator _current;
+        typename std::vector<std::pair<KEY_T, unsigned> >::iterator _current;
         
         // Create an empty Iterator
-        Iterator(typename std::vector<std::pair<KEY_T, WEIGHT_T> >::iterator it) : _current(it) { }
+        Iterator(typename std::vector<std::pair<KEY_T, unsigned> >::iterator it) : _current(it) { }
         
         
         

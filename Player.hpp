@@ -1,4 +1,4 @@
-//Contains all setters and getters for basic character
+//Contains all setters and getters for a player: Level and exp
 //also has a inventory that can cycle
 
 #ifndef Player_h
@@ -6,6 +6,7 @@
 
 #include "Combatant.hpp"
 #include "Inventory.hpp"
+#include "Monster.hpp"
 
 class Player : public Combatant
 {
@@ -13,12 +14,26 @@ class Player : public Combatant
 private:
     Inventory inv;
     int level;
+    DiscreteDistribution<int> crit;
 
 //public Functions
 public:
-    int getLevel()  { return level; }
+    int getLevel()          { return level; }
     
-    int getExp()    { return exp;   }
+    double getCritPercent()
+    {
+        updateCrit();
+        return crit.probability(1);
+    }
+    
+    int attack(Monster& mo)
+    {
+        int roll = crit();
+        if(roll == 1){ return (2*str-mo.getDef())>0?(2*str-mo.getDef()):1; }
+        return (str-mo.getDef())>0?(str-mo.getDef()):1;
+    }
+  
+//  (room location?) death() { go to location of start of game and delete }
     
     //returns true if leveled up
     bool increaseExp(int x)
@@ -34,11 +49,17 @@ public:
     
 //private functions
 private:
-    int nextLevel(){ return (int)round(sqrt((double)(20*level))); }
+    int nextLevel() { return (int)round(sqrt((double)(20*level))); }
+    
+    void updateCrit()
+    {
+        crit.add(0, 100-lck);
+        crit.add(1, lck);
+    }
     
     void levelUp()
     {
-        exp = 0 + (exp - nextLevel());
+        exp = (exp - nextLevel());
         level++;
     }
     

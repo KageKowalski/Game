@@ -13,11 +13,15 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include "IterableDiscreteDistribution.hpp"
 using namespace std;
 
 class Entity
 {
-    protected:
-        string _name;
+protected:
+    string _name;
+    
+protected:
+    Entity(){}
 };
 #endif /* Entity_h */

@@ -14,21 +14,25 @@
 class Combatant : public Entity
 {
 public:
-	int getHp() { return hp; }
+    int getExp(){ return exp;      }
+    
+	int getHp() { return hp;       }
 
-	int getPp() { return pp; }
+	int getPp() { return pp;       }
 
-	int getStr() { return str; }
+	int getStr() { return str;     }
 
-	int getDef() { return def; }
+	int getDef() { return def;     }
 
-	int getLck() { return lck; }
+	int getLck() { return lck;     }
 
-	int getSpd() { return spd; }
+	int getSpd() { return spd;     }
+    
+    int getGold(){ return gold;    }
 
-	void setHp(int x) { hp += x; }
+	void setHp(int x) { hp += x;   }
 
-	void setPp(int x) { pp += x; }
+	void setPp(int x) { pp += x;   }
 
 	void setStr(int x) { str += x; }
 
@@ -37,6 +41,9 @@ public:
 	void setLck(int x) { lck += x; }
 
 	void setSpd(int x) { spd += x; }
+    
+    void setGold(int x){ gold +=x; }
+    
 protected:
     int hp;
     int pp;
@@ -46,6 +53,7 @@ protected:
     int lck;
     int gold;
     int exp;
+    
 };
 
 #endif /* Character_h */

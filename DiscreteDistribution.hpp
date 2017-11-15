@@ -14,7 +14,6 @@
 #include <iomanip>
 
 #include "Random.h"
-#include "Types.h"
 
 //
 // Map-based distribution <KEY, WEIGHT>
