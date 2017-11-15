@@ -16,8 +16,8 @@ private:
     int level;
     int pp;
     //discrete distributions only returns 1 or 0 based on if you crit/dodged
-    DiscreteDistribution<int> crit;
-    DiscreteDistribution<int> dodge;
+    DiscreteDistribution<bool> crit;
+    DiscreteDistribution<bool> dodge;
 
 //public Functions
 public:
@@ -27,7 +27,7 @@ public:
     
     void setPp(int x)       { pp += x;       }
     
-    bool rollCrit()         { updateCrit(); return crit();   }
+    bool rollCrit()         { updateCrit();  return crit();  }
     
     bool rollDodge()        { updateDodge(); return dodge(); }
     
@@ -74,14 +74,14 @@ private:
     
     void updateCrit()
     {
-        crit.add(0, 100-lck);
-        crit.add(1, lck);
+        crit.add(false, 100-lck);
+        crit.add(true, lck);
     }
     
     void updateDodge()
     {
-        dodge.add(0, 230-lck-spd);
-        dodge.add(1, lck+spd);
+        dodge.add(false, 230-lck-spd);
+        dodge.add(true, lck+spd);
     }
     
     void levelUp()

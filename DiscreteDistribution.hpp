@@ -165,7 +165,7 @@ double DiscreteDistribution<KEY_T>::probability(KEY_T key) const
 template<typename KEY_T>
 KEY_T DiscreteDistribution<KEY_T>::operator()() const
 {
-    //obtain a random potion to select
+    //obtain a random position to select
     int compare = _rng.nextInt(_valueToWeightMap[_valueToWeightMap.size()-1].second)+1;
     
     for(int i = 0; i < _valueToWeightMap.size()-1;i++)
@@ -186,7 +186,7 @@ KEY_T DiscreteDistribution<KEY_T>::operator()() const
             }
         }
     }
-    return _valueToWeightMap.at(0).first;
+    return _valueToWeightMap.at(_valueToWeightMap.size()-1).first;
 }
 
 
