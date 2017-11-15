@@ -1,21 +1,21 @@
 #include <string>
-#include <pair>
 #include "Room.hpp"
 
 class Stage{
 	public:
-		//  Initializes this stage as beginning at room with id=0.
-		Stage(): curRoom(0) {}
+		//  Initializes this Stage as beginning at Room with id=0 and nonexistent prevRoom id.
+		//  Also hard-code constructs this Stage.
+		Stage();
 
 		
-		//  Returns all info regarding the current room of this stage in the format:
-		//			[north, east, south, west, combatant, interactable]
-		//  For directions, a 1 denotes that the player can move in that direction, a 0 denotes that they can't.
-		//  For combatant and interactable, the count of combatants or interactables found in the current room is passed.
+		//  Returns all info regarding the current Room of this Stage in the format:
+		//			[north, east, south, west, Monster, Interactable]
+		//  For directions, a 1 denotes that the Player can move in that direction, a 0 denotes that they can't.
+		//  For Monster and Interactable, the count of Monsters or Interactables found in the current Room is passed.
 		vector<int> cur_room_info();
 
 		
-		//  Moves the player north, east, south, and west.
+		//  Moves the Player north, east, south, or west.
 		//  Returns true if success, otherwise false.
 		bool move_north();
 		bool move_east();
@@ -23,19 +23,25 @@ class Stage{
 		bool move_west();
 
 
-		//  Returns a vector of the combatants or interactables found in the current room paired with their id numbers.
-		vector<pair<Combatant, int>> get_combatant();
-		vector<pair<Interactable, int>> get_interactable();
+		//  Returns a vector of the Monsters or Interactables found in the current Room paired with their id numbers.
+		vector<Monster*> get_monsters();
+		vector<Interactable*> get_interactables();
 
 
-		//  Removes combatant or interactable from the current room based on passed id number.
+		//  Removes Monster or Interactable from the current Room based on passed pointer.
 		//  Returns true if success, otherwise false.
-		bool remove_combatant(int id);
-		bool remove_interactable(int id);
+		bool remove_monster(Monster*);
+		bool remove_interactable(Interactable*);
+
+
 	protected:
 		int curRoom;
+		int prevRoom;
 		vector<Room> rooms;
-}
+};
+
+
+//  INFORMATION METHOD
 
 
 vector<int> Stage::cur_room_info(){
@@ -44,14 +50,22 @@ vector<int> Stage::cur_room_info(){
 	data.push_back(rooms.at(curRoom).has_east() == true);
 	data.push_back(rooms.at(curRoom).has_south() == true);
 	data.push_back(rooms.at(curRoom).has_west() == true);
-	data.push_back(rooms.at(curRoom).get_num_combatants);
-	data.push_back(rooms.at(curRoom).get_num_interactables);
+	data.push_back(rooms.at(curRoom).get_num_monsters());
+	data.push_back(rooms.at(curRoom).get_num_interactables());
 	return data;
 }
 
 
+//  MOVE METHODS
+//
+//  First if statement denies movement if the current Room doesn't have an exit in the direction the Player is attempting to move.
+//  Second if statement denies movement if the current Room has Monsters AND the Player is attempting to move to a new Room.
+
+
 bool Stage::move_north(){
 	if(!rooms.at(curRoom).has_north()) return false;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_north() != prevRoom) return false;
+	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_north();
 	return true;
 }
@@ -59,6 +73,8 @@ bool Stage::move_north(){
 
 bool Stage::move_east(){
 	if(!rooms.at(curRoom).has_east()) return false;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_east() != prevRoom) return false;
+	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_east();
 	return true;
 }
@@ -66,6 +82,8 @@ bool Stage::move_east(){
 
 bool Stage::move_south(){
 	if(!rooms.at(curRoom).has_south()) return false;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_south() != prevRoom) return false;
+	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_south();
 	return true;
 }
@@ -73,13 +91,34 @@ bool Stage::move_south(){
 
 bool Stage::move_west(){
 	if(!rooms.at(curRoom).has_west()) return false;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_west() != prevRoom) return false;
+	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_west();
 	return true;
 }
 
 
+//  GETTER METHODS
 
 
+vector<Monster*> Stage::get_monsters(){
+	return rooms.at(curRoom).get_monsters();
+}
 
 
+vector<Interactable*> Stage::get_interactables(){
+	return rooms.at(curRoom).get_interactables();
+}
 
+
+//  MUTATOR METHODS
+
+
+bool Stage::remove_monster(Monster* mo){
+	return rooms.at(curRoom).remove_monster(mo);
+}
+
+
+bool Stage::remove_interactable(Interactable* in){
+	return rooms.at(curRoom).remove_interactable(in);
+}
