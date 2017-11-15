@@ -11,7 +11,7 @@
 
 #include "Item.hpp"
 
-class StatModifiers : public Item
+class Equipment: public Item
 {
     
 };

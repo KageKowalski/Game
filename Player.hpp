@@ -9,10 +9,10 @@
 #ifndef Player_h
 #define Player_h
 
-#include "Character.hpp"
+#include "Combatant.hpp"
 #include "Inventory.hpp"
 
-class Player : public Character
+class Player : public Combatant
 {
 //private instance variables
 private:

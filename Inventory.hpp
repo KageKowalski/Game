@@ -10,12 +10,12 @@
 #define Inventory_h
 
 #include <list>
-#include "StatModifiers.hpp"
+#include "Equipment.hpp"
 
 class Inventory
 {
 private:
-    std::list<StatModifiers> inv;
+    std::list<Equipment> inv;
     int maxSize;
     int currentSize;
 public:

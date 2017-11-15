@@ -9,9 +9,9 @@
 #ifndef Monster_h
 #define Monster_h
 
-#include "Character.hpp"
+#include "Combatant.hpp"
 
-class Monster : public Character
+class Monster : public Combatant
 {
     
 };
