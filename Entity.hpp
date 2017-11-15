@@ -13,7 +13,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-using std::string;
+using namespace std;
 
 class Entity
 {

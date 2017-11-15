@@ -11,5 +11,4 @@
 
 int main()
 {
-    Player::get().create();
 }
