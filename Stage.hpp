@@ -23,7 +23,7 @@ class Stage{
 		bool move_west();
 
 
-		//  Returns a vector of the Monsters or Interactables found in the current Room paired with their id numbers.
+		//  Returns a vector of the Monsters or Interactables found in the current Room.
 		vector<Monster*> get_monsters();
 		vector<Interactable*> get_interactables();
 
