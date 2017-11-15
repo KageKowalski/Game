@@ -11,7 +11,7 @@
 
 #include "Entity.hpp"
 
-class Character : public Entity
+class Combatant : public Entity
 {
 protected:
     int hp;

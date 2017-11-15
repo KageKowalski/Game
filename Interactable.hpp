@@ -9,10 +9,9 @@
 #ifndef Interactable_h
 #define Interactable_h
 
-#include "StatlessInteractable.hpp"
-#include "Character.hpp"
+#include "Entity.hpp"
 
-class Interactable : public StatlessInteractable, public Character
+class Interactable : public Entity
 {
     
 };
