@@ -1,10 +1,5 @@
-//
-//  Player.hpp
-//  GameFirstDraft
-//
-//  Created by Joshua Seelye on 11/13/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
+//Contains all setters and getters for basic character
+//also has a inventory that can cycle
 
 #ifndef Player_h
 #define Player_h
@@ -25,30 +20,6 @@ public:
     
     int getExp()    { return exp;   }
     
-    int getHp()     { return hp;    }
-    
-    int getPp()     { return pp;    }
-    
-    int getStr()    { return str;   }
-    
-    int getDef()    { return def;   }
-    
-    int getLck()    { return lck;   }
-    
-    int getSpd()    { return spd;   }
-    
-    void setHp(int x)     { hp+=x;  }
-    
-    void setPp(int x)     { pp+=x;  }
-    
-    void setStr(int x)    { str+=x; }
-    
-    void setDef(int x)    { def+=x; }
-    
-    void setLck(int x)    { lck+=x; }
-    
-    void setSpd(int x)    { spd+=x; }
-    
     //returns true if leveled up
     bool increaseExp(int x)
     {
@@ -63,21 +34,13 @@ public:
     
 //private functions
 private:
-    int nextLevel()
-    {
-        return (int)round(sqrt((double)(20*level)));
-    }
+    int nextLevel(){ return (int)round(sqrt((double)(20*level))); }
     
     void levelUp()
     {
-        
+        exp = 0 + (exp - nextLevel());
+        level++;
     }
-    
-    
-    
-    
-    
-    
     
     
     
