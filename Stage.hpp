@@ -23,14 +23,13 @@ class Stage{
 
 
 		//  Returns a vector of the Monsters or Interactables found in the current Room.
-		vector<Monster*> get_monsters();
-		vector<Interactable*> get_interactables();
+		vector<Monster>& get_monsters() {return rooms.at(curRoom).get_monsters();}
+		vector<Interactable>& get_interactables() {return rooms.at(curRoom).get_interactables();}
 
 
 		//  Removes Monster or Interactable from the current Room based on passed pointer.
-		//  Returns true if successful, otherwise false.
-		bool remove_monster(Monster*);
-		bool remove_interactable(Interactable*);
+		void remove_monster(Monster& mo) {rooms.at(curRoom).remove_monster(mo);}
+		void remove_interactable(Interactable& in) {rooms.at(curRoom).remove_interactable(in);}
 
 
 	protected:
@@ -94,30 +93,4 @@ int Stage::move_west(){
 	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_west();
 	return 0;
-}
-
-
-//  GETTER METHODS
-
-
-vector<Monster*> Stage::get_monsters(){
-	return rooms.at(curRoom).get_monsters();
-}
-
-
-vector<Interactable*> Stage::get_interactables(){
-	return rooms.at(curRoom).get_interactables();
-}
-
-
-//  MUTATOR METHODS
-
-
-bool Stage::remove_monster(Monster* mo){
-	return rooms.at(curRoom).remove_monster(mo);
-}
-
-
-bool Stage::remove_interactable(Interactable* in){
-	return rooms.at(curRoom).remove_interactable(in);
 }
