@@ -66,7 +66,7 @@ int System::run() {
 	vector<RoomEntity> roomEntities;
 	roomEntities.push_back(RoomEntity::INTERACTABLE);
 	roomEntities.push_back(RoomEntity::MONSTER);
-	drawRoom(roomExits, roomEntities, pair<int,int>(), RoomExit::UP);
+	drawRoom(roomExits, roomEntities, pair<int,int>(2, 6), RoomExit::UP);
 
 	playerSpecs();
 	
@@ -80,8 +80,7 @@ void System::init() {
 
 // Frees resources
 void System::shutDown() {
-	int c;
-	cin >> c;
+	this_thread::sleep_for(chrono::seconds(2));
 }
 
 // Prints player stats
@@ -164,14 +163,22 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 		}
 	}
 	
-	// Edit room for correct entities
+	// Edit room for correct entities and number of entities
 	if (roomEntities.size() == 2) {
 		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2) = 'M';
+		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + ROOM_WIDTH) = numEntites.first + '0';
 		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 2) = 'I';
+		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 2 + ROOM_WIDTH) = numEntites.second + '0';
 	}
 	else if(roomEntities.size() == 1) {
-		if(roomEntities.at(0) == RoomEntity::MONSTER) output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'M';
-		else output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'I';
+		if (roomEntities.at(0) == RoomEntity::MONSTER) {
+			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'M';
+			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1 + ROOM_WIDTH) = numEntites.first + '0';
+		}
+		else {
+			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'I';
+			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1 + ROOM_WIDTH) = numEntites.second + '0';
+		}
 	}
 
 	// Edit room for correct player placement
