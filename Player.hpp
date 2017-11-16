@@ -34,13 +34,13 @@ public:
     double getCritPercent()
     {
         updateCrit();
-        return crit.probability(1);
+        return crit.probability(1)*100;
     }
     
-    double getDodge()
+    double getDodgePercent()
     {
         updateDodge();
-        return dodge.probability(1);
+        return dodge.probability(1)*100;
     }
     
     int attack(Combatant& mo)
