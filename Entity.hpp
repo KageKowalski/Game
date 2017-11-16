@@ -1,10 +1,3 @@
-//
-//  Entity.hpp
-//  GameFirstDraft
-//
-//  Created by Joshua Seelye on 11/13/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
 
 #ifndef Entity_h
 #define Entity_h
@@ -19,9 +12,13 @@ using namespace std;
 class Entity
 {
 protected:
-    string _name;
+    string name;
     
 protected:
     Entity(){}
+    
+    //basic setter and getter for name
+    void setName(string x) { name = x;   }
+    string getName()       { return name;}
 };
 #endif /* Entity_h */

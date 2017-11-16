@@ -68,9 +68,10 @@ public:
         return false;
     }
     
+    int nextLevel() { return (int)round(sqrt((double)(20*level))); }
+    
 //private functions
 private:
-    int nextLevel() { return (int)round(sqrt((double)(20*level))); }
     
     void updateCrit()
     {

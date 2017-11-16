@@ -12,17 +12,8 @@
 
 class Monster : public Combatant
 {
-public:
-    Monster(int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp)
-    {
-        hp   = _hp;
-        str  = _str;
-        def  = _def;
-        lck  = _lck;
-        spd  = _spd;
-        gold = _gold;
-        exp  = _exp;
-    }
+protected:
+    DiscreteDistribution<Item> loot;
 };
 
 #endif /* Monster_h */
