@@ -29,18 +29,10 @@ public:
     
     bool rollCrit()         { updateCrit();  return crit();  }
     
-    bool rollDodge()        { updateDodge(); return dodge(); }
-    
     double getCritPercent()
     {
         updateCrit();
         return crit.probability(1)*100;
-    }
-    
-    double getDodgePercent()
-    {
-        updateDodge();
-        return dodge.probability(1)*100;
     }
     
     int attack(Combatant& mo)
@@ -77,12 +69,6 @@ private:
     {
         crit.add(false, 100-lck);
         crit.add(true, lck);
-    }
-    
-    void updateDodge()
-    {
-        dodge.add(false, 230-lck-spd);
-        dodge.add(true, lck+spd);
     }
     
     void levelUp()

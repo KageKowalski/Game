@@ -40,10 +40,18 @@ public:
     
     void setGold(int x){ gold +=x; }
     
+    bool rollDodge()        { updateDodge(); return dodge(); }
+    
     virtual int attack(Combatant& mo)
     {
         mo.setHp(-((str-mo.getDef())>0?(str-mo.getDef()):1));
         return (str-mo.getDef())>0?(str-mo.getDef()):1;
+    }
+    
+    double getDodgePercent()
+    {
+        updateDodge();
+        return dodge.probability(1)*100;
     }
     
 protected:
@@ -54,6 +62,13 @@ protected:
     int lck;
     int gold;
     int exp;
+    DiscreteDistribution<bool> dodge;
+    
+    void updateDodge()
+    {
+        dodge.add(false, 230-lck-spd);
+        dodge.add(true, lck+spd);
+    }
     
 };
 
