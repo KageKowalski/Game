@@ -38,8 +38,8 @@ private:
 	void levelUp();
 
 	// Draws the currently loaded room
-	void drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntities>& roomEntities,
-		const pair<int, int>& numEntities, RoomExits prevRoomDir) const;
+	void drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
+		const pair<int, int>& numEntities, RoomExit prevRoomDir) const;
 
 private:
 
@@ -58,15 +58,15 @@ int System::run() {
 
 	init();
 
-	vector<RoomExits> roomExits;
-	roomExits.push_back(RoomExits::UP);
-	roomExits.push_back(RoomExits::RIGHT);
-	roomExits.push_back(RoomExits::DOWN);
-	roomExits.push_back(RoomExits::LEFT);
-	vector<RoomEntities> roomEntities;
-	roomEntities.push_back(RoomEntities::INTERACTABLE);
-	roomEntities.push_back(RoomEntities::MONSTER);
-	drawRoom(roomExits, roomEntities, pair<int,int>(), RoomExits::UP);
+	vector<RoomExit> roomExits;
+	roomExits.push_back(RoomExit::UP);
+	roomExits.push_back(RoomExit::RIGHT);
+	roomExits.push_back(RoomExit::DOWN);
+	roomExits.push_back(RoomExit::LEFT);
+	vector<RoomEntity> roomEntities;
+	roomEntities.push_back(RoomEntity::INTERACTABLE);
+	roomEntities.push_back(RoomEntity::MONSTER);
+	drawRoom(roomExits, roomEntities, pair<int,int>(), RoomExit::UP);
 
 	playerSpecs();
 	
@@ -122,8 +122,8 @@ void System::levelUp() {
 }
 
 // Draws the currently loaded room
-void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntities>& roomEntities,
-	const pair<int, int>& numEntites, RoomExits prevRoomDir) const {
+void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
+	const pair<int, int>& numEntites, RoomExit prevRoomDir) const {
 	const int ROOM_WIDTH = 18;
 	const int ROOM_HEIGHT = 7;
 	const int LEFT_MARGIN = 3;
@@ -137,27 +137,27 @@ void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntit
 	output += "    ------------- ";
 
 	// Edit room for correct exits
-	for (RoomExits exitType : roomExits) {
-		if (exitType == RoomExits::UP) {
+	for (RoomExit exitType : roomExits) {
+		if (exitType == RoomExit::UP) {
 			output.at(ROOM_WIDTH / 2 - 2 + LEFT_MARGIN / 2) = '#';
 			output.at(ROOM_WIDTH / 2 - 1 + LEFT_MARGIN / 2) = ' ';
 			output.at(ROOM_WIDTH / 2 + LEFT_MARGIN / 2) = ' ';
 			output.at(ROOM_WIDTH / 2 + 1 + LEFT_MARGIN / 2) = ' ';
 			output.at(ROOM_WIDTH / 2 + 2 + LEFT_MARGIN / 2) = '#';
 		}
-		else if (exitType == RoomExits::RIGHT) {
+		else if (exitType == RoomExit::RIGHT) {
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) - 1) = '#';
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) - 1) = ' ';
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 2) - 1) = '#';
 		}
-		else if (exitType == RoomExits::DOWN) {
+		else if (exitType == RoomExit::DOWN) {
 			output.at((ROOM_WIDTH / 2 - 2) + (ROOM_HEIGHT - 1) * ROOM_WIDTH + LEFT_MARGIN / 2) = '#';
 			output.at((ROOM_WIDTH / 2 - 1) + (ROOM_HEIGHT - 1) * ROOM_WIDTH + LEFT_MARGIN / 2) = ' ';
 			output.at((ROOM_WIDTH / 2) + (ROOM_HEIGHT - 1) * ROOM_WIDTH + LEFT_MARGIN / 2) = ' ';
 			output.at((ROOM_WIDTH / 2 + 1) + (ROOM_HEIGHT - 1) * ROOM_WIDTH + LEFT_MARGIN / 2) = ' ';
 			output.at((ROOM_WIDTH / 2 + 2) + (ROOM_HEIGHT - 1) * ROOM_WIDTH + LEFT_MARGIN / 2) = '#';
 		}
-		else if (exitType == RoomExits::LEFT) {
+		else if (exitType == RoomExit::LEFT) {
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 - 1) + LEFT_MARGIN) = '#';
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) + LEFT_MARGIN) = ' ';
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) + LEFT_MARGIN) = '#';
@@ -170,15 +170,15 @@ void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntit
 		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 2) = 'I';
 	}
 	else if(roomEntities.size() == 1) {
-		if(roomEntities.at(0) == RoomEntities::MONSTER) output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'M';
+		if(roomEntities.at(0) == RoomEntity::MONSTER) output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'M';
 		else output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'I';
 	}
 
 	// Edit room for correct player placement
-	if (prevRoomDir == RoomExits::UP) output.at(ROOM_WIDTH / 2 + LEFT_MARGIN / 2 + ROOM_WIDTH) = 'P';
-	else if (prevRoomDir == RoomExits::RIGHT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) - 3) = 'P';
-	else if (prevRoomDir == RoomExits::DOWN) output.at((ROOM_WIDTH / 2) + (ROOM_HEIGHT - 2) * ROOM_WIDTH + LEFT_MARGIN / 2) = 'P';
-	else if (prevRoomDir == RoomExits::LEFT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) + LEFT_MARGIN + 2) = 'P';
+	if (prevRoomDir == RoomExit::UP) output.at(ROOM_WIDTH / 2 + LEFT_MARGIN / 2 + ROOM_WIDTH) = 'P';
+	else if (prevRoomDir == RoomExit::RIGHT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) - 3) = 'P';
+	else if (prevRoomDir == RoomExit::DOWN) output.at((ROOM_WIDTH / 2) + (ROOM_HEIGHT - 2) * ROOM_WIDTH + LEFT_MARGIN / 2) = 'P';
+	else if (prevRoomDir == RoomExit::LEFT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) + LEFT_MARGIN + 2) = 'P';
 
 	// Draw completed room
 	cout << endl;

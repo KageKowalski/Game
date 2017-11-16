@@ -1,17 +1,11 @@
 #include <string>
 #include "Room.hpp"
+#include "RoomSpecifiers.hpp"
 
 class Stage{
 	public:
 		//  Initializes this Stage as beginning at Room with id=0 and nonexistent prevRoom id.
 		Stage(): curRoom(0), prevRoom(-1) {}
-
-		
-		//  Returns all info regarding the current Room of this Stage in the format:
-		//			[north, east, south, west, Monster, Interactable]
-		//  For directions, a 1 denotes that the Player can move in that direction, a 0 denotes that they can't.
-		//  For Monster and Interactable, the count of Monsters or Interactables found in the current Room is passed.
-		vector<int> cur_room_info();
 
 		
 		//  Moves the Player north, east, south, or west.
@@ -22,12 +16,22 @@ class Stage{
 		int move_west();
 
 
-		//  Returns a vector of the Monsters or Interactables found in the current Room.
+		//  GETTERS
+		//  get_monsters returns() a vector of Monsters in the current Room.
+		//  get_interactables() returns a vector of Interactables in the current Room.
+		//  get_num_entities() returns a pair containing the number of Monsters in the current Room and the number of Interactables in the current Room, respectively.
+		//  get_room_exits() returns a vector of RoomExits for the current Room.
+		//  get_room_entities() returns a vector of RoomEntities for the current Room.
+		//  get_prev_room_dir() returns the RoomExit (direction) of the previous room, relative to the current room. Returns RoomExit::NONE if previous room can't be found.
 		vector<Monster>& get_monsters() {return rooms.at(curRoom).get_monsters();}
 		vector<Interactable>& get_interactables() {return rooms.at(curRoom).get_interactables();}
+		pair<int, int> get_num_entities() {return pair<int, int>(rooms.at(curRoom).get_num_monsters(), rooms.at(curRoom).get_num_interactables());}
+		vector<RoomExit> get_room_exits();
+		vector<RoomEntity> get_room_entities();
+		RoomExit get_prev_room_dir();
 
 
-		//  Removes Monster or Interactable from the current Room based on passed pointer.
+		//  Removes passed Monster or Interactable from the current Room.
 		void remove_monster(Monster& mo) {rooms.at(curRoom).remove_monster(mo);}
 		void remove_interactable(Interactable& in) {rooms.at(curRoom).remove_interactable(in);}
 
@@ -37,21 +41,6 @@ class Stage{
 		int prevRoom;
 		vector<Room> rooms;
 };
-
-
-//  INFORMATION METHOD
-
-
-vector<int> Stage::cur_room_info(){
-	vector<int> data;
-	data.push_back(rooms.at(curRoom).has_north() == true);
-	data.push_back(rooms.at(curRoom).has_east() == true);
-	data.push_back(rooms.at(curRoom).has_south() == true);
-	data.push_back(rooms.at(curRoom).has_west() == true);
-	data.push_back(rooms.at(curRoom).get_num_monsters());
-	data.push_back(rooms.at(curRoom).get_num_interactables());
-	return data;
-}
 
 
 //  MOVE METHODS
@@ -93,4 +82,36 @@ int Stage::move_west(){
 	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_west();
 	return 0;
+}
+
+
+//  GETTER METHODS
+
+
+vector<RoomExit> Stage::get_room_exits(){
+	vector<RoomExit> roomExits;
+	if(rooms.at(curRoom).has_north()) roomExits.push_back(RoomExit::UP);
+	if(rooms.at(curRoom).has_east()) roomExits.push_back(RoomExit::RIGHT);
+	if(rooms.at(curRoom).has_south()) roomExits.push_back(RoomExit::DOWN);
+	if(rooms.at(curRoom).has_west()) roomExits.push_back(RoomExit::LEFT);
+	if(roomExits.empty()) roomExits.push_back(RoomExit::NONE);
+	return roomExits;
+}
+
+
+vector<RoomEntity> Stage::get_room_entities(){
+	vector<RoomEntity> roomEntities;
+	if(rooms.at(curRoom).get_num_monsters()) roomEntities.push_back(RoomEntity::MONSTER);
+	if(rooms.at(curRoom).get_num_interactables()) roomEntities.push_back(RoomEntity::INTERACTABLE);
+	if(roomEntities.empty()) roomEntities.push_back(RoomEntity::NONE);
+	return roomEntities;
+}
+
+
+RoomExit Stage::get_prev_room_dir(){
+	if(rooms.at(curRoom).get_north() == prevRoom) return RoomExit::UP;
+	if(rooms.at(curRoom).get_east() == prevRoom) return RoomExit::RIGHT;
+	if(rooms.at(curRoom).get_south() == prevRoom) return RoomExit::DOWN;
+	if(rooms.at(curRoom).get_west() == prevRoom) return RoomExit::LEFT;
+	return RoomExit::NONE;
 }

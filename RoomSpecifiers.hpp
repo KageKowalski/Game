@@ -1,5 +1,5 @@
 // All possible room exit directions
-enum class RoomExits {
+enum class RoomExit {
 	UP,
 	RIGHT,
 	DOWN,
@@ -8,7 +8,7 @@ enum class RoomExits {
 };
 
 // All possible room entities
-enum class RoomEntities {
+enum class RoomEntity {
 	MONSTER,
 	INTERACTABLE,
 	NONE
