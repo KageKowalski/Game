@@ -7,23 +7,43 @@
 
 using namespace std;
 
+// ==============================================
+// DEFINITIONS
+// ==============================================
+
 class System {
 
 public:
+
+	// Contains the game loop
 	int run();
+
+	// Frees resources
 	void shutDown();
 
 private:
+
+	// Initializes game components on startup
 	void init();
+
+	// Prints player stats to console
 	void printPlayerStats() const;
 
 private:
+
+	// Player
 	Player* player;
 
 };
 
+// ==============================================
+// IMPLEMENTATIONS
+// ==============================================
+
 int System::run() {
 	int retCode = 0;
+
+	init();
 
 	printPlayerStats();
 	
