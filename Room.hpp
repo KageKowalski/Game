@@ -36,8 +36,8 @@ class Room{
 
 		//  Adds passed Monster or Interactable to this Room.
 		//  Retursn true if successful, else false.
-		void add_monster(Monster&);
-		void add_interactable(Interactable&);
+		void add_monster(Monster);
+		void add_interactable(Interactable);
 
 
 		//  Removes passed Monster or Interactable from this Room.
@@ -60,12 +60,12 @@ class Room{
 //  MUTATORS
 
 
-void Room::add_monster(Monster& mo){
+void Room::add_monster(Monster mo){
 	monsters.push_back(mo);
 }
 
 
-void Room::add_interactable(Interactable& in){
+void Room::add_interactable(Interactable in){
 	interactables.push_back(in);
 }
 
