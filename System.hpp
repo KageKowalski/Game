@@ -39,7 +39,7 @@ private:
 
 	// Draws the currently loaded room
 	void drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntities>& roomEntities,
-		const pair<int, int>& numEntities) const;
+		const pair<int, int>& numEntities, RoomExits prevRoomDir) const;
 
 private:
 
@@ -64,8 +64,9 @@ int System::run() {
 	roomExits.push_back(RoomExits::DOWN);
 	roomExits.push_back(RoomExits::LEFT);
 	vector<RoomEntities> roomEntities;
-	roomEntities.push_back(RoomEntities::NONE);
-	drawRoom(roomExits, roomEntities, pair<int,int>());
+	roomEntities.push_back(RoomEntities::INTERACTABLE);
+	roomEntities.push_back(RoomEntities::MONSTER);
+	drawRoom(roomExits, roomEntities, pair<int,int>(), RoomExits::UP);
 
 	playerSpecs();
 	
@@ -79,7 +80,8 @@ void System::init() {
 
 // Frees resources
 void System::shutDown() {
-
+	int c;
+	cin >> c;
 }
 
 // Prints player stats
@@ -112,7 +114,6 @@ void System::playerSpecs() const {
 	cout << "GOLD            = " << player->getGold() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "----------------------------------" << endl;
-	cout << endl;
 }
 
 // Level up sequence
@@ -121,8 +122,8 @@ void System::levelUp() {
 }
 
 // Draws the currently loaded room
-void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntities>& RoomEntities,
-	const pair<int, int>& numEntites) const {
+void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntities>& roomEntities,
+	const pair<int, int>& numEntites, RoomExits prevRoomDir) const {
 	const int ROOM_WIDTH = 18;
 	const int ROOM_HEIGHT = 7;
 	const int LEFT_MARGIN = 3;
@@ -135,6 +136,7 @@ void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntit
 	output += "   |             |";
 	output += "    ------------- ";
 
+	// Edit room for correct exits
 	for (RoomExits exitType : roomExits) {
 		if (exitType == RoomExits::UP) {
 			output.at(ROOM_WIDTH / 2 - 2 + LEFT_MARGIN / 2) = '#';
@@ -161,13 +163,29 @@ void System::drawRoom(const vector<RoomExits>& roomExits, const vector<RoomEntit
 			output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) + LEFT_MARGIN) = '#';
 		}
 	}
+	
+	// Edit room for correct entities
+	if (roomEntities.size() == 2) {
+		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2) = 'M';
+		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 2) = 'I';
+	}
+	else if(roomEntities.size() == 1) {
+		if(roomEntities.at(0) == RoomEntities::MONSTER) output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'M';
+		else output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'I';
+	}
 
+	// Edit room for correct player placement
+	if (prevRoomDir == RoomExits::UP) output.at(ROOM_WIDTH / 2 + LEFT_MARGIN / 2 + ROOM_WIDTH) = 'P';
+	else if (prevRoomDir == RoomExits::RIGHT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) - 3) = 'P';
+	else if (prevRoomDir == RoomExits::DOWN) output.at((ROOM_WIDTH / 2) + (ROOM_HEIGHT - 2) * ROOM_WIDTH + LEFT_MARGIN / 2) = 'P';
+	else if (prevRoomDir == RoomExits::LEFT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) + LEFT_MARGIN + 2) = 'P';
+
+	// Draw completed room
 	cout << endl;
 	for (int i = 0; i < ROOM_HEIGHT; i++) {
 		cout << output.substr(ROOM_WIDTH * i, ROOM_WIDTH) << endl;
 		this_thread::sleep_for(chrono::milliseconds(50));
 	}
-	cout << endl;
 }
 
 #endif
