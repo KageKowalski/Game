@@ -28,7 +28,7 @@ public:
     
     int getGold(){ return gold;    }
 
-	void setHp(int x) { hp += x;   }
+    void setHp(int x) { hp += x;  if(hp <= 0) death(); }
 
 	void setStr(int x) { str += x; }
 
@@ -47,6 +47,8 @@ public:
         mo.setHp(-((str-mo.getDef())>0?(str-mo.getDef()):1));
         return (str-mo.getDef())>0?(str-mo.getDef()):1;
     }
+    
+    virtual void death(){}
     
     double getDodgePercent()
     {

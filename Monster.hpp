@@ -14,6 +14,11 @@ class Monster : public Combatant
 {
 protected:
     DiscreteDistribution<Item> loot;
+    
+    Item& death()
+    {
+        return loot();
+    }
 };
 
 #endif /* Monster_h */
