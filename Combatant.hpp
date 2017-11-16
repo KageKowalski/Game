@@ -10,6 +10,7 @@
 #define Character_h
 
 #include "Entity.hpp"
+#include "Item.hpp"
 
 class Combatant : public Entity
 {
@@ -48,7 +49,7 @@ public:
         return (str-mo.getDef())>0?(str-mo.getDef()):1;
     }
     
-    virtual void death(){}
+    virtual Item death() = 0;
     
     double getDodgePercent()
     {

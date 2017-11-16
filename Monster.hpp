@@ -15,7 +15,7 @@ class Monster : public Combatant
 protected:
     DiscreteDistribution<Item> loot;
     
-    Item& death()
+    Item death()
     {
         return loot();
     }

@@ -8,10 +8,11 @@ class Slime : public Monster
 {
 private:
     int level;
-    int DiscreteDistribution<int> levelChanges;
+    DiscreteDistribution<int> levelChanges;
 public:
-    Slime(string _name, int _level) : name(_name), level(_level)
+    Slime(string _name, int _level) : level(_level)
     {
+        name = _name;
         hp  = 6;
         str = 2;
         def = 0;
@@ -32,10 +33,10 @@ public:
             levelChanges.add(2, 25);
             levelChanges.add(3, 10);
             levelChanges.add(4, 20);
-            for(int statsToIncrease = 3*(level - 1);statsToIncrase!=-1;statsToIncrease--)
+            for(int statsToIncrease = 3*(level - 1);statsToIncrease!=-1;statsToIncrease--)
             {
-                roll = levelChanges();
-                switch roll
+                int roll = levelChanges();
+                switch(roll)
                 {
                 case 1:
                     hp+=5;
@@ -47,13 +48,13 @@ public:
                     def++;
                     break;
                 case 4:
-                    luck++;
+                    lck++;
                     break;
                 }
             }
         }
     }
-}
+};
 
 
 #endif /* Slime_h */

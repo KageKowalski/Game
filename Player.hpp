@@ -64,6 +64,11 @@ public:
     
 //private functions
 private:
+    Item death()
+    {
+        //do death stuff
+        return Item();
+    }
     
     void updateCrit()
     {
