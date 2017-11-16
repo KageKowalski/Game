@@ -4,8 +4,7 @@
 class Stage{
 	public:
 		//  Initializes this Stage as beginning at Room with id=0 and nonexistent prevRoom id.
-		//  Also hard-code constructs this Stage.
-		Stage();
+		Stage(): curRoom(0), prevRoom(-1) {}
 
 		
 		//  Returns all info regarding the current Room of this Stage in the format:
@@ -16,11 +15,11 @@ class Stage{
 
 		
 		//  Moves the Player north, east, south, or west.
-		//  Returns true if success, otherwise false.
-		bool move_north();
-		bool move_east();
-		bool move_south();
-		bool move_west();
+		//  Returns 0 if successful, 1 if no exit exists in the chosen direction, 2 if a monster is blocking the player's route.
+		int move_north();
+		int move_east();
+		int move_south();
+		int move_west();
 
 
 		//  Returns a vector of the Monsters or Interactables found in the current Room.
@@ -29,7 +28,7 @@ class Stage{
 
 
 		//  Removes Monster or Interactable from the current Room based on passed pointer.
-		//  Returns true if success, otherwise false.
+		//  Returns true if successful, otherwise false.
 		bool remove_monster(Monster*);
 		bool remove_interactable(Interactable*);
 
@@ -62,39 +61,39 @@ vector<int> Stage::cur_room_info(){
 //  Second if statement denies movement if the current Room has Monsters AND the Player is attempting to move to a new Room.
 
 
-bool Stage::move_north(){
-	if(!rooms.at(curRoom).has_north()) return false;
-	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_north() != prevRoom) return false;
+int Stage::move_north(){
+	if(!rooms.at(curRoom).has_north()) return 1;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_north() != prevRoom) return 2;
 	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_north();
-	return true;
+	return 0;
 }
 
 
-bool Stage::move_east(){
-	if(!rooms.at(curRoom).has_east()) return false;
-	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_east() != prevRoom) return false;
+int Stage::move_east(){
+	if(!rooms.at(curRoom).has_east()) return 1;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_east() != prevRoom) return 2;
 	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_east();
-	return true;
+	return 0;
 }
 
 
-bool Stage::move_south(){
-	if(!rooms.at(curRoom).has_south()) return false;
-	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_south() != prevRoom) return false;
+int Stage::move_south(){
+	if(!rooms.at(curRoom).has_south()) return 1;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_south() != prevRoom) return 2;
 	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_south();
-	return true;
+	return 0;
 }
 
 
-bool Stage::move_west(){
-	if(!rooms.at(curRoom).has_west()) return false;
-	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_west() != prevRoom) return false;
+int Stage::move_west(){
+	if(!rooms.at(curRoom).has_west()) return 1;
+	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_west() != prevRoom) return 2;
 	prevRoom = curRoom;
 	curRoom = rooms.at(curRoom).get_west();
-	return true;
+	return 0;
 }
 
 
