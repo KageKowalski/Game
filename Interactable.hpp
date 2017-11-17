@@ -9,7 +9,7 @@ class Interactable : public Entity
 private:
     string desc;
     Monster monster;
-    int trapDamage
+	int trapDamage;
     
 public:
     //constructor for trap iteractable
@@ -21,7 +21,7 @@ public:
     
     void interact()
     {
-        if(trapDamage)
+		if (trapDamage);
     }
 };
 

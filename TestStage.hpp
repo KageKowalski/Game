@@ -1,10 +1,10 @@
 #include "Stage.hpp"
-#include "Slime.hpp"
+#include "Monsters/Slime.hpp"
 
 class TestStage : public Stage{
 	public:
 		//  Hard-code constructs TestStage.
-		TestStage();
+		TestStage(const string& name);
 
 
 		//  Singleton Design Pattern.
@@ -13,13 +13,13 @@ class TestStage : public Stage{
     
     	static TestStage& get()
     	{
-			static TestStage instance;
+			static TestStage instance("TestStage");
 			return instance;
     	}
 };
 
 
-TestStage::TestStage(){
+TestStage::TestStage(const string& name) : Stage(name) {
 	Room room0(0, -1, 1, -1, -1);
 	room0.add_monster(Slime(1));
 	rooms.push_back(room0);

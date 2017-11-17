@@ -4,8 +4,8 @@
 
 class Stage{
 	public:
-		//  Initializes this Stage as beginning at Room with id=0 and nonexistent prevRoom id.
-		Stage(): curRoom(0), prevRoom(-1) {}
+		//  Initializes this Stage as beginning at Room with id=0, nonexistent prevRoom id, and a name.
+		Stage(const string& name): curRoom(0), prevRoom(-1), name(name) {}
 
 		
 		//  Moves the Player north, east, south, or west.
@@ -23,12 +23,14 @@ class Stage{
 		//  get_room_exits() returns a vector of RoomExits for the current Room.
 		//  get_room_entities() returns a vector of RoomEntities for the current Room.
 		//  get_prev_room_dir() returns the RoomExit (direction) of the previous room, relative to the current room. Returns RoomExit::NONE if previous room can't be found.
+		//  get_name() returns the name of the current Room.
 		vector<Monster>& get_monsters() {return rooms.at(curRoom).get_monsters();}
 		vector<Interactable>& get_interactables() {return rooms.at(curRoom).get_interactables();}
 		pair<int, int> get_num_entities() {return pair<int, int>(rooms.at(curRoom).get_num_monsters(), rooms.at(curRoom).get_num_interactables());}
 		vector<RoomExit> get_room_exits();
 		vector<RoomEntity> get_room_entities();
 		RoomExit get_prev_room_dir();
+		string get_name() {return name;}
 
 
 		//  Removes passed Monster or Interactable from the current Room.
@@ -40,6 +42,7 @@ class Stage{
 		int curRoom;
 		int prevRoom;
 		vector<Room> rooms;
+		string name;
 };
 
 

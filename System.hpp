@@ -7,9 +7,13 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <array>
 
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
+#include "Stage.hpp"
+
+#include "TestStage.hpp"
 
 using namespace std;
 
@@ -46,6 +50,9 @@ private:
 	// Player
 	Player* player;
 
+	// Contains all stages
+	array<Stage, 1> stages;
+
 };
 
 int System::run() {
@@ -53,23 +60,14 @@ int System::run() {
 
 	init();
 
-	vector<RoomExit> roomExits;
-	roomExits.push_back(RoomExit::UP);
-	roomExits.push_back(RoomExit::RIGHT);
-	roomExits.push_back(RoomExit::DOWN);
-	roomExits.push_back(RoomExit::LEFT);
-	vector<RoomEntity> roomEntities;
-	roomEntities.push_back(RoomEntity::INTERACTABLE);
-	roomEntities.push_back(RoomEntity::MONSTER);
-	drawRoom(roomExits, roomEntities, pair<int,int>(2, 6), RoomExit::UP);
-
-	levelUp(10);
+	drawRoom(stages.at(0).get_room_exits, stages.at(0).get_room_entities, stages.at(0).get_num_entities, stages.at(0).get_prev_room_dir());
 	
 	return retCode;
 }
 
 void System::init() {
 	player = &Player::get();
+	stages.at(0) = TestStage::get();
 }
 
 void System::shutDown() {
