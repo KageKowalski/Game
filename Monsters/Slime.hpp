@@ -2,13 +2,7 @@
 #define Slime_h
 
 #include "../Monster.hpp"
-#include "../Equipments/TrashSet/WornLadle.hpp"
-#include "../Equipments/TrashSet/RustyPot.hpp"
-#include "../Equipments/TrashSet/CardboardBox.hpp"
-#include "../Equipments/TrashSet/TrashBag.hpp"
-#include "../Equipments/TrashSet/DiscardedCrocs.hpp"
-#include "../Equipments/TrashSet/TornMittens.hpp"
-#include "../Equipments/TrashSet/BrokenBoard.hpp"
+#include "../Equipments/TrashSet/TrashSet.h"
 
 class Slime : public Monster
 {
