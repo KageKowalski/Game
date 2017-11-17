@@ -6,7 +6,9 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+
 #include "IterableDiscreteDistribution.hpp"
+
 using namespace std;
 
 class Entity

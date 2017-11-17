@@ -1,10 +1,3 @@
-//
-//  Interactable.hpp
-//  GameFirstDraft
-//
-//  Created by Joshua Seelye on 11/13/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
 
 #ifndef Interactable_h
 #define Interactable_h
@@ -13,7 +6,16 @@
 
 class Interactable : public Entity
 {
+private:
+    string desc;
     
+public:
+    Interactable()
+    {
+        
+    }
+    
+
 };
 
 #endif /* Interactable_h */

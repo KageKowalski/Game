@@ -1,5 +1,15 @@
 //Contains all setters and getters for a player: Level and exp
 //also has a inventory that can cycle
+/**********************************
+ getLevel
+ getPp
+ setPp
+ rollCrit - returns true if crit
+ getCritPercent - returns percentage of crit chance
+ attack - returns damage done
+ increaseExp - returns true if you leveled
+ nextLevel - returns total required exp to level at players level
+ **********************************/
 
 #ifndef Player_h
 #define Player_h
@@ -60,7 +70,7 @@ public:
         return false;
     }
     
-    int nextLevel() { return (int)round(sqrt((double)(20*level))); }
+    int nextLevel() { return 15+pow(level+1,2); }
     
 //private functions
 private:
@@ -80,6 +90,10 @@ private:
     {
         exp = (exp - nextLevel());
         level++;
+        if(exp>=nextLevel())
+        {
+            levelUp();
+        }
     }
     
     

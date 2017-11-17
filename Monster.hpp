@@ -8,7 +8,7 @@
 
 #ifndef Monster_h
 #define Monster_h
-#include "Combatant.hpp"
+#include "Player.hpp"
 
 class Monster : public Combatant
 {
@@ -17,6 +17,8 @@ protected:
     
     Item death()
     {
+        Player::get().setGold(gold);
+        Player::get().increaseExp(exp);
         return loot();
     }
 };
