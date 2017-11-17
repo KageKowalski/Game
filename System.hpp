@@ -6,6 +6,7 @@
 #include <thread>
 #include <vector>
 #include <string>
+#include <limits>
 
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
@@ -34,8 +35,11 @@ private:
 	// Prints player specs
 	void playerSpecs() const;
 
+	// Trigger stat point distribution event
+	void statPointDistribution(int points);
+
 	// Level up sequence
-	void levelUp();
+	void levelUp(int points);
 
 	// Draws the currently loaded room
 	void drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
@@ -68,7 +72,7 @@ int System::run() {
 	roomEntities.push_back(RoomEntity::MONSTER);
 	drawRoom(roomExits, roomEntities, pair<int,int>(2, 6), RoomExit::UP);
 
-	playerSpecs();
+	levelUp(10);
 	
 	return retCode;
 }
@@ -80,13 +84,13 @@ void System::init() {
 
 // Frees resources
 void System::shutDown() {
-	this_thread::sleep_for(chrono::seconds(2));
+	this_thread::sleep_for(chrono::seconds(3));
 }
 
 // Prints player stats
 void System::playerSpecs() const {
 	cout << endl;
-	cout << "++++++++++ PLAYER SPECS ++++++++++" << endl;
+	cout << "----- PLAYER SPECS -----" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "HEALTH          = " << player->getHp() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
@@ -112,12 +116,28 @@ void System::playerSpecs() const {
 	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "GOLD            = " << player->getGold() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "----------------------------------" << endl;
+	cout << "------------------------" << endl;
 }
 
 // Level up sequence
-void System::levelUp() {
+void System::levelUp(int points) {
+	const int FIREWORK_WIDTH = 41;
+	const int FIREWORK_HEIGHT = 5;
+	string output = "";
+	output += "     . : .                       . : .   ";
+	output += "   .   :   .                   .   :   . ";
+	output += "  .  ' : '  . YOU LEVELED UP! .  ' : '  .";
+	output += "   .   :   .                   .   :   . ";
+	output += "     ' : '                       ' : '   ";
 
+	cout << endl;
+	for (auto i = 0; i < FIREWORK_HEIGHT; i++) {
+		cout << output.substr(FIREWORK_WIDTH * i, FIREWORK_WIDTH) << endl;
+		this_thread::sleep_for(chrono::milliseconds(50));
+	}
+	this_thread::sleep_for(chrono::seconds(2));
+
+	statPointDistribution(points);
 }
 
 // Draws the currently loaded room
@@ -193,6 +213,79 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 		cout << output.substr(ROOM_WIDTH * i, ROOM_WIDTH) << endl;
 		this_thread::sleep_for(chrono::milliseconds(50));
 	}
+}
+
+// Trigger stat point distribution event
+void System::statPointDistribution(int points) {
+	playerSpecs();
+
+	cout << endl;
+	cout << "You have " << points << " available stat points." << endl;
+	this_thread::sleep_for(chrono::milliseconds(50));
+	cout << "Enter '1' to increase HEALTH" << endl;
+	this_thread::sleep_for(chrono::milliseconds(50));
+	cout << "Enter '2' to increase STRENGTH" << endl;
+	this_thread::sleep_for(chrono::milliseconds(50));
+	cout << "Enter '3' to increase DEFENSE" << endl;
+	this_thread::sleep_for(chrono::milliseconds(50));
+	cout << "Enter '4' to increase SPEED" << endl;
+	this_thread::sleep_for(chrono::milliseconds(50));
+	cout << "Enter '5' to increase LUCK" << endl;
+	this_thread::sleep_for(chrono::milliseconds(50));
+	cout << "Enter '6' to increase STAMINA" << endl;
+
+	const int ARG = points;
+	for (auto i = 0; i < ARG; i++) {
+		int key = 0;
+		cin >> key;
+
+		this_thread::sleep_for(chrono::milliseconds(50));
+
+		switch (key) {
+		case 1:
+			player->setHp(1);
+			cout << "Your health has increased! Health = " << player->getHp() << endl;
+			points--;
+			break;
+		case 2:
+			player->setStr(1);
+			cout << "Your strength has increased! Strength = " << player->getStr() << endl;
+			points--;
+			break;
+		case 3:
+			player->setDef(1);
+			cout << "Your defense has increased! Defense = " << player->getDef() << endl;
+			points--;
+			break;
+		case 4:
+			player->setSpd(1);
+			cout << "Your speed has increased! Speed = " << player->getSpd() << endl;
+			points--;
+			break;
+		case 5:
+			player->setLck(1);
+			cout << "Your luck has increased! Luck = " << player->getLck() << endl;
+			points--;
+			break;
+		case 6:
+			player->setPp(1);
+			cout << "Your stamina has increased! Stamina = " << player->getPp() << endl;
+			points--;
+			break;
+		default:
+			cout << "Trying to break the system, eh?" << endl;
+			i--;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
+		}
+
+		this_thread::sleep_for(chrono::milliseconds(50));
+		cout << "You have " << points << " available stat points." << endl;
+	}
+	this_thread::sleep_for(chrono::milliseconds(50));
+
+	playerSpecs();
 }
 
 #endif
