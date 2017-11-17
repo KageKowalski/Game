@@ -2,7 +2,6 @@
 #define Item_h
 
 #include "Entity.hpp"
-#include "Player.hpp"
 
 class Item : public Entity
 {

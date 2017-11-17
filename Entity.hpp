@@ -1,4 +1,3 @@
-
 #ifndef Entity_h
 #define Entity_h
 
@@ -21,4 +20,5 @@ protected:
     void setName(string x) { name = x;   }
     string getName()       { return name;}
 };
+
 #endif /* Entity_h */

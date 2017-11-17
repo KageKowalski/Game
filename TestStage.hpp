@@ -21,11 +21,11 @@ class TestStage : public Stage{
 
 TestStage::TestStage(){
 	Room room0(0, -1, 1, -1, -1);
-	room0.add_monster(Slime("I'm a fagget", 1));
+	room0.add_monster(Slime(1));
 	rooms.push_back(room0);
 
 	Room room1(1, 2, 3, -1, 0);
-	room1.add_monster(Slime("I suck ur mum", 1));
+	room1.add_monster(Slime(1));
 	rooms.push_back(room1);
 
 	Room room2(2, -1, 4, 1, -1);
@@ -38,6 +38,6 @@ TestStage::TestStage(){
 	rooms.push_back(room4);
 
 	Room room5(5, -1, -2, -1, 4);
-	room5.add_monster(Slime("Tiddies", 2));
+	room5.add_monster(Slime(2));
 	rooms.push_back(room5);
 }

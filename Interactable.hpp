@@ -1,10 +1,8 @@
-
 #ifndef Interactable_h
 #define Interactable_h
 
 #include "Entity.hpp"
 #include "Monster.hpp"
-#include "Player.hpp"
 
 class Interactable : public Entity
 {

@@ -1,16 +1,8 @@
-//
-//  Character.hpp
-//  GameFirstDraft
-//
-//  Created by Joshua Seelye on 11/13/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
-
-#ifndef Character_h
-#define Character_h
+#ifndef Combatant_h
+#define Combatant_h
 
 #include "Entity.hpp"
-#include "Equipment.hpp"
+#include "Item.hpp"
 
 class Combatant : public Entity
 {
@@ -75,4 +67,4 @@ protected:
     
 };
 
-#endif /* Character_h */
+#endif /* Combatant_h */

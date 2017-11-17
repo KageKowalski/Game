@@ -17,7 +17,6 @@
 #include "Combatant.hpp"
 #include "Inventory.hpp"
 
-
 class Player : public Combatant
 {
 //private instance variables
