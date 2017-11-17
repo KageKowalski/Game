@@ -29,7 +29,6 @@ protected:
     Monster(){}
     DiscreteDistribution<Item> loot;
     
-    
     Item death()
     {
         return loot();

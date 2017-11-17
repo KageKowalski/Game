@@ -10,7 +10,7 @@
 #define Character_h
 
 #include "Entity.hpp"
-#include "Item.hpp"
+#include "Equipment.hpp"
 
 class Combatant : public Entity
 {

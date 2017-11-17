@@ -23,7 +23,7 @@ class Player : public Combatant
 //private instance variables
 private:
     Inventory inv;
-    int level;
+    unsigned int level;
     int pp;
     //discrete distributions only returns 1 or 0 based on if you crit/dodged
     DiscreteDistribution<bool> crit;
@@ -31,7 +31,7 @@ private:
 
 //public Functions
 public:
-    int getLevel()          { return level;  }
+    unsigned int getLevel()          { return level;  }
     
     int getPp()             { return pp;     }
     
@@ -84,7 +84,7 @@ private:
         crit.add(false, 100-lck);
         crit.add(true, lck);
     }
-    
+    //recursive level up
     void levelUp()
     {
         exp = (exp - nextLevel());

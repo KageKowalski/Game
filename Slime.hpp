@@ -6,16 +6,20 @@
 
 class Slime : public Monster
 {
+//private variables
 private:
-    int level;
+    unsigned int level;
     DiscreteDistribution<int> levelChanges;
+
+//public functions
 public:
     Slime(int _level, string _name = "Slime" ) : level(_level)
     {
         Monster(_name,6,2,0,5,3,5,6);
         levelIncrease();
     }
-    
+//private Functions
+private:
     void levelIncrease()
     {
         gold+=5*(level/5);
@@ -46,7 +50,26 @@ public:
                 }
             }
         }
+        setLoot();
     }
+    
+    void setLoot()
+    {
+        if(level < 10)
+        {
+            Item nothing = Item("Nothing");
+            Equipment eq1 = Equipment("Rusted Pot",0,0,1,0,0,false);
+            Equipment eq2 = Equipment("Slimy Dagger",0,1,0,0,0,false);
+            Equipment eq3 = Equipment("Slime Boots",4,0,0,0,0,false);
+            loot.add(nothing, 60);
+            loot.add(eq1, 17);
+            loot.add(eq2, 18);
+            loot.add(eq3, 10);
+        }
+    }
+    
+    
+    
 };
 
 
