@@ -13,7 +13,7 @@
 class Monster : public Combatant
 {
 public:
-    Monster(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp, DiscreteDistribution<Item>& _loot)
+    Monster(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp, DiscreteDistribution<Item>& _loot = DiscreteDistribution<Item>())
     {
         name = _name;
         hp   = _hp;
