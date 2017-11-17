@@ -13,10 +13,6 @@
 
 using namespace std;
 
-// ======================================================================================
-// DEFINITIONS
-// ======================================================================================
-
 class System {
 
 public:
@@ -52,11 +48,6 @@ private:
 
 };
 
-// ======================================================================================
-// IMPLEMENTATIONS
-// ======================================================================================
-
-// Contains the game loop
 int System::run() {
 	int retCode = 0;
 
@@ -77,49 +68,45 @@ int System::run() {
 	return retCode;
 }
 
-// Initializes game components on startup
 void System::init() {
 	player = &Player::get();
 }
 
-// Frees resources
 void System::shutDown() {
 	this_thread::sleep_for(chrono::seconds(3));
 }
 
-// Prints player stats
 void System::playerSpecs() const {
 	cout << endl;
-	cout << "----- PLAYER SPECS -----" << endl;
+	cout << "  ----- PLAYER SPECS -----" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "HEALTH          = " << player->getHp() << endl;
+	cout << "  Health         = " << player->getHp() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "STRENGTH        = " << player->getStr() << endl;
+	cout << "  Strength        = " << player->getStr() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "DEFENSE         = " << player->getDef() << endl;
+	cout << "  Defense         = " << player->getDef() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "SPEED           = " << player->getSpd() << endl;
+	cout << "  Speed           = " << player->getSpd() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "LUCK            = " << player->getLck() << endl;
+	cout << "  Luck            = " << player->getLck() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "STAMINA         = " << player->getPp() << endl;
+	cout << "  Stamina         = " << player->getPp() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "CRIT CHANCE     = " << player->getCritPercent() << "%" << endl;
+	cout << "  Crit Chance     = " << player->getCritPercent() << "%" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "DODGE CHANCE    = " << player->getDodgePercent() << "%" << endl;
+	cout << "  Dodge Chance    = " << player->getDodgePercent() << "%" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "EXPERIENCE      = " << player->getExp() << endl;
+	cout << "  Experience      = " << player->getExp() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "LEVEL           = " << player->getLevel() << endl;
+	cout << "  Level           = " << player->getLevel() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "TO NEXT LEVEL   = " << player->nextLevel() << endl;
+	cout << "  Next Level At   = " << player->nextLevel() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "GOLD            = " << player->getGold() << endl;
+	cout << "  Gold            = " << player->getGold() << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "------------------------" << endl;
+	cout << "  ------------------------" << endl;
 }
 
-// Level up sequence
 void System::levelUp(int points) {
 	const int FIREWORK_WIDTH = 41;
 	const int FIREWORK_HEIGHT = 5;
@@ -140,7 +127,6 @@ void System::levelUp(int points) {
 	statPointDistribution(points);
 }
 
-// Draws the currently loaded room
 void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
 	const pair<int, int>& numEntites, RoomExit prevRoomDir) const {
 	const int ROOM_WIDTH = 18;
@@ -155,7 +141,6 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 	output += "   |             |";
 	output += "    ------------- ";
 
-	// Edit room for correct exits
 	for (RoomExit exitType : roomExits) {
 		if (exitType == RoomExit::UP) {
 			output.at(ROOM_WIDTH / 2 - 2 + LEFT_MARGIN / 2) = '#';
@@ -183,7 +168,6 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 		}
 	}
 	
-	// Edit room for correct entities and number of entities
 	if (roomEntities.size() == 2) {
 		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2) = 'M';
 		output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + ROOM_WIDTH) = numEntites.first + '0';
@@ -201,13 +185,11 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 		}
 	}
 
-	// Edit room for correct player placement
 	if (prevRoomDir == RoomExit::UP) output.at(ROOM_WIDTH / 2 + LEFT_MARGIN / 2 + ROOM_WIDTH) = 'P';
 	else if (prevRoomDir == RoomExit::RIGHT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) - 3) = 'P';
 	else if (prevRoomDir == RoomExit::DOWN) output.at((ROOM_WIDTH / 2) + (ROOM_HEIGHT - 2) * ROOM_WIDTH + LEFT_MARGIN / 2) = 'P';
 	else if (prevRoomDir == RoomExit::LEFT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) + LEFT_MARGIN + 2) = 'P';
 
-	// Draw completed room
 	cout << endl;
 	for (int i = 0; i < ROOM_HEIGHT; i++) {
 		cout << output.substr(ROOM_WIDTH * i, ROOM_WIDTH) << endl;
@@ -215,24 +197,23 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 	}
 }
 
-// Trigger stat point distribution event
 void System::statPointDistribution(int points) {
 	playerSpecs();
 
 	cout << endl;
-	cout << "You have " << points << " available stat points." << endl;
+	cout << "  You have " << points << " available stat points." << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "Enter '1' to increase HEALTH" << endl;
+	cout << "  Enter '1' to increase HEALTH   +5" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "Enter '2' to increase STRENGTH" << endl;
+	cout << "  Enter '2' to increase STRENGTH +1" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "Enter '3' to increase DEFENSE" << endl;
+	cout << "  Enter '3' to increase DEFENSE  +1" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "Enter '4' to increase SPEED" << endl;
+	cout << "  Enter '4' to increase SPEED    +1" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "Enter '5' to increase LUCK" << endl;
+	cout << "  Enter '5' to increase LUCK     +1" << endl;
 	this_thread::sleep_for(chrono::milliseconds(50));
-	cout << "Enter '6' to increase STAMINA" << endl;
+	cout << "  Enter '6' to increase STAMINA  +1" << endl;
 
 	const int ARG = points;
 	for (auto i = 0; i < ARG; i++) {
@@ -243,37 +224,37 @@ void System::statPointDistribution(int points) {
 
 		switch (key) {
 		case 1:
-			player->setHp(1);
-			cout << "Your health has increased! Health = " << player->getHp() << endl;
+			player->setHp(5);
+			cout << "  Your health has increased! Health = " << player->getHp() << endl;
 			points--;
 			break;
 		case 2:
 			player->setStr(1);
-			cout << "Your strength has increased! Strength = " << player->getStr() << endl;
+			cout << "  Your strength has increased! Strength = " << player->getStr() << endl;
 			points--;
 			break;
 		case 3:
 			player->setDef(1);
-			cout << "Your defense has increased! Defense = " << player->getDef() << endl;
+			cout << "  Your defense has increased! Defense = " << player->getDef() << endl;
 			points--;
 			break;
 		case 4:
 			player->setSpd(1);
-			cout << "Your speed has increased! Speed = " << player->getSpd() << endl;
+			cout << "  Your speed has increased! Speed = " << player->getSpd() << endl;
 			points--;
 			break;
 		case 5:
 			player->setLck(1);
-			cout << "Your luck has increased! Luck = " << player->getLck() << endl;
+			cout << "  Your luck has increased! Luck = " << player->getLck() << endl;
 			points--;
 			break;
 		case 6:
-			player->setPp(1);
-			cout << "Your stamina has increased! Stamina = " << player->getPp() << endl;
+			player->setPp(2);
+			cout << "  Your stamina has increased! Stamina = " << player->getPp() << endl;
 			points--;
 			break;
 		default:
-			cout << "Trying to break the system, eh?" << endl;
+			cout << "  Trying to break the system, eh?" << endl;
 			i--;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -281,7 +262,7 @@ void System::statPointDistribution(int points) {
 		}
 
 		this_thread::sleep_for(chrono::milliseconds(50));
-		cout << "You have " << points << " available stat points." << endl;
+		cout << "  You have " << points << " available stat points." << endl;
 	}
 	this_thread::sleep_for(chrono::milliseconds(50));
 
