@@ -76,7 +76,6 @@ public:
 private:
     Item death()
     {
-        //do death stuff
         return Item();
     }
     

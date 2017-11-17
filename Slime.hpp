@@ -10,16 +10,9 @@ private:
     int level;
     DiscreteDistribution<int> levelChanges;
 public:
-    Slime(string _name, int _level) : level(_level)
+    Slime(int _level, string _name = "Slime" ) : level(_level)
     {
-        name = _name;
-        hp  = 6;
-        str = 2;
-        def = 0;
-        lck = 5;
-        spd = 3;
-        gold = 5;
-        exp = 6;
+        Monster(_name,6,2,0,5,3,5,6,//loot);
         levelIncrease();
     }
     

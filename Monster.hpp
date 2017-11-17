@@ -12,13 +12,25 @@
 
 class Monster : public Combatant
 {
+public:
+    Monster(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp, DiscreteDistribution<Item>& _loot)
+    {
+        name = _name;
+        hp   = _hp;
+        str  = _str;
+        def  = _def;
+        lck  = _lck;
+        spd  = _spd;
+        gold = _gold;
+        exp  = _exp;
+        loot = _loot;
+    }
 protected:
     DiscreteDistribution<Item> loot;
     
+    
     Item death()
     {
-        Player::get().setGold(gold);
-        Player::get().increaseExp(exp);
         return loot();
     }
 };

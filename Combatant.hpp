@@ -29,7 +29,7 @@ public:
     
     int getGold(){ return gold;    }
 
-    void setHp(int x) { hp += x;  if(hp <= 0) death(); }
+    void setHp(int x)  { hp += x;  if(hp <= 0) death(); }
 
 	void setStr(int x) { str += x; }
 
@@ -41,7 +41,7 @@ public:
     
     void setGold(int x){ gold +=x; }
     
-    bool rollDodge()        { updateDodge(); return dodge(); }
+    bool rollDodge()   { updateDodge(); return dodge(); }
     
     virtual int attack(Combatant& mo)
     {

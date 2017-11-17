@@ -3,8 +3,6 @@
 #define Entity_h
 
 #include <string>
-#include <iostream>
-#include <iomanip>
 #include <cmath>
 
 #include "IterableDiscreteDistribution.hpp"
