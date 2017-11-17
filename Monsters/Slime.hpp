@@ -2,7 +2,13 @@
 #define Slime_h
 
 #include "../Monster.hpp"
-#include "../Equipments/TrashSet/*"
+#include "../Equipments/TrashSet/WornLadle.hpp"
+#include "../Equipments/TrashSet/RustyPot.hpp"
+#include "../Equipments/TrashSet/CardboardBox.hpp"
+#include "../Equipments/TrashSet/TrashBag.hpp"
+#include "../Equipments/TrashSet/DiscardedCrocs.hpp"
+#include "../Equipments/TrashSet/TornMittens.hpp"
+#include "../Equipments/TrashSet/BrokenBoard.hpp"
 
 class Slime : public Monster
 {
@@ -56,14 +62,14 @@ private:
     
     void setLoot()
     {
-        loot.add(Equipment(), 70)
-		loot.add(WornLadle(level), 10)
-		loot.add(RustyPot.hpp(level), 10)
-		loot.add(CardboardBox(level), 10)
-		loot.add(TrashBag(level), 10)
-		loot.add(DiscardedCrocs(level), 10)
-		loot.add(TornMittens(level), 10)
-		loot.add(BrokenBoard(level), 10)
+        loot.add(Equipment(), 70);
+		loot.add(WornLadle(level), 10);
+		loot.add(RustyPot(level), 10);
+		loot.add(CardboardBox(level), 10);
+		loot.add(TrashBag(level), 10);
+		loot.add(DiscardedCrocs(level), 10);
+		loot.add(TornMittens(level), 10);
+		loot.add(BrokenBoard(level), 10);
     }
     
     

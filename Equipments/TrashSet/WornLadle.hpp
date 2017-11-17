@@ -48,7 +48,7 @@ void WornLadle::level_up(){
 			pp++;
 			break;
 		case 8:
-			luck;
+			lck++;
 	}
 
 	lvl++;

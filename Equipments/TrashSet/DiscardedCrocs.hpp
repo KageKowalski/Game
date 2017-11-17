@@ -16,7 +16,7 @@ DiscardedCrocs::DiscardedCrocs(int _lvl){
 	levelChanges.add(4, 2);
 	levelChanges.add(5, 2);
 	levelChanges.add(6, 25);
-	levelChanges.add(7, 10;
+	levelChanges.add(7, 10);
 	levelChanges.add(8, 5);
 
 	for(int i = 0; i < _lvl; i++) level_up();

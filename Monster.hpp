@@ -1,6 +1,8 @@
 #ifndef Monster_h
 #define Monster_h
 
+#include "Combatant.hpp"
+
 class Monster : public Combatant
 {
 public:
