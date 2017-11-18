@@ -118,6 +118,12 @@ private:
 
 	// Intro sequence
 	void introSequence();
+
+	// Prints a string of text with a time delay between each character [of settings.textSpeed]
+	void printDelay(string output) const;
+
+	// Prints a string of text with a time delay between each character [of textSpeedOverride]
+	void printDelay(string output, Settings::TextSpeed textSpeedOverride) const;
 	
 };
 
@@ -263,7 +269,7 @@ void System::statPointDistribution(int points) {
 	cout << "  Enter '3' to increase DEFENSE  +1" << endl;
 	cout << "  Enter '4' to increase SPEED    +1" << endl;
 	cout << "  Enter '5' to increase LUCK     +1" << endl;
-	cout << "  Enter '6' to increase STAMINA  +1" << endl;
+	cout << "  Enter '6' to increase STAMINA  +2" << endl;
 
 	const int ARG = points;
 	for (auto i = 0; i < ARG; i++) {
@@ -472,6 +478,14 @@ void System::introSequence() {
 	player->setName(name);
 
 	statPointDistribution(15);
+}
+
+void System::printDelay(string output) const {
+	
+}
+
+void System::printDelay(string output, Settings::TextSpeed textSpeedOverride) const {
+
 }
 
 #endif
