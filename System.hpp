@@ -11,9 +11,6 @@
 
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
-#include "Stage.hpp"
-
-#include "TestStage.hpp"
 
 using namespace std;
 
@@ -51,7 +48,6 @@ private:
 	Player* player;
 
 	// Contains all stages
-	array<Stage, 1> stages;
 
 };
 
@@ -59,15 +55,12 @@ int System::run() {
 	int retCode = 0;
 
 	init();
-
-	drawRoom(stages.at(0).get_room_exits, stages.at(0).get_room_entities, stages.at(0).get_num_entities, stages.at(0).get_prev_room_dir());
 	
 	return retCode;
 }
 
 void System::init() {
 	player = &Player::get();
-	stages.at(0) = TestStage::get();
 }
 
 void System::shutDown() {
