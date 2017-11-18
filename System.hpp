@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <limits>
-#include <array>
 
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
@@ -16,6 +15,25 @@
 using namespace std;
 
 class System {
+
+private:
+
+	// Player
+	Player* player;
+
+	// All possible traversal directions
+	enum class TraversalDir {
+		UP,
+		RIGHT,
+		DOWN,
+		LEFT
+	};
+
+	// Contains every stage in the game
+	vector<Stage> stages;
+	
+	// Current stage ID
+	int currStageID;
 
 public:
 
@@ -43,12 +61,9 @@ private:
 	void drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
 		const pair<int, int>& numEntities, RoomExit prevRoomDir) const;
 
-private:
+	void overworld();
 
-	// Player
-	Player* player;
-
-	// Contains all stages
+	void traverse(TraversalDir dir);
 
 };
 
@@ -56,12 +71,16 @@ int System::run() {
 	int retCode = 0;
 
 	init();
+
+	overworld();
 	
 	return retCode;
 }
 
 void System::init() {
 	player = &Player::get();
+	stages.push_back(TestStage::get());
+	currStageID = 0;
 }
 
 void System::shutDown() {
@@ -121,17 +140,19 @@ void System::levelUp(int points) {
 
 void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
 	const pair<int, int>& numEntites, RoomExit prevRoomDir) const {
-	const int ROOM_WIDTH = 18;
-	const int ROOM_HEIGHT = 7;
+	const int ROOM_WIDTH = 24;
+	const int ROOM_HEIGHT = 9;
 	const int LEFT_MARGIN = 3;
 	string output = "";
-	output += "    ------------- ";
-	output += "   |             |";
-	output += "   |             |";
-	output += "   |             |";
-	output += "   |             |";
-	output += "   |             |";
-	output += "    ------------- ";
+	output += "    ------------------- ";
+	output += "   |                   |";
+	output += "   |                   |";
+	output += "   |                   |";
+	output += "   |                   |";
+	output += "   |                   |";
+	output += "   |                   |";
+	output += "   |                   |";
+	output += "    ------------------- ";
 
 	for (RoomExit exitType : roomExits) {
 		if (exitType == RoomExit::UP) {
@@ -171,7 +192,7 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'M';
 			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1 + ROOM_WIDTH) = numEntites.first + '0';
 		}
-		else {
+		else if(roomEntities.at(0) == RoomEntity::INTERACTABLE) {
 			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'I';
 			output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1 + ROOM_WIDTH) = numEntites.second + '0';
 		}
@@ -259,6 +280,72 @@ void System::statPointDistribution(int points) {
 	this_thread::sleep_for(chrono::milliseconds(50));
 
 	playerSpecs();
+}
+
+void System::overworld() {
+	drawRoom(stages.at(currStageID).get_room_exits(), stages.at(currStageID).get_room_entities(),
+		stages.at(currStageID).get_num_entities(), stages.at(currStageID).get_prev_room_dir());
+
+	while (true) {
+		string input = "";
+		cin >> input;
+
+		for (auto i = 0; i < input.size(); i++)
+			if (input.at(i) >= 'A' && input.at(i) <= 'Z') input.at(i) += 32;
+
+		this_thread::sleep_for(chrono::milliseconds(50));
+		
+		if(input == "n" || input == "north") {
+			traverse(TraversalDir::UP);
+		}
+		else if (input == "e" || input == "east") {
+			traverse(TraversalDir::RIGHT);
+		}
+		else if (input == "s" || input == "south") {
+			traverse(TraversalDir::DOWN);
+		}
+		else if (input == "w" || input == "west") {
+			traverse(TraversalDir::LEFT);
+		}
+		else {
+			cout << "  Tongue tied?" << endl;
+		}
+
+		this_thread::sleep_for(chrono::milliseconds(50));
+	}
+}
+
+void System::traverse(TraversalDir dir) {
+	int result;
+	switch (dir) {
+	case TraversalDir::UP:
+		result = TestStage::get().move_north();
+		break;
+	case TraversalDir::RIGHT:
+		result = TestStage::get().move_east();
+		break;
+	case TraversalDir::DOWN:
+		result = TestStage::get().move_south();
+		break;
+	case TraversalDir::LEFT:
+		result = TestStage::get().move_west();
+		break;
+	}
+
+	this_thread::sleep_for(chrono::milliseconds(50));
+
+	if (result == 0) {
+		drawRoom(TestStage::get().get_room_exits(), TestStage::get().get_room_entities(), TestStage::get().get_num_entities(),
+			TestStage::get().get_prev_room_dir());
+	}
+	else if (result == 1) {
+		cout << "  There's a wall in the way!" << endl;
+	}
+	else if (result == 2) {
+		cout << "  A monster guards the path." << endl;
+	}
+
+	this_thread::sleep_for(chrono::milliseconds(50));
 }
 
 #endif
