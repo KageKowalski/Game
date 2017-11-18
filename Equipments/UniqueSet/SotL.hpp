@@ -13,7 +13,7 @@ public:
 SotL::SotL(int _lvl)
 {
     Equipment2("Slayer of the Lifeless", EquipsType::ONE_HANDED);
-    for(int i = _lvl; i != -1; i--){increase_lvl();}
+    for(int i = _lvl; i != -1; i--){ increase_lvl(); }
 }
 void SotL::increase_lvl()
 {
