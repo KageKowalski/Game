@@ -16,6 +16,7 @@
 
 #include "Combatant.hpp"
 #include "Inventory.hpp"
+#include "Equipments/StarterSet/StarterSet.hpp"
 
 class Player : public Combatant
 {
@@ -24,12 +25,57 @@ private:
     Inventory inv;
     unsigned int level;
     int pp;
+    Equipment helmet;
+    Equipment vest;
+    Equipment boots;
+    Equipment pants;
+    Equipment gloves;
+    Equipment oneHanded;
+    Equipment shield;
+    Equipment twoHanded;
 
 //public Functions
 public:
     unsigned int getLevel() { return level;      }
     int getPp()             { return pp;         }
     void setPp(int x)       { pp += x;           }
+    
+    bool set_helm(Equipment eq)
+    {
+        if(eq.get_EquipType() == EquipType::HELMET) { helmet = eq; return true;   }
+        return false;
+    }
+    bool set_vest(Equipment eq)
+    {
+        if(eq.get_EquipType() == EquipType::VEST)   { vest = eq; return true;   }
+        return false;
+    }
+    bool set_gloves(Equipment eq)
+    {
+        if(eq.get_EquipType() == EquipType::GLOVES) { gloves = eq; return true; }
+        return false;
+    }
+    bool set_pants(Equipment eq)
+    {
+        if(eq.get_EquipType() == EquipType::PANTS)  { pants = eq; return true;  }
+        return false;
+    }
+    bool set_weapon(Equipment eq)
+    {
+        //need to fix for shield
+        if(eq.get_EquipType() == EquipType::ONE_HANDED)
+        {
+            oneHanded = eq;
+            return true;
+        }
+        //need to fix for shield
+        if(eq.get_EquipType() == EquipType::TWO_HANDED)
+        {
+            twoHanded = eq;
+            return true;
+        }
+        return false;
+    }
     
     pair<int, bool> attack(Combatant& mo)
     {
@@ -46,7 +92,6 @@ public:
         ret.second = false;
         return ret;
     }
-    
     //returns true if leveled up
     bool increaseExp(int x)
     {
@@ -91,6 +136,14 @@ private:
         pp  = 5;
         gold = 0;
         exp = 0;
+        helmet = Hair();
+        vest   = Shirt();
+        pants  = Pants();
+        gloves = Hands();
+        boots  = Shoes();
+        shield = Arm();
+        oneHanded = Fists();
+        twoHanded = Nothing();
     }
 public:
     Player(Player const&)          = delete;
