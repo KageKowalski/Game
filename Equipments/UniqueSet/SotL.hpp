@@ -17,10 +17,10 @@ SotL::SotL(int _lvl)
 }
 void SotL::increase_lvl()
 {
-    level_up(10, str, 30);
-    level_up(2, def, 10);
-    level_up(15, lck, 10);
-    level_up(15, hp, 75);
+    level_up(10, str, 1, 30);
+    level_up(2, def, 1, 10);
+    level_up(15, lck, 1, 10);
+    level_up(15, hp, 4, 75);
 }
 
 #endif /* SotL_h */

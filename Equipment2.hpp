@@ -43,14 +43,14 @@ public:
     int get_def()              { return def;       }
     int get_spd()              { return spd;       }
     int get_lck()              { return lck;       }
-    EquipsType get_equipsType()  { return equipsType; }
+    EquipsType get_equipsType(){ return equipsType; }
     
     //  Overloads == operator for comparing Equipments.
     bool operator==(const Equipment2& rhs) { return lvl == rhs.lvl && hp == rhs.hp && pp == rhs.pp && str == rhs.str && def == rhs.def
         && spd == rhs.spd && lck == rhs.lck && equipsType == rhs.equipsType && name == rhs.name;    }
     
     //  Levels up this Equipment.
-    void level_up(int percent, int& stat, int secondRoll)
+    void level_up(int percent, int& stat, int amount int secondRoll)
     {
         DiscreteDistribution<bool> second_roll;
         second_roll.add(false, 100-secondRoll);
@@ -59,10 +59,10 @@ public:
         levelChanges.add(true, percent);
         if(levelChanges())
         {
-            stat++;
+            stat+=amount;
             if(second_roll())
             {
-                level_up(percent, stat, secondRoll);
+                level_up(percent, stat, amount, secondRoll);
             }
         }
     }

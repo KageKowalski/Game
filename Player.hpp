@@ -1,16 +1,3 @@
-//Contains all setters and getters for a player: Level and exp
-//also has a inventory that can cycle
-/**********************************
- getLevel
- getPp
- setPp
- rollCrit - returns true if crit
- getCritPercent - returns percentage of crit chance
- attack - returns damage done
- increaseExp - returns true if you leveled
- nextLevel - returns total required exp to level at players level
- **********************************/
-
 #ifndef Player_h
 #define Player_h
 
