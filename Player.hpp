@@ -129,35 +129,35 @@ public:
 
 bool Player::set_helm(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::HELMET) { helmet = eq; update_stats(); return true;   }
+    if(eq.get_equipType() == EquipType::HELMET) { helmet = eq; update_stats(); return true;   }
     return false;
 }
 bool Player::set_vest(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::VEST)   { vest = eq; update_stats(); return true;   }
+    if(eq.get_equipType() == EquipType::VEST)   { vest = eq; update_stats(); return true;   }
     return false;
 }
 bool Player::set_gloves(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::GLOVES) { gloves = eq; update_stats(); return true; }
+    if(eq.get_equipType() == EquipType::GLOVES) { gloves = eq; update_stats(); return true; }
     return false;
 }
 bool Player::set_pants(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::PANTS)  { pants = eq; update_stats(); return true;  }
+    if(eq.get_equipType() == EquipType::PANTS)  { pants = eq; update_stats(); return true;  }
     return false;
 }
 bool Player::set_weapon(Equipment eq)
 {
     //need to fix for shield
-    if(eq.get_EquipType() == EquipType::ONE_HANDED)
+    if(eq.get_equipType() == EquipType::ONE_HANDED)
     {
         oneHanded = eq;
         update_stats();
         return true;
     }
     //need to fix for shield
-    if(eq.get_EquipType() == EquipType::TWO_HANDED)
+    if(eq.get_equipType() == EquipType::TWO_HANDED)
     {
         twoHanded = eq;
         update_stats();
