@@ -30,7 +30,7 @@ private:
 	};
 
 	// Contains every stage in the game
-	vector<Stage> stages;
+	vector<Stage*> stages;
 	
 	// Current stage ID
 	int currStageID;
@@ -65,6 +65,8 @@ private:
 
 	void traverse(TraversalDir dir);
 
+	void helpList() const;
+
 };
 
 int System::run() {
@@ -79,8 +81,8 @@ int System::run() {
 
 void System::init() {
 	player = &Player::get();
-	stages.push_back(TestStage::get());
-	currStageID = 0;
+	stages.push_back(&TestStage::get());
+	currStageID = TestStage::get().get_id();
 }
 
 void System::shutDown() {
@@ -90,31 +92,18 @@ void System::shutDown() {
 void System::playerSpecs() const {
 	cout << endl;
 	cout << "  ----- PLAYER SPECS -----" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Health         = " << player->getHp() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Strength        = " << player->getStr() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Defense         = " << player->getDef() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Speed           = " << player->getSpd() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Luck            = " << player->getLck() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Stamina         = " << player->getPp() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Crit Chance     = " << player->getCritPercent() << "%" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Dodge Chance    = " << player->getDodgePercent() << "%" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Experience      = " << player->getExp() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Level           = " << player->getLevel() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Next Level At   = " << player->nextLevel() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Gold            = " << player->getGold() << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  ------------------------" << endl;
 }
 
@@ -131,9 +120,8 @@ void System::levelUp(int points) {
 	cout << endl;
 	for (auto i = 0; i < FIREWORK_HEIGHT; i++) {
 		cout << output.substr(FIREWORK_WIDTH * i, FIREWORK_WIDTH) << endl;
-		this_thread::sleep_for(chrono::milliseconds(50));
 	}
-	this_thread::sleep_for(chrono::seconds(2));
+	this_thread::sleep_for(chrono::seconds(1));
 
 	statPointDistribution(points);
 }
@@ -206,7 +194,6 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 	cout << endl;
 	for (int i = 0; i < ROOM_HEIGHT; i++) {
 		cout << output.substr(ROOM_WIDTH * i, ROOM_WIDTH) << endl;
-		this_thread::sleep_for(chrono::milliseconds(50));
 	}
 }
 
@@ -215,25 +202,17 @@ void System::statPointDistribution(int points) {
 
 	cout << endl;
 	cout << "  You have " << points << " available stat points." << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Enter '1' to increase HEALTH   +5" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Enter '2' to increase STRENGTH +1" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Enter '3' to increase DEFENSE  +1" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Enter '4' to increase SPEED    +1" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Enter '5' to increase LUCK     +1" << endl;
-	this_thread::sleep_for(chrono::milliseconds(50));
 	cout << "  Enter '6' to increase STAMINA  +1" << endl;
 
 	const int ARG = points;
 	for (auto i = 0; i < ARG; i++) {
 		int key = 0;
 		cin >> key;
-
-		this_thread::sleep_for(chrono::milliseconds(50));
 
 		switch (key) {
 		case 1:
@@ -273,29 +252,28 @@ void System::statPointDistribution(int points) {
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			break;
 		}
-
-		this_thread::sleep_for(chrono::milliseconds(50));
 		cout << "  You have " << points << " available stat points." << endl;
 	}
-	this_thread::sleep_for(chrono::milliseconds(50));
 
 	playerSpecs();
 }
 
 void System::overworld() {
-	drawRoom(stages.at(currStageID).get_room_exits(), stages.at(currStageID).get_room_entities(),
-		stages.at(currStageID).get_num_entities(), stages.at(currStageID).get_prev_room_dir());
-
 	while (true) {
+		drawRoom(stages.at(currStageID)->get_room_exits(), stages.at(currStageID)->get_room_entities(),
+			stages.at(currStageID)->get_num_entities(), stages.at(currStageID)->get_prev_room_dir());
+
+		cout << endl;
 		string input = "";
 		cin >> input;
 
 		for (auto i = 0; i < input.size(); i++)
 			if (input.at(i) >= 'A' && input.at(i) <= 'Z') input.at(i) += 32;
 
-		this_thread::sleep_for(chrono::milliseconds(50));
-		
-		if(input == "n" || input == "north") {
+		if (input == "h" || input == "help") {
+			helpList();
+		}
+		else if(input == "n" || input == "north") {
 			traverse(TraversalDir::UP);
 		}
 		else if (input == "e" || input == "east") {
@@ -308,10 +286,8 @@ void System::overworld() {
 			traverse(TraversalDir::LEFT);
 		}
 		else {
-			cout << "  Tongue tied?" << endl;
+			cout << "  Tongue tied?" << endl;			
 		}
-
-		this_thread::sleep_for(chrono::milliseconds(50));
 	}
 }
 
@@ -332,20 +308,25 @@ void System::traverse(TraversalDir dir) {
 		break;
 	}
 
-	this_thread::sleep_for(chrono::milliseconds(50));
-
-	if (result == 0) {
-		drawRoom(TestStage::get().get_room_exits(), TestStage::get().get_room_entities(), TestStage::get().get_num_entities(),
-			TestStage::get().get_prev_room_dir());
-	}
-	else if (result == 1) {
+	if (result == 1) {
 		cout << "  There's a wall in the way!" << endl;
 	}
 	else if (result == 2) {
 		cout << "  A monster guards the path." << endl;
 	}
+}
 
-	this_thread::sleep_for(chrono::milliseconds(50));
+void System::helpList() const {
+	cout << endl;
+	cout << "  --- LIST OF COMMANDS ---" << endl;
+	cout << "  [Always]" << endl;
+	cout << "  help,    h" << endl;
+	cout << endl << "  [Overworld]" << endl;
+	cout << "  north,   n" << endl;
+	cout << "  east,    e" << endl;
+	cout << "  south,   s" << endl;
+	cout << "  west,    w" << endl;
+	cout << "  ------------------------" << endl;
 }
 
 #endif
