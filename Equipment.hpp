@@ -53,7 +53,7 @@ public:
 
 
 	//  Levels up this Equipment.
-	virtual void level_up();
+    virtual void level_up(){}
 
 
 protected:
