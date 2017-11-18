@@ -50,7 +50,7 @@ public:
         && spd == rhs.spd && lck == rhs.lck && equipsType == rhs.equipsType && name == rhs.name;    }
     
     //  Levels up this Equipment.
-    void level_up(int percent, int& stat, int amount int secondRoll)
+    void level_up(int percent, int& stat, int amount, int secondRoll)
     {
         DiscreteDistribution<bool> second_roll;
         second_roll.add(false, 100-secondRoll);
