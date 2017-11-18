@@ -1,4 +1,9 @@
+#ifndef DiscardedCrocs_h
+#define DiscardedCrocs_h
+
 #include "../../Equipment.hpp"
+
+//  Stat increase per level: 0.3
 
 class DiscardedCrocs : public Equipment{
 	public:
@@ -53,3 +58,5 @@ void DiscardedCrocs::level_up(){
 
 	lvl++;
 }
+
+#endif /* DiscardedCrocs_h */

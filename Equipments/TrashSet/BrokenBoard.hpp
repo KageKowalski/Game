@@ -1,4 +1,9 @@
+#ifndef BrokenBoard_h
+#define BrokenBoard_h
+
 #include "../../Equipment.hpp"
+
+//  Stat increase per level: 0.3
 
 class BrokenBoard : public Equipment{
 	public:
@@ -49,3 +54,5 @@ void BrokenBoard::level_up(){
 
 	lvl++;
 }
+
+#endif /* BrokenBoard_h */

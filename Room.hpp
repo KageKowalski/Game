@@ -14,10 +14,10 @@ class Room{
 
 
 		//  Return true if this Room has designated exit, else false.
-		bool has_north() {return north != -1;}
-		bool has_east() {return east != -1;}
-		bool has_south() {return south != -1;}
-		bool has_west() {return west != -1;}
+		bool has_north() {return north != DEAD_END;}
+		bool has_east() {return east != DEAD_END;}
+		bool has_south() {return south != DEAD_END;}
+		bool has_west() {return west != DEAD_END;}
 
 
 		//  Return the int id of the designated Room, relative to this Room.
@@ -25,6 +25,7 @@ class Room{
 		int get_east() {return east;}
 		int get_south() {return south;}
 		int get_west() {return west;}
+		int get_id() {return id;}
 
 
 		//  Return number of Monsters or Interactables in this Room.
@@ -47,6 +48,11 @@ class Room{
 		//  Returns true if successful, else false.
 		void remove_monster(Monster&);
 		void remove_interactable(Interactable&);
+
+		
+		//  Constants designating dead ends and stage exits.
+		const static int DEAD_END   = -1;
+		const static int STAGE_EXIT = -2;
 
 
 	protected:

@@ -8,5 +8,6 @@
 #include "TornMittens.hpp"
 #include "WornLadle.hpp"
 #include "BrokenBoard.hpp"
+#include "LargeBranch.hpp"
 
 #endif /* TrashSet_h */

@@ -1,4 +1,9 @@
+#ifndef TornMittens_h
+#define TornMittens_h
+
 #include "../../Equipment.hpp"
+
+//  Stat increase per level: 0.3
 
 class TornMittens : public Equipment{
 	public:
@@ -53,3 +58,5 @@ void TornMittens::level_up(){
 
 	lvl++;
 }
+
+#endif /* TornMittens_h */

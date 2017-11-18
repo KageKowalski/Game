@@ -1,19 +1,19 @@
-#ifndef WornLadle_h
-#define WornLadle_h
+#ifndef LargeBranch_h
+#define LargeBranch_h
 
 #include "../../Equipment.hpp"
 
-class WornLadle : public Equipment{
+//  Stat increase per level: .45
+//  pp increase per level:   .1
+
+class LargeBranch : public Equipment{
 	public:
-		WornLadle(int);
+		LargeBranch(int);
 		void level_up();
 };
 
-//  Stat increase per level: 0.3
-//  pp increase per level:   0.1
-
-WornLadle::WornLadle(int _lvl){
-	Equipment("Worn Ladle", EquipType::ONE_HANDED);
+LargeBranch::LargeBranch(int _lvl){
+	Equipment("Large Branch", EquipType::TWO_HANDED);
 
 	levelChanges.add(0, 40);
 	levelChanges.add(1, 2);
@@ -21,14 +21,15 @@ WornLadle::WornLadle(int _lvl){
 	levelChanges.add(3, 2);
 	levelChanges.add(4, 2);
 	levelChanges.add(5, 2);
-	levelChanges.add(6, 35);
-	levelChanges.add(7, 10);
-	levelChanges.add(8, 5);
+	levelChanges.add(6, 20);
+	levelChanges.add(7, 15);
+	levelChanges.add(8, 10);
+	levelChanges.add(9, 5);
 
 	for(int i = 0; i < _lvl; i++) level_up();
 }
 
-void WornLadle::level_up(){
+void LargeBranch::level_up(){
 	int roll = levelChanges();
 
 	switch(roll){
@@ -51,13 +52,16 @@ void WornLadle::level_up(){
 			str++;
 			break;
 		case 7:
-			pp++;
+			str+=2;
 			break;
 		case 8:
+			pp++;
+			break;
+		case 9:
 			lck++;
 	}
 
 	lvl++;
 }
 
-#endif /* WornLadle_h */
+#endif /* LargeBranch */

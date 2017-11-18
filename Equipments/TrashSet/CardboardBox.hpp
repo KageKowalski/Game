@@ -1,4 +1,9 @@
+#ifndef CardboardBox_h
+#define CardboardBox_h
+
 #include "../../Equipment.hpp"
+
+//  Stat increase per level: 0.3
 
 class CardboardBox : public Equipment{
 	public:
@@ -49,3 +54,5 @@ void CardboardBox::level_up(){
 
 	lvl++;
 }
+
+#endif /* CardboardBox_h */

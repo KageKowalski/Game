@@ -1,4 +1,9 @@
+#ifndef TrashBag_h
+#define TrashBag_h
+
 #include "../../Equipment.hpp"
+
+//  Stat increase per level: 0.3
 
 class TrashBag : public Equipment{
 	public:
@@ -49,3 +54,5 @@ void TrashBag::level_up(){
 
 	lvl++;
 }
+
+#endif /* TrashBag_h */

@@ -1,4 +1,9 @@
+#ifndef RustyPot_h
+#define RustyPot_h
+
 #include "../../Equipment.hpp"
+
+//  Stat increase per level: 0.3 
 
 class RustyPot : public Equipment{
 	public:
@@ -49,3 +54,5 @@ void RustyPot::level_up(){
 
 	lvl++;
 }
+
+#endif /* RustyPot_h */
