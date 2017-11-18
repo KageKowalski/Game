@@ -3,10 +3,13 @@
 
 #include <string>
 #include <cmath>
+#include <chrono>
 
 #include "IterableDiscreteDistribution.hpp"
 
 using namespace std;
+
+Random RANDOM_GENERATOR(chrono::high_resolution_clock::now().time_since_epoch().count());
 
 class Entity
 {
