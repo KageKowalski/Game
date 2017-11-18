@@ -44,7 +44,7 @@ public:
     int get_def()              { return def;       }
 	int get_spd()              { return spd;       }
     int get_lck()              { return lck;       }
-	EquipType get_EquipType()  { return equipType; }
+	EquipType get_equipType()  { return equipType; }
     
 
 	//  Overloads == operator for comparing Equipments.

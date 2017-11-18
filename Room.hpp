@@ -10,7 +10,7 @@ class Room{
 	public:
 		//  Initializes all of this Room's data.
 		Room(int _id, int _north, int _east, int _south, int _west):
-			id(_id), north(_north), east(_east), south(_south), west(_west) {}
+			id(_id), north(_north), east(_east), south(_south), west(_west), description("") {}
 
 
 		//  Return true if this Room has designated exit, else false.
@@ -39,9 +39,13 @@ class Room{
 
 
 		//  Adds passed Monster or Interactable to this Room.
-		//  Retursn true if successful, else false.
 		void add_monster(Monster);
 		void add_interactable(Interactable);
+
+
+		//  Sets or gets this Room's description.
+		void set_description(string _description) {description = _description;}
+		string get_description() {return description;}
 
 
 		//  Removes passed Monster or Interactable from this Room.
@@ -61,6 +65,7 @@ class Room{
 		int east;
 		int south;
 		int west;
+		string description;
 		vector<Monster> monsters;
 		vector<Interactable> interactables;
 };
