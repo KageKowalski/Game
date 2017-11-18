@@ -29,11 +29,52 @@ private:
 		LEFT
 	};
 
+	// Contains game settings
+	struct Settings {
+
+		// All possible text speeds
+		enum class TextSpeed {
+			VERY_SLOW,
+			SLOW,
+			MODERATE,
+			FAST,
+			VERY_FAST,
+			INSTANT
+		};
+
+		// Current text speed
+		TextSpeed textSpeed;
+
+		// Default constructor
+		Settings() : textSpeed(TextSpeed::MODERATE) {}
+
+		// Returns text speed as a string
+		string printTextSpeed() const {
+			switch (textSpeed) {
+			case TextSpeed::VERY_SLOW:
+				return "Very Slow";
+			case TextSpeed::SLOW:
+				return "Slow";
+			case TextSpeed::MODERATE:
+				return "Moderate";
+			case TextSpeed::FAST:
+				return "Fast";
+			case TextSpeed::VERY_FAST:
+				return "Very Fast";
+			case TextSpeed::INSTANT:
+				return "Instant";
+			}
+		}
+	};
+
 	// Contains every stage in the game
 	vector<Stage*> stages;
 	
 	// Current stage ID
 	int currStageID;
+
+	// Game settings
+	Settings settings;
 
 public:
 
@@ -57,16 +98,24 @@ private:
 	// Level up sequence
 	void levelUp(int points);
 
-	// Draws the currently loaded room
+	// Draws the current room
 	void drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
 		const pair<int, int>& numEntities, RoomExit prevRoomDir) const;
 
 	void overworld();
 
+	// Traverse the current stage
 	void traverse(TraversalDir dir);
 
+	// Prints list of all commands
 	void helpList() const;
 
+	// Configure game settings
+	void configure();
+
+	// Prints game settings
+	void gameSettings() const;
+	
 };
 
 int System::run() {
@@ -190,6 +239,7 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 	else if (prevRoomDir == RoomExit::RIGHT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2 + 1) - 3) = 'P';
 	else if (prevRoomDir == RoomExit::DOWN) output.at((ROOM_WIDTH / 2) + (ROOM_HEIGHT - 2) * ROOM_WIDTH + LEFT_MARGIN / 2) = 'P';
 	else if (prevRoomDir == RoomExit::LEFT) output.at(ROOM_WIDTH * (ROOM_HEIGHT / 2) + LEFT_MARGIN + 2) = 'P';
+	else if (prevRoomDir == RoomExit::NONE) output.at(ROOM_WIDTH * ROOM_HEIGHT / 2 + 1) = 'P';
 
 	cout << endl;
 	for (int i = 0; i < ROOM_HEIGHT; i++) {
@@ -273,6 +323,15 @@ void System::overworld() {
 		if (input == "h" || input == "help") {
 			helpList();
 		}
+		else if (input == "c" || input == "configure") {
+			configure();
+		}
+		else if (input == "se" || input == "settings") {
+			gameSettings();
+		}
+		else if (input == "sp" || input == "specs") {
+			playerSpecs();
+		}
 		else if(input == "n" || input == "north") {
 			traverse(TraversalDir::UP);
 		}
@@ -286,7 +345,7 @@ void System::overworld() {
 			traverse(TraversalDir::LEFT);
 		}
 		else {
-			cout << "  Tongue tied?" << endl;			
+			cout << "  Tongue tied? Give yourself some leeway and type 'h'!" << endl;			
 		}
 	}
 }
@@ -320,13 +379,75 @@ void System::helpList() const {
 	cout << endl;
 	cout << "  --- LIST OF COMMANDS ---" << endl;
 	cout << "  [Always]" << endl;
-	cout << "  help,    h" << endl;
+	cout << "  help,       h" << endl;
+	cout << "  configure,  c" << endl;
+	cout << "  settings,   se" << endl;
+	cout << "  specs,      sp" << endl;
 	cout << endl << "  [Overworld]" << endl;
-	cout << "  north,   n" << endl;
-	cout << "  east,    e" << endl;
-	cout << "  south,   s" << endl;
-	cout << "  west,    w" << endl;
+	cout << "  north,      n" << endl;
+	cout << "  east,       e" << endl;
+	cout << "  south,      s" << endl;
+	cout << "  west,       w" << endl;
 	cout << "  ------------------------" << endl;
+}
+
+void System::configure() {
+	gameSettings();
+
+	cout << "  TEXT SPEED" << endl;
+	cout << "  Enter '1' for Very Slow" << endl;
+	cout << "  Enter '2' for Slow" << endl;
+	cout << "  Enter '3' for Moderate" << endl;
+	cout << "  Enter '4' for Fast" << endl;
+	cout << "  Enter '5' for Very Fast" << endl;
+	cout << "  Enter '6' for Instant" << endl;
+	
+	bool loop = true;
+	while (loop) {
+		int key = 0;
+		cin >> key;
+
+		switch (key) {
+		case 1:
+			settings.textSpeed = Settings::TextSpeed::VERY_SLOW;
+			loop = false;
+			break;
+		case 2:
+			settings.textSpeed = Settings::TextSpeed::SLOW;
+			loop = false;
+			break;
+		case 3:
+			settings.textSpeed = Settings::TextSpeed::MODERATE;
+			loop = false;
+			break;
+		case 4:
+			settings.textSpeed = Settings::TextSpeed::FAST;
+			loop = false;
+			break;
+		case 5:
+			settings.textSpeed = Settings::TextSpeed::VERY_FAST;
+			loop = false;
+			break;
+		case 6:
+			settings.textSpeed = Settings::TextSpeed::INSTANT;
+			loop = false;
+			break;
+		default:
+			cout << "  This is serious stuff, you know..." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
+		}
+	}
+
+	gameSettings();
+}
+
+void System::gameSettings() const {
+	cout << endl;
+	cout << "  ----- GAME SETTINGS -----" << endl;
+	cout << "  Text Speed = " << settings.printTextSpeed() << endl;
+	cout << "  -------------------------" << endl << endl;
 }
 
 #endif
