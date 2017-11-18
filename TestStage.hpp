@@ -21,11 +21,9 @@ class TestStage : public Stage{
 			name = "Test Stage";
 
 			Room room0(0, Room::DEAD_END, 1, Room::DEAD_END, Room::DEAD_END);
-			//room0.add_monster(Slime(1));
 			rooms.push_back(room0);
 
 			Room room1(1, 2, 3, Room::DEAD_END, 0);
-			room1.add_monster(Slime(1));
 			rooms.push_back(room1);
 
 			Room room2(2, Room::DEAD_END, 4, 1, Room::DEAD_END);

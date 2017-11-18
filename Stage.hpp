@@ -68,7 +68,7 @@ int Stage::move_north(){
 
 
 int Stage::move_east(){
-	if(!rooms.at(curRoom).get_east() == Room::DEAD_END) return 1;
+	if(rooms.at(curRoom).get_east() == Room::DEAD_END) return 1;
 	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_east() != prevRoom) return 2;
 	if(rooms.at(curRoom).get_east() == Room::STAGE_EXIT) return -1;
 	prevRoom = curRoom;
@@ -78,7 +78,7 @@ int Stage::move_east(){
 
 
 int Stage::move_south(){
-	if(!rooms.at(curRoom).get_south() == Room::DEAD_END) return 1;
+	if(rooms.at(curRoom).get_south() == Room::DEAD_END) return 1;
 	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_south() != prevRoom) return 2;
 	if(rooms.at(curRoom).get_south() == Room::STAGE_EXIT) return -1;
 	prevRoom = curRoom;
@@ -88,7 +88,7 @@ int Stage::move_south(){
 
 
 int Stage::move_west(){
-	if(!rooms.at(curRoom).get_west() == Room::DEAD_END) return 1;
+	if(rooms.at(curRoom).get_west() == Room::DEAD_END) return 1;
 	if(rooms.at(curRoom).get_num_monsters() && rooms.at(curRoom).get_west() != prevRoom) return 2;
 	if(rooms.at(curRoom).get_west() == Room::STAGE_EXIT) return -1;
 	prevRoom = curRoom;
