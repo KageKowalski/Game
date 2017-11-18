@@ -1,16 +1,3 @@
-//Contains all setters and getters for a player: Level and exp
-//also has a inventory that can cycle
-/**********************************
- getLevel
- getPp
- setPp
- rollCrit - returns true if crit
- getCritPercent - returns percentage of crit chance
- attack - returns damage done
- increaseExp - returns true if you leveled
- nextLevel - returns total required exp to level at players level
- **********************************/
-
 #ifndef Player_h
 #define Player_h
 
@@ -67,8 +54,8 @@ public:
 
     pair<int, bool> attack(Combatant& mo);
     
-    //returns true if leveled up
-    bool increaseExp(int x);
+    //returns amount of times leveled up
+    int increaseExp(int x);
     
     //return at what xp you will reach next level
     int nextLevel() { return 15+pow(level+1,2); }
@@ -76,14 +63,15 @@ public:
 //private functions
 private:
     //recursive level up
-    void levelUp()
+    int levelUp(int amnt)
     {
         exp = (exp - nextLevel());
         level++;
         if(exp>=nextLevel())
         {
-            levelUp();
+            amnt = levelUp(amnt+1);
         }
+        return amnt;
     }
     void update_stats()
     {
@@ -182,15 +170,15 @@ pair<int, bool> Player::attack(Combatant& mo)
     return ret;
 }
 
-bool Player::increaseExp(int x)
+int Player::increaseExp(int x)
 {
     exp+=x;
     if(exp>=nextLevel())
     {
-        levelUp();
-        return true;
+        int amnt = levelUp(0);
+        return 1 + amnt;
     }
-    return false;
+    return 0;
 }
 
 int Player::get_hp_boost()
