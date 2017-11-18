@@ -1,3 +1,6 @@
+#ifndef TestStage_h
+#define TestStage_h
+
 #include "Stage.hpp"
 #include "Monsters/Slime.hpp"
 
@@ -41,3 +44,5 @@ TestStage::TestStage(const string& name) : Stage(name) {
 	room5.add_monster(Slime(2));
 	rooms.push_back(room5);
 }
+
+#endif /* TestStage_h */
