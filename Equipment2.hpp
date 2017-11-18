@@ -1,9 +1,9 @@
-#ifndef Equipment_h
-#define Equipment_h
+#ifndef Equipment2_h
+#define Equipment2_h
 
 #include "Item.hpp"
 
-enum class EquipType {
+enum class EquipsType {
     HELMET,
     VEST,
     PANTS,
@@ -16,12 +16,12 @@ enum class EquipType {
 };
 
 
-class Equipment : public Item
+class Equipment2 : public Item
 {
 public:
     //  An object of type Equipment will never be constructed for serious use.
     //  This constructor is merely to assist sub-classes' constructors.
-    Equipment(string _name="Nothing", EquipType _equipType=EquipType::NONE)
+    Equipment2(string _name="Nothing", EquipsType _equipsType=EquipsType::NONE)
     {
         name      = _name;
         lvl       = 0;
@@ -31,7 +31,7 @@ public:
         def       = 0;
         spd       = 0;
         lck       = 0;
-        equipType = _equipType;
+        equipsType = _equipsType;
     }
     
     //  GETTERS
@@ -43,23 +43,24 @@ public:
     int get_def()              { return def;       }
     int get_spd()              { return spd;       }
     int get_lck()              { return lck;       }
-    EquipType get_equipType()  { return equipType; }
+    EquipsType get_equipsType()  { return equipsType; }
     
     //  Overloads == operator for comparing Equipments.
-    bool operator==(const Equipment& rhs) { return lvl == rhs.lvl && hp == rhs.hp && pp == rhs.pp && str == rhs.str && def == rhs.def
-        && spd == rhs.spd && lck == rhs.lck && equipType == rhs.equipType && name == rhs.name;    }
+    bool operator==(const Equipment2& rhs) { return lvl == rhs.lvl && hp == rhs.hp && pp == rhs.pp && str == rhs.str && def == rhs.def
+        && spd == rhs.spd && lck == rhs.lck && equipsType == rhs.equipsType && name == rhs.name;    }
     
     //  Levels up this Equipment.
-    void level_up(double percent, int& stat, double secondRoll)
+    void level_up(int percent, int& stat, int secondRoll)
     {
-        DiscreteDistribution<bool> second_roll.add(false, 100-secondRoll);
+        DiscreteDistribution<bool> second_roll;
+        second_roll.add(false, 100-secondRoll);
         second_roll.add(true, secondRoll);
-        levelChages.add(false, 100-percent);
+        levelChanges.add(false, 100-percent);
         levelChanges.add(true, percent);
         if(levelChanges())
         {
             stat++;
-            if(secondRoll())
+            if(second_roll())
             {
                 level_up(percent, stat, secondRoll);
             }
@@ -74,7 +75,7 @@ protected:
     int def;
     int spd;
     int lck;
-    EquipType equipType;
+    EquipsType equipsType;
     DiscreteDistribution<bool> levelChanges;
 };
 
