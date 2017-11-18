@@ -25,6 +25,13 @@ private:
     Inventory inv;
     unsigned int level;
     int pp;
+    
+    int hp_eq;
+    int str_eq;
+    int def_eq;
+    int lck_eq;
+    int spd_eq;
+    
     Equipment helmet;
     Equipment vest;
     Equipment boots;
@@ -51,12 +58,19 @@ public:
     int get_def_boost();
     int get_lck_boost();
     int get_spd_boost();
+    
+    int get_hp_tot()    { return hp_eq;  }
+    int get_str_tot()   { return str_eq; }
+    int get_def_tot()   { return def_eq; }
+    int get_lck_tot()   { return lck_eq; }
+    int get_spd_tot()   { return spd_eq; }
 
     pair<int, bool> attack(Combatant& mo);
     
     //returns true if leveled up
     bool increaseExp(int x);
     
+    //return at what xp you will reach next level
     int nextLevel() { return 15+pow(level+1,2); }
     
 //private functions
@@ -70,6 +84,14 @@ private:
         {
             levelUp();
         }
+    }
+    void update_stats()
+    {
+        hp_eq  = hp + get_hp_boost();
+        str_eq = str + get_str_boost();
+        def_eq = def + get_def_boost();
+        lck_eq = lck + get_lck_boost();
+        spd_eq = spd + get_spd_boost();
     }
 //singleton design pattern for player class
 private:
@@ -107,22 +129,22 @@ public:
 
 bool Player::set_helm(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::HELMET) { helmet = eq; return true;   }
+    if(eq.get_EquipType() == EquipType::HELMET) { helmet = eq; update_stats(); return true;   }
     return false;
 }
 bool Player::set_vest(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::VEST)   { vest = eq; return true;   }
+    if(eq.get_EquipType() == EquipType::VEST)   { vest = eq; update_stats(); return true;   }
     return false;
 }
 bool Player::set_gloves(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::GLOVES) { gloves = eq; return true; }
+    if(eq.get_EquipType() == EquipType::GLOVES) { gloves = eq; update_stats(); return true; }
     return false;
 }
 bool Player::set_pants(Equipment eq)
 {
-    if(eq.get_EquipType() == EquipType::PANTS)  { pants = eq; return true;  }
+    if(eq.get_EquipType() == EquipType::PANTS)  { pants = eq; update_stats(); return true;  }
     return false;
 }
 bool Player::set_weapon(Equipment eq)
@@ -131,12 +153,14 @@ bool Player::set_weapon(Equipment eq)
     if(eq.get_EquipType() == EquipType::ONE_HANDED)
     {
         oneHanded = eq;
+        update_stats();
         return true;
     }
     //need to fix for shield
     if(eq.get_EquipType() == EquipType::TWO_HANDED)
     {
         twoHanded = eq;
+        update_stats();
         return true;
     }
     return false;

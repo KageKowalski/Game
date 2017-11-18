@@ -13,7 +13,7 @@ class Entity
 protected:
     string name;
     
-protected:
+public:
     Entity(){}
     
     //basic setter and getter for name
