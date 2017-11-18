@@ -19,7 +19,6 @@ public:
         loot = _loot;
     }
 protected:
-    Monster(){}
     DiscreteDistribution<Item> loot;
     
     Item death()

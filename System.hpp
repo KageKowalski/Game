@@ -10,6 +10,7 @@
 
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
+#include "TestStage.hpp"
 
 using namespace std;
 

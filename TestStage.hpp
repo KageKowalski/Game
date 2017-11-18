@@ -1,5 +1,5 @@
 #include "Stage.hpp"
-#include "Slime.hpp"
+#include "Monsters/Slime.hpp"
 
 class TestStage : public Stage{
 	public:
