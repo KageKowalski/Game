@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <sstream>
 
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
@@ -46,7 +47,7 @@ private:
 		TextSpeed textSpeed;
 
 		// Default constructor
-		Settings() : textSpeed(TextSpeed::MODERATE) {}
+		Settings() : textSpeed(TextSpeed::FAST) {}
 
 		// Returns text speed as a string
 		string printTextSpeed() const {
@@ -119,11 +120,20 @@ private:
 	// Intro sequence
 	void introSequence();
 
-	// Prints a string of text with a time delay between each character [of settings.textSpeed]
+	// Prints a string of text with a time delay between each character depending on settings.textSpeed
 	void printDelay(string output) const;
 
-	// Prints a string of text with a time delay between each character [of textSpeedOverride]
+	// Prints a string of text with a time delay between each character depending on textSpeedOverride
 	void printDelay(string output, Settings::TextSpeed textSpeedOverride) const;
+
+	// Thread sleeps depending on settings.textSpeed
+	void sleep() const;
+
+	// Thread sleeps depending on textSpeedOverride
+	void sleep(Settings::TextSpeed textSpeedOverride) const;
+
+	// Thread sleeps for milliseconds, simulating a pause
+	void sleep(int milliseconds) const;
 	
 };
 
@@ -146,7 +156,7 @@ void System::init() {
 }
 
 void System::shutDown() {
-	this_thread::sleep_for(chrono::seconds(3));
+	sleep(2000);
 }
 
 void System::playerSpecs() const {
@@ -182,7 +192,7 @@ void System::levelUp(int points) {
 	for (auto i = 0; i < FIREWORK_HEIGHT; i++) {
 		cout << output.substr(FIREWORK_WIDTH * i, FIREWORK_WIDTH) << endl;
 	}
-	this_thread::sleep_for(chrono::seconds(1));
+	sleep(1000);
 
 	statPointDistribution(points);
 }
@@ -262,14 +272,13 @@ void System::drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity
 void System::statPointDistribution(int points) {
 	playerSpecs();
 
-	cout << endl;
-	cout << "  You have " << points << " available stat points." << endl;
-	cout << "  Enter '1' to increase HEALTH   +5" << endl;
-	cout << "  Enter '2' to increase STRENGTH +1" << endl;
-	cout << "  Enter '3' to increase DEFENSE  +1" << endl;
-	cout << "  Enter '4' to increase SPEED    +1" << endl;
-	cout << "  Enter '5' to increase LUCK     +1" << endl;
-	cout << "  Enter '6' to increase STAMINA  +2" << endl;
+	ostringstream output;
+	output << "\n  You have " << points << " available stat points.\n  Enter '1' to increase HEALTH   +5\n"
+		<< "  Enter '2' to increase STRENGTH +1\n  Enter '3' to increase DEFENSE  +1\n"
+		<< "  Enter '4' to increase SPEED    +1\n  Enter '5' to increase LUCK     +1\n"
+		<< "  Enter '6' to increase STAMINA  +2\n";
+	printDelay(output.str());
+	output.str("");
 
 	const int ARG = points;
 	for (auto i = 0; i < ARG; i++) {
@@ -279,42 +288,47 @@ void System::statPointDistribution(int points) {
 		switch (key) {
 		case 1:
 			player->setHp(5);
-			cout << "  Your health has increased! Health = " << player->getHp() << endl;
+			output << "  Your health has increased! Health = " << player->getHp() << "\n";
 			points--;
 			break;
 		case 2:
 			player->setStr(1);
-			cout << "  Your strength has increased! Strength = " << player->getStr() << endl;
+			output << "  Your strength has increased! Strength = " << player->getStr() << "\n";
 			points--;
 			break;
 		case 3:
 			player->setDef(1);
-			cout << "  Your defense has increased! Defense = " << player->getDef() << endl;
+			output << "  Your defense has increased! Defense = " << player->getDef() << "\n";
 			points--;
 			break;
 		case 4:
 			player->setSpd(1);
-			cout << "  Your speed has increased! Speed = " << player->getSpd() << endl;
+			output << "  Your speed has increased! Speed = " << player->getSpd() << "\n";
 			points--;
 			break;
 		case 5:
 			player->setLck(1);
-			cout << "  Your luck has increased! Luck = " << player->getLck() << endl;
+			output << "  Your luck has increased! Luck = " << player->getLck() << "\n";
 			points--;
 			break;
 		case 6:
 			player->setPp(2);
-			cout << "  Your stamina has increased! Stamina = " << player->getPp() << endl;
+			output << "  Your stamina has increased! Stamina = " << player->getPp() << "\n";
 			points--;
 			break;
 		default:
-			cout << "  Trying to break the system, eh?" << endl;
+			output << "  Trying to break the system, eh?" << "\n";
 			i--;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			break;
 		}
-		cout << "  You have " << points << " available stat points." << endl;
+		printDelay(output.str());
+		output.str("");
+
+		output << "  You have " << points << " available stat points." << "\n";
+		printDelay(output.str());
+		output.str("");
 	}
 
 	playerSpecs();
@@ -324,7 +338,7 @@ void System::overworld() {
 	while (true) {
 		drawRoom(stages.at(currStageID)->get_room_exits(), stages.at(currStageID)->get_room_entities(),
 			stages.at(currStageID)->get_num_entities(), stages.at(currStageID)->get_prev_room_dir());
-		cout << stages.at(currStageID)->get_description() << endl;
+		printDelay(stages.at(currStageID)->get_description() + "\n");
 
 		cout << endl;
 		string input = "";
@@ -361,7 +375,7 @@ void System::overworld() {
 
 		}
 		else {
-			cout << "  Tongue tied? Give yourself some leeway and type 'h'!" << endl;			
+			printDelay("  Tongue tied? Give yourself some leeway and type 'h'!\n");
 		}
 	}
 }
@@ -384,10 +398,10 @@ void System::traverse(TraversalDir dir) {
 	}
 
 	if (result == 1) {
-		cout << "  There's a wall in the way!" << endl;
+		printDelay("  There's a wall in the way!\n");
 	}
 	else if (result == 2) {
-		cout << "  A monster guards the path." << endl;
+		printDelay("  A monster guards the path.\n");
 	}
 }
 
@@ -411,13 +425,16 @@ void System::helpList() const {
 void System::configure() {
 	gameSettings();
 
-	cout << "  TEXT SPEED" << endl;
-	cout << "  Enter '1' for Very Slow" << endl;
-	cout << "  Enter '2' for Slow" << endl;
-	cout << "  Enter '3' for Moderate" << endl;
-	cout << "  Enter '4' for Fast" << endl;
-	cout << "  Enter '5' for Very Fast" << endl;
-	cout << "  Enter '6' for Instant" << endl;
+	ostringstream output;
+	output << "  TEXT SPEED" << "\n";
+	cout << "  Enter '1' for Very Slow" << "\n";
+	cout << "  Enter '2' for Slow" << "\n";
+	cout << "  Enter '3' for Moderate" << "\n";
+	cout << "  Enter '4' for Fast" << "\n";
+	cout << "  Enter '5' for Very Fast" << "\n";
+	cout << "  Enter '6' for Instant" << "\n";
+	printDelay(output.str());
+	output.str("");
 	
 	bool loop = true;
 	while (loop) {
@@ -450,7 +467,10 @@ void System::configure() {
 			loop = false;
 			break;
 		default:
-			cout << "  This is serious stuff, you know..." << endl;
+			output << "  This is serious stuff, you know..." << "\n";
+			printDelay(output.str());
+			output.str("");
+
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			break;
@@ -468,10 +488,10 @@ void System::gameSettings() const {
 }
 
 void System::introSequence() {
-	cout << endl;
-	cout << "  ...Hello?" << endl << endl;
-	cout << "  ...You there..." << endl << endl;
-	cout << "  ...What is your name?" << endl << endl;
+	printDelay("\n  ...Hello?", Settings::TextSpeed::VERY_SLOW);
+	printDelay("\n\n  ...You there...", Settings::TextSpeed::SLOW);
+	printDelay("\n\n  ...What's your name?", Settings::TextSpeed::MODERATE);
+	cout << endl << endl;
 
 	string name;
 	getline(cin, name);
@@ -481,11 +501,73 @@ void System::introSequence() {
 }
 
 void System::printDelay(string output) const {
-	
+	for (auto i = 0; i < output.size(); i++) {
+		if (i < output.size() - 1 && output.substr(i, 2) == "\n") {
+			cout << endl;
+			i++;
+			continue;
+		}
+
+		cout << output.at(i);
+		sleep();
+	}
 }
 
 void System::printDelay(string output, Settings::TextSpeed textSpeedOverride) const {
+	for (auto i = 0; i < output.size(); i++) {
+		if (i < output.size() - 1 && output.substr(i, 2) == "\n") {
+			cout << endl;
+			i++;
+			continue;
+		}
 
+		cout << output.at(i);
+		sleep(textSpeedOverride);
+	}
+}
+
+void System::sleep() const {
+	switch (settings.textSpeed) {
+	case Settings::TextSpeed::VERY_SLOW:
+		this_thread::sleep_for(chrono::milliseconds(500));
+		break;
+	case Settings::TextSpeed::SLOW:
+		this_thread::sleep_for(chrono::milliseconds(250));
+		break;
+	case Settings::TextSpeed::MODERATE:
+		this_thread::sleep_for(chrono::milliseconds(75));
+		break;
+	case Settings::TextSpeed::FAST:
+		this_thread::sleep_for(chrono::milliseconds(15));
+		break;
+	case Settings::TextSpeed::VERY_FAST:
+		this_thread::sleep_for(chrono::milliseconds(5));
+		break;
+	}
+}
+
+void System::sleep(Settings::TextSpeed textSpeedOverride) const {
+	switch (textSpeedOverride) {
+	case Settings::TextSpeed::VERY_SLOW:
+		this_thread::sleep_for(chrono::milliseconds(500));
+		break;
+	case Settings::TextSpeed::SLOW:
+		this_thread::sleep_for(chrono::milliseconds(250));
+		break;
+	case Settings::TextSpeed::MODERATE:
+		this_thread::sleep_for(chrono::milliseconds(75));
+		break;
+	case Settings::TextSpeed::FAST:
+		this_thread::sleep_for(chrono::milliseconds(15));
+		break;
+	case Settings::TextSpeed::VERY_FAST:
+		this_thread::sleep_for(chrono::milliseconds(5));
+		break;
+	}
+}
+
+void System::sleep(int milliseconds) const {
+	this_thread::sleep_for(chrono::milliseconds(milliseconds));
 }
 
 #endif
