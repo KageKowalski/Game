@@ -115,6 +115,9 @@ private:
 
 	// Prints game settings
 	void gameSettings() const;
+
+	// Intro sequence
+	void introSequence();
 	
 };
 
@@ -122,6 +125,8 @@ int System::run() {
 	int retCode = 0;
 
 	init();
+
+	introSequence();
 
 	overworld();
 	
@@ -140,12 +145,13 @@ void System::shutDown() {
 
 void System::playerSpecs() const {
 	cout << endl;
-	cout << "  ----- PLAYER SPECS -----" << endl;
-	cout << "  Health         = " << player->getHp() << endl;
-	cout << "  Strength        = " << player->getStr() << endl;
-	cout << "  Defense         = " << player->getDef() << endl;
-	cout << "  Speed           = " << player->getSpd() << endl;
-	cout << "  Luck            = " << player->getLck() << endl;
+	cout << "  -------- PLAYER SPECS --------" << endl;
+	cout << "  Name            = " << player->getName() << endl;
+	cout << "  Health          = " << player->getHp() << " + " << player->get_hp_boost() << endl;
+	cout << "  Strength        = " << player->getStr() << " + " << player->get_str_boost() << endl;
+	cout << "  Defense         = " << player->getDef() << " + " << player->get_def_boost() << endl;
+	cout << "  Speed           = " << player->getSpd() << " + " << player->get_spd_boost() << endl;
+	cout << "  Luck            = " << player->getLck() << " + " << player->get_lck_boost() << endl;
 	cout << "  Stamina         = " << player->getPp() << endl;
 	cout << "  Crit Chance     = " << player->getCritPercent() << "%" << endl;
 	cout << "  Dodge Chance    = " << player->getDodgePercent() << "%" << endl;
@@ -153,7 +159,7 @@ void System::playerSpecs() const {
 	cout << "  Level           = " << player->getLevel() << endl;
 	cout << "  Next Level At   = " << player->nextLevel() << endl;
 	cout << "  Gold            = " << player->getGold() << endl;
-	cout << "  ------------------------" << endl;
+	cout << "  ------------------------------" << endl;
 }
 
 void System::levelUp(int points) {
@@ -312,6 +318,7 @@ void System::overworld() {
 	while (true) {
 		drawRoom(stages.at(currStageID)->get_room_exits(), stages.at(currStageID)->get_room_entities(),
 			stages.at(currStageID)->get_num_entities(), stages.at(currStageID)->get_prev_room_dir());
+		cout << stages.at(currStageID)->get_description() << endl;
 
 		cout << endl;
 		string input = "";
@@ -343,6 +350,9 @@ void System::overworld() {
 		}
 		else if (input == "w" || input == "west") {
 			traverse(TraversalDir::LEFT);
+		}
+		else if (input == "inspect" || input == "i") {
+
 		}
 		else {
 			cout << "  Tongue tied? Give yourself some leeway and type 'h'!" << endl;			
@@ -388,6 +398,7 @@ void System::helpList() const {
 	cout << "  east,       e" << endl;
 	cout << "  south,      s" << endl;
 	cout << "  west,       w" << endl;
+	cout << "  inspect,    i" << endl;
 	cout << "  ------------------------" << endl;
 }
 
@@ -448,6 +459,19 @@ void System::gameSettings() const {
 	cout << "  ----- GAME SETTINGS -----" << endl;
 	cout << "  Text Speed = " << settings.printTextSpeed() << endl;
 	cout << "  -------------------------" << endl << endl;
+}
+
+void System::introSequence() {
+	cout << endl;
+	cout << "  ...Hello?" << endl << endl;
+	cout << "  ...You there..." << endl << endl;
+	cout << "  ...What is your name?" << endl << endl;
+
+	string name;
+	getline(cin, name);
+	player->setName(name);
+
+	statPointDistribution(15);
 }
 
 #endif
