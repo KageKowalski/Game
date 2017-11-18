@@ -23,8 +23,8 @@ public:
 private:
     void levelIncrease()
     {
-        gold+=5*(level/5);
-        exp+=2*level;
+        gold+=5*(level);
+        exp+=3*level;
         if(level>1)
         {
             levelChanges.add(1, 45);
@@ -56,14 +56,14 @@ private:
     
     void setLoot()
     {
-        loot.add(Equipment(), 70);
-		loot.add(WornLadle(level), 10);
-		loot.add(RustyPot(level), 10);
-		loot.add(CardboardBox(level), 10);
-		loot.add(TrashBag(level), 10);
-		loot.add(DiscardedCrocs(level), 10);
-		loot.add(TornMittens(level), 10);
-		loot.add(BrokenBoard(level), 10);
+            loot.add(Equipment(), 70);
+            loot.add(WornLadle(level), 10);
+            loot.add(RustyPot(level), 10);
+            loot.add(CardboardBox(level), 10);
+            loot.add(TrashBag(level), 10);
+            loot.add(DiscardedCrocs(level), 10);
+            loot.add(TornMittens(level), 10);
+            loot.add(BrokenBoard(level), 10);
     }
     
     

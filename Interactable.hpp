@@ -12,17 +12,17 @@ private:
 	int trapDamage;
     
 public:
-    //constructor for trap iteractable
-    Interactable(string _desc, int _trapDamage) : desc(_desc), trapDamage(_trapDamage)
-    {}
-    //constructor for a monster interact
-    Interactable(string _desc, Monster _monster) : desc(_desc), monster(_monster)
-    {}
-    
-    void interact()
-    {
-		if (trapDamage);
-    }
+//    //constructor for trap iteractable
+//    Interactable(string _desc, int _trapDamage) : desc(_desc), trapDamage(_trapDamage)
+//    {}
+//    //constructor for a monster interact
+//    Interactable(string _desc, Monster _monster) : desc(_desc), monster(_monster)
+//    {}
+//
+//    void interact()
+//    {
+//        if (trapDamage);
+//    }
 };
 
 #endif /* Interactable_h */

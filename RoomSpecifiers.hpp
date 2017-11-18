@@ -1,3 +1,6 @@
+#ifndef _RoomSpecifiers
+#define _RoomSpecifiers
+
 // All possible room exit directions
 enum class RoomExit {
 	UP,
@@ -13,3 +16,5 @@ enum class RoomEntity {
 	INTERACTABLE,
 	NONE
 };
+
+#endif

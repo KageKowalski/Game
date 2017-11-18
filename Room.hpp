@@ -1,3 +1,6 @@
+#ifndef _RoomGuard
+#define _RoomGuard
+
 #include <vector>
 #include <assert.h>
 #include "Monster.hpp"
@@ -92,3 +95,5 @@ void Room::remove_interactable(Interactable& in){
 	interactables = updatedInteractables;
 	assert(interactableFound);
 }
+
+#endif

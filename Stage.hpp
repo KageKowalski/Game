@@ -1,3 +1,6 @@
+#ifndef _StageGuard
+#define _StageGuard
+
 #include <string>
 #include "Room.hpp"
 #include "RoomSpecifiers.hpp"
@@ -118,3 +121,5 @@ RoomExit Stage::get_prev_room_dir(){
 	if(rooms.at(curRoom).get_west() == prevRoom) return RoomExit::LEFT;
 	return RoomExit::NONE;
 }
+
+#endif

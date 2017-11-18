@@ -22,10 +22,8 @@ protected:
     Monster(){}
     DiscreteDistribution<Item> loot;
     
-    Item death()
-    {
-        return loot();
-    }
+    Item get_loot(){ return loot(); }
+    
 };
 
 #endif /* Monster_h */
