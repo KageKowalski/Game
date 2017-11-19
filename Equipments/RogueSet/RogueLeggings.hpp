@@ -1,4 +1,3 @@
-//poop
 #ifndef RogueLeggings_h
 #define RogueLeggings_h
 
@@ -9,47 +8,20 @@
 class RogueLeggings : public Equipment{
 public:
     RogueLeggings(int);
-    void level_up();
+    void increase_lvl();
 };
 
-RogueLeggings::RogueLeggings(int _lvl){
+RogueLeggings::RogueLeggings(int _lvl)
+{
     Equipment("Rogue Leggings", EquipType::PANTS);
-    
-    levelChanges.add(0, 35);
-    levelChanges.add(1, 11);
-    levelChanges.add(2, 15);
-    levelChanges.add(3, 9);
-    levelChanges.add(4, 12);
-    levelChanges.add(5, 15);
-    levelChanges.add(6, 3);
-    
-    for(int i = 0; i < _lvl; i++) level_up();
+    for(int i = _lvl; i != 0; i--){ increase_lvl(); }
 }
-
-void RogueLeggings::level_up(){
-    int roll = levelChanges();
-    
-    switch(roll){
-        case 1:
-            def++;
-            break;
-        case 2:
-            spd+=2;
-            break;
-        case 3:
-            spd+=3;
-            break;
-        case 4:
-            lck++;
-            break;
-        case 5:
-            hp+=2;
-            break;
-        case 6:
-            str++;
-    }
-    
-    lvl++;
+void RogueLeggings::increase_lvl()
+{
+    level_up(30, spd, 1, 30);
+    level_up(20, def, 1, 10);
+    level_up(15, lck, 1, 10);
+    level_up(7, hp, RANDOM_GENERATOR.nextInt(3)+1, 12);
 }
 
 

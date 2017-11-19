@@ -71,7 +71,7 @@ DiscreteDistribution<KEY_T>::DiscreteDistribution()
 {}
 
 template<typename KEY_T>
-DiscreteDistribution<KEY_T>::DiscreteDistribution(const DiscreteDistribution<KEY_T>& orig): _valueToWeightMap(orig._valueToWeightMap),_rng(orig._rng)
+DiscreteDistribution<KEY_T>::DiscreteDistribution(const DiscreteDistribution<KEY_T>& orig): _valueToWeightMap(orig._valueToWeightMap),_rng(std::chrono::high_resolution_clock::now().time_since_epoch().count())
 {}
 
 // Templated Overloaded equals operator

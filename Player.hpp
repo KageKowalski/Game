@@ -3,7 +3,7 @@
 
 #include "Combatant.hpp"
 #include "Inventory.hpp"
-#include "Equipments/StarterSet/StarterSet.hpp"
+#include "Equipments/StarterSet/StarterSet.h"
 
 class Player : public Combatant
 {

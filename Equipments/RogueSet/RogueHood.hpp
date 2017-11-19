@@ -1,70 +1,27 @@
-//
-//  RogueHood.hpp
-//  Game
-//
-//  Created by Joshua Seelye on 11/18/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
-
 #ifndef RogueHood_h
 #define RogueHood_h
-
-//poop
-#ifndef RogueLeggings_h
-#define RogueLeggings_h
 
 #include "../../Equipment.hpp"
 
 //  Stat increase per level: 0.93
 
-class RogueLeggings : public Equipment{
+class RogueHood : public Equipment{
 public:
-    RogueLeggings(int);
-    void level_up();
+    RogueHood(int);
+    void increase_lvl();
 };
 
-RogueLeggings::RogueLeggings(int _lvl){
-    Equipment("Rogue Leggings", EquipType::PANTS);
-    
-    levelChanges.add(0, 35);
-    levelChanges.add(1, 11);
-    levelChanges.add(2, 15);
-    levelChanges.add(3, 9);
-    levelChanges.add(4, 12);
-    levelChanges.add(5, 15);
-    levelChanges.add(6, 3);
-    
-    for(int i = 0; i < _lvl; i++) level_up();
+RogueHood::RogueHood(int _lvl)
+{
+    Equipment("Serrated Dirk", EquipType::HELMET);
+    for(int i = _lvl; i != -1; i--){ increase_lvl(); }
 }
-
-void RogueLeggings::level_up(){
-    int roll = levelChanges();
-    
-    switch(roll){
-        case 1:
-            def++;
-            break;
-        case 2:
-            spd+=2;
-            break;
-        case 3:
-            spd+=3;
-            break;
-        case 4:
-            lck++;
-            break;
-        case 5:
-            hp+=2;
-            break;
-        case 6:
-            str++;
-    }
-    
-    lvl++;
+void RogueHood::increase_lvl()
+{
+    level_up(30, spd, 1, 30);
+    level_up(20, def, 1, 10);
+    level_up(15, lck, 1, 10);
+    level_up(7, hp, RANDOM_GENERATOR.nextInt(3)+1, 12);
 }
-
-
-#endif /* RogueLeggings_h */
-
 
 #endif /* RogueHood_h */
