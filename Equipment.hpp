@@ -56,7 +56,7 @@ public:
     void level_up(int percent, int& stat, int amount, int secondRoll);
     void level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp);
     
-    ostringstream toString();
+    string toString();
 
 
 protected:
@@ -88,7 +88,7 @@ void Equipment::level_up(int percent, int& stat, int amount, int secondRoll)
     }
 }
 
-void Equipment::level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp){
+void Equipment::level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp=0){
     int n;
     
     n = _hp/100;
@@ -160,11 +160,11 @@ void Equipment::level_up(int _hp, int _str, int _def, int _spd, int _lck, int _n
     lvl++;
 }
 
-ostringstream Equipment::toString()
+string Equipment::toString()
 {
     ostringstream oss;
     oss << "Hp: " << hp << " Str: " << str << " Def: " << def << " Luk: " << lck << " Spd: " << spd << " PP: " << pp << endl;
-    return oss;
+    return oss.str();
 }
 
 #endif /* Equipment_h */
