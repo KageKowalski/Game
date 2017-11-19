@@ -3,56 +3,16 @@
 
 #include "../../Equipment.hpp"
 
-//  Stat increase per level: 0.3 
+//  Average Stats/Level: .15
 
-class RustyPot : public Equipment{
+class RustyPot : public Equipment {
 	public:
-		RustyPot(int);
-		void level_up();
+		RustyPot(int level);
 };
 
-RustyPot::RustyPot(int _lvl){
+RustyPot::RustyPot(int level){
 	Equipment("Rusty Pot", EquipType::HELMET);
-
-	levelChanges.add(0, 50);
-	levelChanges.add(1, 2);
-	levelChanges.add(2, 2);
-	levelChanges.add(3, 2);
-	levelChanges.add(4, 2);
-	levelChanges.add(5, 2);
-	levelChanges.add(6, 35);
-	levelChanges.add(7, 5);
-
-	for(int i = 0; i < _lvl; i++) level_up();
-}
-
-void RustyPot::level_up(){
-	int roll = levelChanges();
-
-	switch(roll){
-		case 1:
-			hp--;
-			break;
-		case 2:
-			str--;
-			break;
-		case 3:
-			def--;
-			break;
-		case 4:
-			spd--;
-			break;
-		case 5:
-			lck--;
-			break;
-		case 6:
-			def++;
-			break;
-		case 7:
-			lck++;
-	}
-
-	lvl++;
+	for(int i = 0; i < level; i++) level_up(0, 105, 140, 0, 120, 110, 110, 110, 110, 110);
 }
 
 #endif /* RustyPot_h */

@@ -3,60 +3,14 @@
 
 #include "../../Equipment.hpp"
 
-//  Stat increase per level: 0.3
+// Average Stats/Level: .15
 
-class TornMittens : public Equipment{
+class TornMittens : public Equipment {
 	public:
-		TornMittens(int);
-		void level_up();
+		TornMittens(int level){
+			Equipment("Torn Mittens", EquipType::GLOVES);
+			for(int i = 0; i < level; i++) level_up(0, 105, 120, 115, 125, 110, 110, 110, 110, 110);
+		}
 };
-
-TornMittens::TornMittens(int _lvl){
-	Equipment("TornMittens", EquipType::GLOVES);
-
-	levelChanges.add(0, 50);
-	levelChanges.add(1, 2);
-	levelChanges.add(2, 2);
-	levelChanges.add(3, 2);
-	levelChanges.add(4, 2);
-	levelChanges.add(5, 2);
-	levelChanges.add(6, 25);
-	levelChanges.add(7, 10);
-	levelChanges.add(8, 5);
-
-	for(int i = 0; i < _lvl; i++) level_up();
-}
-
-void TornMittens::level_up(){
-	int roll = levelChanges();
-
-	switch(roll){
-		case 1:
-			hp--;
-			break;
-		case 2:
-			str--;
-			break;
-		case 3:
-			def--;
-			break;
-		case 4:
-			spd--;
-			break;
-		case 5:
-			lck--;
-			break;
-		case 6:
-			lck++;
-			break;
-		case 7:
-			def++;
-			break;
-		case 8:
-			str++;
-	}
-
-	lvl++;
-}
 
 #endif /* TornMittens_h */

@@ -3,56 +3,14 @@
 
 #include "../../Equipment.hpp"
 
-//  Stat increase per level: 0.3
+//  Average Stats/Level: .15
 
-class BrokenBoard : public Equipment{
+class BrokenBoard : public Equipment {
 	public:
-		BrokenBoard(int);
-		void level_up();
+		BrokenBoard(int level){
+			Equipment("Broken Board", EquipType::SHIELD);
+			for(int i = 0; i < level; i++) level_up(0, 115, 135, 115, 0, 110, 110, 110, 110, 110);
+		}
 };
-
-BrokenBoard::BrokenBoard(int _lvl){
-	Equipment("Broken Board", EquipType::SHIELD);
-
-	levelChanges.add(0, 50);
-	levelChanges.add(1, 2);
-	levelChanges.add(2, 2);
-	levelChanges.add(3, 2);
-	levelChanges.add(4, 2);
-	levelChanges.add(5, 2);
-	levelChanges.add(6, 35);
-	levelChanges.add(7, 5);
-
-	for(int i = 0; i < _lvl; i++) level_up();
-}
-
-void BrokenBoard::level_up(){
-	int roll = levelChanges();
-
-	switch(roll){
-		case 1:
-			hp--;
-			break;
-		case 2:
-			str--;
-			break;
-		case 3:
-			def--;
-			break;
-		case 4:
-			spd--;
-			break;
-		case 5:
-			lck--;
-			break;
-		case 6:
-			def++;
-			break;
-		case 7:
-			lck++;
-	}
-
-	lvl++;
-}
 
 #endif /* BrokenBoard_h */
