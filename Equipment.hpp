@@ -73,11 +73,11 @@ protected:
 
 void Equipment::level_up(int percent, int& stat, int amount, int secondRoll)
 {
-    DiscreteDistribution<bool> second_roll;
-    second_roll.add(false, 100-secondRoll);
-    second_roll.add(true, secondRoll);
-    levelChanges.add(false, 100-percent);
-    levelChanges.add(true, percent);
+    DiscreteDistribution<int> second_roll;
+    second_roll.add(0, 100-secondRoll);
+    second_roll.add(1, secondRoll);
+    levelChanges.add(0, 100-percent);
+    levelChanges.add(1, percent);
     if(levelChanges())
     {
         stat+=amount;
