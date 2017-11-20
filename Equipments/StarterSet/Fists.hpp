@@ -7,7 +7,6 @@ class  Fists : public Equipment{
 public:
     Fists()
     {
-        Equipment();
         name = "Fists";
         equipType = EquipType::ONE_HANDED;
     }

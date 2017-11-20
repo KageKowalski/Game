@@ -7,7 +7,6 @@ class  Shirt : public Equipment{
 public:
     Shirt()
     {
-        Equipment();
         name = "Shirt";
         equipType = EquipType::VEST;
     }

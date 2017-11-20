@@ -7,7 +7,6 @@ class  Arm : public Equipment{
 public:
     Arm()
     {
-        Equipment();
         name = "Arm";
         equipType = EquipType::SHIELD;
     }

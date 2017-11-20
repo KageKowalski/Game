@@ -9,7 +9,8 @@
 class WornLadle : public Equipment {
 	public:
 		WornLadle(int level){
-			Equipment("Worn Ladle", EquipType::ONE_HANDED);
+            name = "Worn Ladle";
+            equipType = EquipType::ONE_HANDED;
 			for(int i = 0; i < level; i++) level_up(0, 230, 0, 105, 105, 110, 110, 110, 110, 110, 110);
 		}
 };

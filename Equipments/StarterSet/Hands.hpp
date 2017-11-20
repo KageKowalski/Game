@@ -7,7 +7,6 @@ class Hands : public Equipment{
 public:
     Hands()
     {
-        Equipment();
         name = "Hands";
         equipType = EquipType::GLOVES;
     }

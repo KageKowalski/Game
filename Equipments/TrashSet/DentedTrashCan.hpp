@@ -9,7 +9,8 @@
 class DentedTrashCan : public Equipment {
 	public:
 		DentedTrashCan(int level){
-			Equipment("Dented Trash Can", EquipType::TWO_HANDED);
+            name = "Dented Trash Can";
+            equipType = EquipType::TWO_HANDED;
 			for(int i = 0; i < level; i++) level_up(0, 240, 105, 0, 0, 110, 110, 110, 110, 110, 117);
 		}
 };

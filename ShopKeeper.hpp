@@ -11,59 +11,93 @@ class ShopKeeper : public Interactable
 {
 //instance variables
 private:
-    pair<bool, Equipment> toRetEq;
-    pair<bool, Consumable> toRetCon;
-    vector<BuyableEquipment> forsaleEq;
-    vector<BuyableConsumable> forsaleCon;
+    pair<bool, Equipment>       toRetEq;
+    pair<bool, Consumable>      toRetCon;
+    vector<BuyableEquipment>    forsaleEq;
+    vector<BuyableConsumable>   forsaleCon;
     int posEq;
     int posCon;
     
 //public Functions
 public:
-    BuyableEquipment& interact_eq();
-    BuyableEquipment& get_current_eq();
-    BuyableEquipment& next_eq();
-    BuyableEquipment& prev_eq();
-    pair<bool, Equipment>& buy_eq();
-    void add(BuyableEquipment& item);
     
-    BuyableConsumable& interact_con();
-    BuyableConsumable& get_current_con();
-    BuyableConsumable& next_con();
-    BuyableConsumable& prev_con();
-    pair<bool, Consumable>& buy_con();
+    BuyableEquipment&           get_current_eq();
+    BuyableEquipment&           next_eq();
+    BuyableEquipment&           prev_eq();
+    void add(BuyableEquipment&  item);
+    
+    BuyableConsumable&          get_current_con();
+    BuyableConsumable&          next_con();
+    BuyableConsumable&          prev_con();
     void add(BuyableConsumable& item);
     
+    //returns true if item was bought based on player gold, second item will be empty if first is false;
+    pair<bool, Consumable>&     buy_con();
+    pair<bool, Equipment>&      buy_eq();
+    
+    //check type of shopkeeper could be Equipment, Consumable, or both
+    bool empty_eq()                   { return forsaleEq.empty();  }
+    bool empty_con()                  { return forsaleCon.empty(); }
+
+    //gets buyable item to output to user
+    BuyableEquipment& interact_eq()   { return get_current_eq();  }
+    BuyableConsumable& interact_con() { return get_current_con(); }
+    
 public:
-    ShopKeeper(){}
-    ShopKeeper(string _name = "Shop Keeper", string _desc = "An old man that has ran this place for years.")
-    {
-        name    = _name;
-        desc    = _desc;
-        posEq = 0;
-        posCon = 0;
-    }
-    ShopKeeper(vector<BuyableEquipment>& _forsale, string _name = "Shop Keeper", string _desc = "Default Eq")
-    {
-        forsaleEq = _forsale;
-        forsaleEq.shrink_to_fit();
-        name    = _name;
-        desc    = _desc;
-        posEq = 0;
-        posCon = 0;
-    }
-    ShopKeeper(vector<BuyableConsumable>& _forsale, string _name = "Shop Keeper", string _desc = "Default Con")
-    {
-        forsaleCon = _forsale;
-        forsaleCon.shrink_to_fit();
-        name    = _name;
-        desc    = _desc;
-        posEq = 0;
-        posCon = 0;
-    }
+    //Different Overloaded Constructors for all types of shopkeeper
+    ShopKeeper(string _name = "Shop Keeper", string _desc = "An old man that has ran this place for years.");
+    ShopKeeper(vector<BuyableEquipment>& _forsaleEq, string _name = "Shop Keeper", string _desc = "Default Eq");
+    ShopKeeper(vector<BuyableConsumable>& _forsaleCon, string _name = "Shop Keeper", string _desc = "Default Con");
+    ShopKeeper(vector<BuyableEquipment> _forsaleEq, vector<BuyableConsumable>& _forsaleCon, string _name = "Shop Keeper", string _desc = "Default Eq and Con");
     
 };
 
+
+/***********************
+      Constructors
+ ***********************/
+ShopKeeper::ShopKeeper(string _name, string _desc)
+{
+    name    = _name;
+    desc    = _desc;
+    posEq = 0;
+    posCon = 0;
+}
+ShopKeeper::ShopKeeper(vector<BuyableEquipment>& _forsaleEq, string _name, string _desc)
+{
+    forsaleEq = _forsaleEq;
+    forsaleEq.shrink_to_fit();
+    name    = _name;
+    desc    = _desc;
+    posEq = 0;
+    posCon = 0;
+}
+ShopKeeper::ShopKeeper(vector<BuyableConsumable>& _forsaleCon, string _name, string _desc)
+{
+    forsaleCon = _forsaleCon;
+    forsaleCon.shrink_to_fit();
+    name    = _name;
+    desc    = _desc;
+    posEq = 0;
+    posCon = 0;
+}
+
+ShopKeeper::ShopKeeper(vector<BuyableEquipment> _forsaleEq, vector<BuyableConsumable>& _forsaleCon, string _name, string _desc)
+{
+    forsaleEq = _forsaleEq;
+    forsaleEq.shrink_to_fit();
+    forsaleCon = _forsaleCon;
+    forsaleCon.shrink_to_fit();
+    name    = _name;
+    desc    = _desc;
+    posEq = 0;
+    posCon = 0;
+}
+
+
+/***********************
+   Equipment Functions
+ ***********************/
 void ShopKeeper::add(BuyableEquipment& item)
 {
     forsaleEq.resize(forsaleEq.size()+1);
@@ -106,9 +140,11 @@ pair<bool, Equipment>& ShopKeeper::buy_eq()
     return toRetEq;
 }
 
-BuyableEquipment& ShopKeeper::interact_eq(){ return get_current_eq(); }
 
 
+/***********************
+  Consumable Functions
+ ***********************/
 void ShopKeeper::add(BuyableConsumable& item)
 {
     forsaleCon.resize(forsaleCon.size()+1);
@@ -150,7 +186,5 @@ pair<bool, Consumable>& ShopKeeper::buy_con()
     forsaleCon.erase((forsaleCon.begin()+posCon));
     return toRetCon;
 }
-
-BuyableConsumable& ShopKeeper::interact_con(){ return get_current_con(); }
 
 #endif /* ShopKeeper_h */

@@ -7,7 +7,6 @@ class  Hair : public Equipment{
 public:
     Hair()
     {
-        Equipment();
         name = "Hair";
         equipType = EquipType::HELMET;
     }

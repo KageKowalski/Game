@@ -12,7 +12,6 @@ public:
 
 RogueGloves::RogueGloves(int _lvl)
 {
-    Equipment();
     name = "Rogue Gloves";
     equipType = EquipType::GLOVES;
     for(int i = _lvl; i != -1; i--){ increase_lvl(); }

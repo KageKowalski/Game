@@ -8,7 +8,8 @@
 class TornMittens : public Equipment {
 	public:
 		TornMittens(int level){
-			Equipment("Torn Mittens", EquipType::GLOVES);
+            name = "Torn Mittens";
+            equipType = EquipType::GLOVES;
 			for(int i = 0; i < level; i++) level_up(0, 105, 120, 115, 125, 110, 110, 110, 110, 110);
 		}
 };

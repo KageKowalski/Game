@@ -8,7 +8,8 @@
 class CardboardBox : public Equipment {
 	public:
 		CardboardBox(int level){
-			Equipment("Cardboard Box", EquipType::VEST);
+            name = "Cardboard Box";
+            equipType = EquipType::VEST;
 			for(int i = 0; i < level; i++) level_up(110, 0, 130, 105, 120, 110, 110, 110, 110, 110);
 		}
 };

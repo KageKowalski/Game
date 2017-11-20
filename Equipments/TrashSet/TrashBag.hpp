@@ -8,7 +8,8 @@
 class TrashBag : public Equipment {
 	public:
 		TrashBag(int level){
-			Equipment("Trash Bag", EquipType::PANTS);
+            name = "Trash Bag";
+            equipType = EquipType::PANTS;
 			for(int i = 0; i < level; i++) level_up(105, 0, 120, 0, 220, 110, 110, 110, 110, 110);
 		}
 };

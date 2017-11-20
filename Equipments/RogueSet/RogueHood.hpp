@@ -13,7 +13,6 @@ public:
 
 RogueHood::RogueHood(int _lvl)
 {
-    Equipment();
     name = "Rogue Hood";
     equipType = EquipType::HELMET;
     for(int i = _lvl; i != -1; i--){ increase_lvl(); }

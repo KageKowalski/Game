@@ -7,7 +7,6 @@ class Nothing : public Equipment{
 public:
     Nothing()
     {
-        Equipment();
         name = "Nothing";
         equipType = EquipType::TWO_HANDED;
     }

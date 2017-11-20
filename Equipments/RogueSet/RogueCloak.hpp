@@ -12,7 +12,6 @@ public:
 
 RogueCloak::RogueCloak(int _lvl)
 {
-    Equipment();
     name = "Rogue Cloak";
     equipType = EquipType::VEST;
     for(int i = _lvl; i != -1; i--){ increase_lvl(); }
