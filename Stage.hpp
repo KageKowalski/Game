@@ -40,8 +40,8 @@ class Stage{
 
 
 		//  Removes passed Monster or Interactable from the current Room.
-		void remove_monster(Monster& mo) {rooms.at(curRoom).remove_monster(mo);}
-		void remove_interactable(Interactable& in) {rooms.at(curRoom).remove_interactable(in);}
+		void remove_monster(Monster mo) {rooms.at(curRoom).remove_monster(mo);}
+		void remove_interactable(Interactable in) {rooms.at(curRoom).remove_interactable(in);}
 
 
 	protected:

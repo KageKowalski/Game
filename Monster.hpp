@@ -18,12 +18,21 @@ public:
         exp  = _exp;
         loot = _loot;
     }
+
+	//  Get or set the id of this Monster.
+	//  set_id(int) is called in Room.hpp inside of add_monster(Monster).
+	//  Every Monster in a given room has a unique id.
+	int get_id()         { return id; }
+	void set_id(int _id) { id = _id; }
+
 protected:
     Monster(){}
     DiscreteDistribution<Item> loot;
     
     Item get_loot(){ return loot(); }
-    
+
+private:
+	int id;	
 };
 
 #endif /* Monster_h */

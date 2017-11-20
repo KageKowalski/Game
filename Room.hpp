@@ -50,8 +50,8 @@ class Room{
 
 		//  Removes passed Monster or Interactable from this Room.
 		//  Returns true if successful, else false.
-		void remove_monster(Monster&);
-		void remove_interactable(Interactable&);
+		void remove_monster(Monster);
+		void remove_interactable(Interactable);
 
 		
 		//  Constants designating dead ends and stage exits.
@@ -75,20 +75,22 @@ class Room{
 
 
 void Room::add_monster(Monster mo){
+	mo.set_id(monsters.size());
 	monsters.push_back(mo);
 }
 
 
 void Room::add_interactable(Interactable in){
+	in.set_id(interactables.size());
 	interactables.push_back(in);
 }
 
 
-void Room::remove_monster(Monster& mo){
+void Room::remove_monster(Monster mo){
 	vector<Monster> updatedMonsters;
 	bool monsterFound = false;
 	for(int i = 0; i < monsters.size(); i++){
-		if(&monsters.at(i) != &mo) updatedMonsters.push_back(monsters.at(i));
+		if(monsters.at(i).get_id() != mo.get_id()) updatedMonsters.push_back(monsters.at(i));
 		else monsterFound = true;
 	}
 	monsters = updatedMonsters;
@@ -96,11 +98,11 @@ void Room::remove_monster(Monster& mo){
 }
 
 
-void Room::remove_interactable(Interactable& in){
+void Room::remove_interactable(Interactable in){
 	vector<Interactable> updatedInteractables;
 	bool interactableFound = false;
 	for(int i = 0; i < interactables.size(); i++){
-		if(&interactables.at(i) != &in) updatedInteractables.push_back(interactables.at(i));
+		if(interactables.at(i).get_id() != in.get_id()) updatedInteractables.push_back(interactables.at(i));
 		else interactableFound = true;
 	}
 	interactables = updatedInteractables;
