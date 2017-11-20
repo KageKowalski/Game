@@ -24,12 +24,13 @@ public:
 	//  Every Monster in a given room has a unique id.
 	int get_id()         { return id; }
 	void set_id(int _id) { id = _id; }
+    
+    
+    Item get_loot(){ return loot(); }
 
 protected:
     Monster(){}
     DiscreteDistribution<Item> loot;
-    
-    Item get_loot(){ return loot(); }
 
 private:
 	int id;	
