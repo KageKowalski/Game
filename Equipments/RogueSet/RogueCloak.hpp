@@ -12,7 +12,9 @@ public:
 
 RogueCloak::RogueCloak(int _lvl)
 {
-    Equipment("Serrated Dirk", EquipType::ONE_HANDED);
+    Equipment();
+    name = "Rogue Cloak";
+    equipType = EquipType::VEST;
     for(int i = _lvl; i != -1; i--){ increase_lvl(); }
 }
 void RogueCloak::increase_lvl()

@@ -169,7 +169,6 @@ KEY_T DiscreteDistribution<KEY_T>::operator()() const
 {
     //obtain a random position to select
     int compare = _rng.nextInt(_valueToWeightMap[_valueToWeightMap.size()-1].second)+1;
-    
     for(int i = 0; i < _valueToWeightMap.size()-1;i++)
     {
         //special case for i == 0 where it compares to zero

@@ -13,7 +13,9 @@ public:
 
 RogueHood::RogueHood(int _lvl)
 {
-    Equipment("Serrated Dirk", EquipType::HELMET);
+    Equipment();
+    name = "Rogue Hood";
+    equipType = EquipType::HELMET;
     for(int i = _lvl; i != -1; i--){ increase_lvl(); }
 }
 void RogueHood::increase_lvl()

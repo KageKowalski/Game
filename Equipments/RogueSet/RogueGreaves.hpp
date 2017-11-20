@@ -12,7 +12,9 @@ public:
 
 RogueGreaves::RogueGreaves(int _lvl)
 {
-    Equipment("Serrated Dirk", EquipType::ONE_HANDED);
+    Equipment();
+    name = "Rogue Greaves";
+    equipType = EquipType::BOOTS;
     for(int i = _lvl; i != -1; i--){ increase_lvl(); }
 }
 void RogueGreaves::increase_lvl()

@@ -13,7 +13,9 @@ public:
 
 RogueLeggings::RogueLeggings(int _lvl)
 {
-    Equipment("Rogue Leggings", EquipType::PANTS);
+    Equipment();
+    name = "Rogue Leggings";
+    equipType = EquipType::PANTS;
     for(int i = _lvl; i != 0; i--){ increase_lvl(); }
 }
 void RogueLeggings::increase_lvl()

@@ -1,11 +1,3 @@
-//
-//  RogueSet.h
-//  Game
-//
-//  Created by Joshua Seelye on 11/18/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
-
 #ifndef RogueSet_h
 #define RogueSet_h
 

@@ -15,7 +15,9 @@ public:
 SerratedDirk::SerratedDirk(int _lvl)
 {
     pp = 3;
-    Equipment("Serrated Dirk", EquipType::ONE_HANDED);
+    Equipment();
+    name = "Serrated Dirk";
+    equipType = EquipType::ONE_HANDED;
     for(int i = _lvl; i != 0; i--){ increase_lvl(); }
 }
 void SerratedDirk::increase_lvl()

@@ -50,6 +50,8 @@ public:
 	//  Overloads == operator for comparing Equipments.
     bool operator==(const Equipment& rhs) { return lvl == rhs.lvl && hp == rhs.hp && pp == rhs.pp && str == rhs.str && def == rhs.def
 											&& spd == rhs.spd && lck == rhs.lck && equipType == rhs.equipType && name == rhs.name;    }
+    
+    const Equipment& operator=(const Equipment& rhs);
 
 
 	//  Levels up this Equipment.
@@ -158,6 +160,20 @@ void Equipment::level_up(int _hp, int _str, int _def, int _spd, int _lck, int _n
     }
     
     lvl++;
+}
+
+const Equipment& Equipment::operator=(const Equipment& rhs)
+{
+    this->name = rhs.name;
+    this->hp   = rhs.hp;
+    this->def  = rhs.def;
+    this->lck  = rhs.lck;
+    this->spd  = rhs.spd;
+    this->lvl  = rhs.lvl;
+    this->pp   = rhs.pp;
+    this->equipType = rhs.equipType;
+    this->levelChanges = rhs.levelChanges;
+    return *this;
 }
 
 string Equipment::toString()

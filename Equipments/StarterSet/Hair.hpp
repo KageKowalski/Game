@@ -1,11 +1,3 @@
-//
-//  Hair.hpp
-//  Game
-//
-//  Created by Joshua Seelye on 11/17/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
-
 #ifndef Hair_h
 #define Hair_h
 
@@ -13,7 +5,12 @@
 
 class  Hair : public Equipment{
 public:
-    Hair(){ Equipment("Hair", EquipType::HELMET); }
+    Hair()
+    {
+        Equipment();
+        name = "Hair";
+        equipType = EquipType::HELMET;
+    }
 };
 
 #endif /* Hair_h */

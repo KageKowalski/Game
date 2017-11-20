@@ -1,11 +1,3 @@
-//
-//  Shoes.hpp
-//  Game
-//
-//  Created by Joshua Seelye on 11/17/17.
-//  Copyright © 2017 Josh Seelye. All rights reserved.
-//
-
 #ifndef Shoes_h
 #define Shoes_h
 
@@ -13,7 +5,12 @@
 
 class  Shoes : public Equipment{
 public:
-    Shoes(){ Equipment("Shoes", EquipType::BOOTS); }
+    Shoes()
+    {
+        Equipment();
+        name = "Shoes";
+        equipType = EquipType::BOOTS;
+    }
 };
 
 #endif /* Shoes_h */

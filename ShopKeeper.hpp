@@ -3,53 +3,154 @@
 #define ShopKeeper_h
 
 #include "Interactable.hpp"
-#include "Buyable.hpp"
+#include "BuyableEquipment.hpp"
+#include "BuyableConsumable.hpp"
+#include "Player.hpp"
 
 class ShopKeeper : public Interactable
 {
 //instance variables
 private:
-    vector<Buyable> forsale;
-    int pos;
+    pair<bool, Equipment> toRetEq;
+    pair<bool, Consumable> toRetCon;
+    vector<BuyableEquipment> forsaleEq;
+    vector<BuyableConsumable> forsaleCon;
+    int posEq;
+    int posCon;
     
 //public Functions
 public:
-    void interact();
-    const Buyable& get_current();
-    const Buyable& next();
-    const Buyable& prev();
+    BuyableEquipment& interact_eq();
+    BuyableEquipment& get_current_eq();
+    BuyableEquipment& next_eq();
+    BuyableEquipment& prev_eq();
+    pair<bool, Equipment>& buy_eq();
+    void add(BuyableEquipment& item);
     
+    BuyableConsumable& interact_con();
+    BuyableConsumable& get_current_con();
+    BuyableConsumable& next_con();
+    BuyableConsumable& prev_con();
+    pair<bool, Consumable>& buy_con();
+    void add(BuyableConsumable& item);
     
 public:
-    ShopKeeper(vector<Buyable> _forsale, string _name = "Shop Keeper", string _desc = "An old man that has ran this place for years.")
+    ShopKeeper(){}
+    ShopKeeper(string _name = "Shop Keeper", string _desc = "An old man that has ran this place for years.")
     {
-        forsale = _forsale;
         name    = _name;
         desc    = _desc;
-        pos = 0;
+        posEq = 0;
+        posCon = 0;
     }
+    ShopKeeper(vector<BuyableEquipment>& _forsale, string _name = "Shop Keeper", string _desc = "Default Eq")
+    {
+        forsaleEq = _forsale;
+        forsaleEq.shrink_to_fit();
+        name    = _name;
+        desc    = _desc;
+        posEq = 0;
+        posCon = 0;
+    }
+    ShopKeeper(vector<BuyableConsumable>& _forsale, string _name = "Shop Keeper", string _desc = "Default Con")
+    {
+        forsaleCon = _forsale;
+        forsaleCon.shrink_to_fit();
+        name    = _name;
+        desc    = _desc;
+        posEq = 0;
+        posCon = 0;
+    }
+    
 };
 
-const Buyable& ShopKeeper::get_current()
+void ShopKeeper::add(BuyableEquipment& item)
 {
-    return forsale[pos];
+    forsaleEq.resize(forsaleEq.size()+1);
+    forsaleEq.push_back(item);
 }
 
-const Buyable& ShopKeeper::next()
+BuyableEquipment& ShopKeeper::get_current_eq()
 {
-    if(forsale.size() == 1)          {          }
-    else if(pos == forsale.size()-1) { pos = 0; }
-    else                             { pos++;   }
-    return forsale[pos];
+    return forsaleEq[posEq];
 }
 
-const Buyable& ShopKeeper::prev()
+BuyableEquipment& ShopKeeper::next_eq()
 {
-    if(forsale.size() == 1)          {          }
-    else if(pos == 0) { pos = forsale.size()-1; }
-    else                             { pos--;   }
-    return forsale[pos];
+    if(forsaleEq.size() == 1)          {          }
+    else if(posEq == forsaleEq.size()-1) { posEq = 0; }
+    else                             { posEq++;   }
+    return forsaleEq[posEq];
 }
 
+BuyableEquipment& ShopKeeper::prev_eq()
+{
+    if(forsaleEq.size() == 1)          {          }
+    else if(posEq == 0) { posEq = forsaleEq.size()-1; }
+    else                             { posEq--;   }
+    return forsaleEq[posEq];
+}
+
+pair<bool, Equipment>& ShopKeeper::buy_eq()
+{
+    if(Player::get().getGold()<get_current_eq().get_price())
+    {
+        toRetEq.first = false;
+        toRetEq.second = Equipment();
+        return toRetEq;
+    }
+    Player::get().setGold(-(get_current_eq().get_price()));
+    toRetEq.first = true;
+    toRetEq.second = get_current_eq().get_item();
+    forsaleEq.erase((forsaleEq.begin()+posEq));
+    return toRetEq;
+}
+
+BuyableEquipment& ShopKeeper::interact_eq(){ return get_current_eq(); }
+
+
+void ShopKeeper::add(BuyableConsumable& item)
+{
+    forsaleCon.resize(forsaleCon.size()+1);
+    forsaleCon.push_back(item);
+}
+
+BuyableConsumable& ShopKeeper::get_current_con()
+{
+    return forsaleCon[posCon];
+}
+
+BuyableConsumable& ShopKeeper::next_con()
+{
+    if(forsaleCon.size() == 1)          {          }
+    else if(posCon == forsaleCon.size()-1) { posCon = 0; }
+    else                             { posCon++;   }
+    return forsaleCon[posCon];
+}
+
+BuyableConsumable& ShopKeeper::prev_con()
+{
+    if(forsaleCon.size() == 1)          {          }
+    else if(posCon == 0) { posCon = forsaleCon.size()-1; }
+    else                             { posCon--;   }
+    return forsaleCon[posCon];
+}
+
+pair<bool, Consumable>& ShopKeeper::buy_con()
+{
+    if(Player::get().getGold()<get_current_con().get_price())
+    {
+        toRetCon.first = false;
+        toRetCon.second = Consumable();
+        return toRetCon;
+    }
+    Player::get().setGold(-(get_current_con().get_price()));
+    toRetCon.first = true;
+    toRetCon.second = get_current_con().get_item();
+    forsaleCon.erase((forsaleCon.begin()+posCon));
+    return toRetCon;
+}
+
+BuyableConsumable& ShopKeeper::interact_con(){ return get_current_con(); }
 
 #endif /* ShopKeeper_h */
