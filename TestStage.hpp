@@ -22,7 +22,7 @@ class TestStage : public Stage{
 
 			Room room0(0, Room::DEAD_END, 1, Room::DEAD_END, Room::DEAD_END);
 			room0.set_description("There are fagets in this room.");
-			room0.add_monster(Slime(1));
+			room0.add_monster(new Slime(1));
 			rooms.push_back(room0);
 
 			Room room1(1, 2, 3, Room::DEAD_END, 0);
@@ -43,7 +43,7 @@ class TestStage : public Stage{
 
 			Room room5(5, Room::DEAD_END, Room::STAGE_EXIT, Room::DEAD_END, 4);
 			room5.set_description("The room is coated in slime");
-			room5.add_monster(Slime(1));
+			room5.add_monster(new Slime(1));
 			rooms.push_back(room5);
 		}
 };
