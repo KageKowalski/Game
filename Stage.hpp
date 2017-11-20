@@ -10,7 +10,7 @@ class Stage{
 		//  Initializes this Stage as beginning at Room with id=0, nonexistent prevRoom id, and a name.
 		Stage(): curRoom(0), prevRoom(-100) {}
 
-		
+
 		//  Moves the Player north, east, south, or west.
 		//  Returns 0 if successful, 1 if no exit exists in the chosen direction, 2 if a monster is blocking the player's route, -1 if Stage exit is found.
 		int move_north();
@@ -28,8 +28,8 @@ class Stage{
 		//  get_prev_room_dir() returns the RoomExit (direction) of the previous room, relative to the current room. Returns RoomExit::NONE if previous room can't be found.
 		//  get_name() returns the name of the current Room.
 		//  get_description() returns the description of this Room.
-		vector<Monster*>& get_monsters() {return rooms.at(curRoom).get_monsters();}
-		vector<Interactable*>& get_interactables() {return rooms.at(curRoom).get_interactables();}
+		const vector<Monster*>& get_monsters() {return rooms.at(curRoom).get_monsters();}
+		const vector<Interactable*>& get_interactables() {return rooms.at(curRoom).get_interactables();}
 		pair<int, int> get_num_entities() {return pair<int, int>(rooms.at(curRoom).get_num_monsters(), rooms.at(curRoom).get_num_interactables());}
 		vector<RoomExit> get_room_exits();
 		vector<RoomEntity> get_room_entities();

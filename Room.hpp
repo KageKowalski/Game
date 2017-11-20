@@ -13,6 +13,10 @@ class Room{
 			id(_id), north(_north), east(_east), south(_south), west(_west), description("") {}
 
 
+		//  Deletes all Monsters & Entities in this Room.
+		~Room();
+
+
 		//  Return true if this Room has designated exit, else false.
 		bool has_north() {return north != DEAD_END;}
 		bool has_east() {return east != DEAD_END;}
@@ -34,8 +38,8 @@ class Room{
 
 
 		//  Return address of vector of pointers to Monsters or Interactables in this Room.
-		vector<Monster*>& get_monsters() {return monsters;}
-		vector<Interactable*>& get_interactables() {return interactables;}
+		const vector<Monster*>& get_monsters() {return monsters;}
+		const vector<Interactable*>& get_interactables() {return interactables;}
 
 
 		//  Adds passed Monster or Interactable to this Room.
@@ -68,6 +72,15 @@ class Room{
 		vector<Monster*> monsters;
 		vector<Interactable*> interactables;
 };
+
+
+//  DESTRUCTOR
+
+
+Room::~Room(){
+	for(int i = 0; i < monsters.size(); i++)      delete monsters.at(i);
+	for(int i = 0; i < interactables.size(); i++) delete interactables.at(i);
+}
 
 
 //  MUTATORS
