@@ -6,6 +6,6 @@ Kage Kowalski
 Klayton Kowalski
 Josh Seelye
 
-Our attempt at making a basic RPG maybe
+Our attempt at making a basic RPG maybe.
 
 oranges
