@@ -18,13 +18,11 @@ class Zombie : public Monster
     //private variables
 private:
     int level;
-    DiscreteDistribution<int> levelChanges;
     
     //public functions
 public:
-    Slime(int _level, string _name = "Zombie") : level(_level)
+    Zombie(int _level, string _name = "Zombie") : level(_level), Monster(_name,7,7,3,2,2,3,8)
     {
-        Monster(_name,7,3,3,2,2,3,8);
         levelIncrease();
     }
     
@@ -32,34 +30,7 @@ public:
 private:
     void levelIncrease()
     {
-        gold+=5*(level);
-        exp+=3*level;
-        if(level>1)
-        {
-            levelChanges.add(1, 25);
-            levelChanges.add(2, 40);
-            levelChanges.add(3, 35);
-            levelChanges.add(4, 0);
-            for(int statsToIncrease = 3*(level - 1);statsToIncrease!=-1;statsToIncrease--)
-            {
-                int roll = levelChanges();
-                switch(roll)
-                {
-                    case 1:
-                        hp+=5;
-                        break;
-                    case 2:
-                        str++;
-                        break;
-                    case 3:
-                        def++;
-                        break;
-                    case 4:
-                        lck++;
-                        break;
-                }
-            }
-        }
+        level_up();
         setLoot();
     }
     

@@ -25,6 +25,7 @@ public:
 	int get_id()         { return id; }
 	void set_id(int _id) { id = _id; }
     
+    void level_up(int percent, int& stat, int amount, int secondRoll);
     
     Item get_loot(){ return loot(); }
 
@@ -35,5 +36,26 @@ protected:
 private:
 	int id;	
 };
+/***********************
+    Implementations
+ ***********************/
+
+void Monster::level_up(int percent, int& stat, int amount, int secondRoll)
+{
+    DiscreteDistribution<int> levelChanges;
+    DiscreteDistribution<int> second_roll;
+    second_roll.add(0, 100-secondRoll);
+    second_roll.add(1, secondRoll);
+    levelChanges.add(0, 100-percent);
+    levelChanges.add(1, percent);
+    if(levelChanges())
+    {
+        stat+=amount;
+        if(second_roll())
+        {
+            level_up(percent, stat, amount, secondRoll-1);
+        }
+    }
+}
 
 #endif /* Monster_h */

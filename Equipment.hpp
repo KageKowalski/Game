@@ -52,14 +52,10 @@ public:
 											&& spd == rhs.spd && lck == rhs.lck && equipType == rhs.equipType && name == rhs.name;    }
     
     const Equipment& operator=(const Equipment& rhs);
-
-
-	//  Levels up this Equipment.
-    void level_up(int percent, int& stat, int amount, int secondRoll);
-    void level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp);
+    
+    virtual void increase_lvl(){}
     
     string toString();
-
 
 protected:
 	int lvl;
@@ -70,11 +66,15 @@ protected:
 	int spd;
     int lck;
 	EquipType equipType;
-	DiscreteDistribution<int> levelChanges;
+    
+    //  Levels up this Equipment.
+    void level_up(int percent, int& stat, int amount, int secondRoll);
+    void level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp);
 };
 
 void Equipment::level_up(int percent, int& stat, int amount, int secondRoll)
 {
+    DiscreteDistribution<int> levelChanges;
     DiscreteDistribution<int> second_roll;
     second_roll.add(0, 100-secondRoll);
     second_roll.add(1, secondRoll);
@@ -172,7 +172,6 @@ const Equipment& Equipment::operator=(const Equipment& rhs)
     this->lvl  = rhs.lvl;
     this->pp   = rhs.pp;
     this->equipType = rhs.equipType;
-    this->levelChanges = rhs.levelChanges;
     return *this;
 }
 
