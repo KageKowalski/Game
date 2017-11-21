@@ -13,10 +13,6 @@ class Room{
 			id(_id), north(_north), east(_east), south(_south), west(_west), description("") {}
 
 
-		//  Deletes all Monsters & Entities in this Room.
-		~Room();
-
-
 		//  Return true if this Room has designated exit, else false.
 		bool has_north() {return north != DEAD_END;}
 		bool has_east() {return east != DEAD_END;}
@@ -43,8 +39,8 @@ class Room{
 
 
 		//  Adds passed Monster or Interactable to this Room.
-		void add_monster(Monster*);
-		void add_interactable(Interactable*);
+		void add_monster(Monster&);
+		void add_interactable(Interactable&);
 
 
 		//  Sets or gets this Room's description.
@@ -74,27 +70,16 @@ class Room{
 };
 
 
-//  DESTRUCTOR
-
-
-Room::~Room(){
-	for(int i = 0; i < monsters.size(); i++)      delete monsters.at(i);
-	for(int i = 0; i < interactables.size(); i++) delete interactables.at(i);
-}
-
-
 //  MUTATORS
 
 
-void Room::add_monster(Monster* mo){
-	mo->set_id(monsters.size());
-	monsters.push_back(mo);
+void Room::add_monster(Monster& mo){
+	monsters.push_back(&mo);
 }
 
 
-void Room::add_interactable(Interactable* in){
-	in->set_id(interactables.size());
-	interactables.push_back(in);
+void Room::add_interactable(Interactable& in){
+	interactables.push_back(&in);
 }
 
 
@@ -103,7 +88,7 @@ void Room::remove_monster(Monster* mo){
 	bool monsterFound = false;
 	for(int i = 0; i < monsters.size(); i++){
 		if(monsters.at(i) != mo) updatedMonsters.push_back(monsters.at(i));
-		else { monsterFound = true; delete monsters.at(i); }
+		else { monsterFound = true; }
 	}
 	monsters = updatedMonsters;
 	assert(monsterFound);
@@ -115,7 +100,7 @@ void Room::remove_interactable(Interactable* in){
 	bool interactableFound = false;
 	for(int i = 0; i < interactables.size(); i++){
 		if(interactables.at(i) != in) updatedInteractables.push_back(interactables.at(i));
-		else { interactableFound = true; delete monsters.at(i); }
+		else { interactableFound = true; }
 	}
 	interactables = updatedInteractables;
 	assert(interactableFound);
