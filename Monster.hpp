@@ -1,7 +1,7 @@
 #ifndef Monster_h
 #define Monster_h
 
-#include "Combatant.hpp"
+#include "Player.hpp"
 
 class Monster : public Combatant
 {
@@ -28,6 +28,8 @@ public:
     void level_up(int percent, int& stat, int amount, int secondRoll);
     
     Item get_loot(){ return loot(); }
+    
+    pair<int, bool> attack_player(Player& mo);
 
 protected:
     Monster(){}
@@ -56,6 +58,22 @@ void Monster::level_up(int percent, int& stat, int amount, int secondRoll)
             level_up(percent, stat, amount, secondRoll-1);
         }
     }
+}
+
+pair<int, bool> Monster::attack_player(Player& mo)
+{
+    pair<int, bool> ret;
+    if(rollCrit())
+    {
+        mo.change_cur_hp(round(-((1.5*str-mo.get_def_tot())>0?(1.5*str-mo.get_def_tot()):1)));
+        ret.first = round(((1.5*str-mo.get_def_tot())>0?(1.5*str-mo.get_def_tot()):1));
+        ret.second = true;
+        return ret;
+    }
+    mo.change_cur_hp(round(-((str-mo.get_def_tot())>0?(str-mo.get_def_tot()):1)));
+    ret.first = round((str-mo.get_def_tot())>0?(str-mo.get_def_tot()):1);
+    ret.second = false;
+    return ret;
 }
 
 #endif /* Monster_h */

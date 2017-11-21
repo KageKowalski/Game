@@ -19,6 +19,8 @@ private:
     int lck_eq;
     int spd_eq;
     
+    int cur_hp;
+    
     Equipment helmet;
     Equipment vest;
     Equipment boots;
@@ -33,6 +35,10 @@ public:
     unsigned int getLevel() { return level;      }
     int getPp()             { return pp;         }
     void setPp(int x)       { pp += x;           }
+    
+    void max_heal()         { cur_hp = hp_eq; }
+    int change_cur_hp(int s);
+    int get_cur_hp()        { return cur_hp;  }
     
     bool set_helm(Equipment eq);
     bool set_vest(Equipment eq);
@@ -54,6 +60,8 @@ public:
 
     pair<int, bool> attack(Combatant& mo);
     
+    bool isDead(){ return cur_hp <= 0; }
+    
     //returns amount of times leveled up
     int increaseExp(int x);
     
@@ -62,6 +70,7 @@ public:
     
 //private functions
 private:
+    
     //recursive level up
     int levelUp(int amnt)
     {
@@ -159,13 +168,13 @@ pair<int, bool> Player::attack(Combatant& mo)
     pair<int, bool> ret;
     if(rollCrit())
     {
-        mo.setHp(-((2*str+-mo.getDef())>0?(2*str-mo.getDef()):1));
-        ret.first = (2*str-mo.getDef())>0?(2*str-mo.getDef()):1;
+        mo.setHp(-((2*str_eq-mo.getDef())>0?(2*str_eq-mo.getDef()):1));
+        ret.first = (2*str_eq-mo.getDef())>0?(2*str_eq-mo.getDef()):1;
         ret.second = true;
         return ret;
     }
-    mo.setHp(-((str-mo.getDef())>0?(str-mo.getDef()):1));
-    ret.first = (str-mo.getDef())>0?(str-mo.getDef()):1;
+    mo.setHp(-((str_eq-mo.getDef())>0?(str_eq-mo.getDef()):1));
+    ret.first = (str_eq-mo.getDef())>0?(str_eq-mo.getDef()):1;
     ret.second = false;
     return ret;
 }
@@ -200,6 +209,18 @@ int Player::get_lck_boost()
 int Player::get_spd_boost()
 {
     return (helmet.get_spd()+vest.get_spd()+gloves.get_spd()+boots.get_spd()+pants.get_spd()+shield.get_spd()+oneHanded.get_spd()+ twoHanded.get_spd());
+}
+
+int Player::change_cur_hp(int s)
+{
+    if(cur_hp + s >= hp_eq)
+    {
+        int temp = hp_eq - cur_hp;
+        cur_hp = hp_eq;
+        return temp;
+    }
+    cur_hp+=s;
+    return s;
 }
 
 #endif /* Player_h */

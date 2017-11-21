@@ -22,6 +22,7 @@ public:
 private:
     void levelIncrease()
     {
+        level_up(45, hp, RANDOM_GENERATOR.nextInt(3), 20);
         gold+=5*(level);
         exp+=3*level;
         if(level>1)
