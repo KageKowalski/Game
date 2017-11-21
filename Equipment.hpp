@@ -69,7 +69,6 @@ protected:
     
     //  Levels up this Equipment.
     void level_up(int percent, int& stat, int amount, int secondRoll);
-    void level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp);
 };
 
 void Equipment::level_up(int percent, int& stat, int amount, int secondRoll)
@@ -88,78 +87,6 @@ void Equipment::level_up(int percent, int& stat, int amount, int secondRoll)
             level_up(percent, stat, amount, secondRoll-1);
         }
     }
-}
-
-void Equipment::level_up(int _hp, int _str, int _def, int _spd, int _lck, int _nhp, int _nstr, int _ndef, int _nspd, int _nlck, int _pp=0){
-    int n;
-    
-    n = _hp/100;
-    _hp = _hp%100;
-    for(int i = 0; i < n; i++){
-        if(_hp > RANDOM_GENERATOR.nextInt(100)) hp+=RANDOM_GENERATOR.nextInt(3)+1;
-    }
-    
-    n = _str/100;
-    _str = _str%100;
-    for(int i = 0; i < n; i++){
-        if(_str > RANDOM_GENERATOR.nextInt(100)) str++;
-    }
-    
-    n = _def/100;
-    _def = _def%100;
-    for(int i = 0; i < n; i++){
-        if(_def > RANDOM_GENERATOR.nextInt(100)) def++;
-    }
-    
-    n = _spd/100;
-    _spd = _spd%100;
-    for(int i = 0; i < n; i++){
-        if(_spd > RANDOM_GENERATOR.nextInt(100)) spd++;
-    }
-    
-    n = _lck/100;
-    _lck = _lck%100;
-    for(int i = 0; i < n; i++){
-        if(_lck > RANDOM_GENERATOR.nextInt(100)) lck++;
-    }
-    
-    n = _nhp/100;
-    _nhp = _nhp%100;
-    for(int i = 0; i < n; i++){
-        if(_nhp > RANDOM_GENERATOR.nextInt(100)) hp-=RANDOM_GENERATOR.nextInt(3)+1;
-    }
-    
-    n = _nstr/100;
-    _nstr = _nstr%100;
-    for(int i = 0; i < n; i++){
-        if(_nstr > RANDOM_GENERATOR.nextInt(100)) str--;
-    }
-    
-    n = _ndef/100;
-    _ndef = _ndef%100;
-    for(int i = 0; i < n; i++){
-        if(_ndef > RANDOM_GENERATOR.nextInt(100)) def--;
-    }
-    
-    n = _nspd/100;
-    _nspd = _nspd%100;
-    for(int i = 0; i < n; i++){
-        if(_nspd > RANDOM_GENERATOR.nextInt(100)) spd--;
-    }
-    
-    n = _nlck/100;
-    _nlck = _lck%100;
-    for(int i = 0; i < n; i++){
-        if(_nlck > RANDOM_GENERATOR.nextInt(100)) lck--;
-    }
-    
-    n = _pp/100;
-    _pp = _pp%100;
-    for(int i = 0; i < n; i++){
-        if(_pp > RANDOM_GENERATOR.nextInt(100)) pp++;
-    }
-    
-    lvl++;
 }
 
 const Equipment& Equipment::operator=(const Equipment& rhs)
