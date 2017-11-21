@@ -22,7 +22,6 @@ class TestStage : public Stage{
 
 			Room room0(0, Room::DEAD_END, 1, Room::DEAD_END, Room::DEAD_END);
 			room0.set_description("There are fagets in this room.");
-			room0.add_monster();
 			rooms.push_back(room0);
 
 			Room room1(1, 2, 3, Room::DEAD_END, 0);
