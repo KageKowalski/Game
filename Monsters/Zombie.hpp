@@ -15,11 +15,7 @@
 
 class Zombie : public Monster
 {
-    //private variables
-private:
-    int level;
-    
-    //public functions
+//public functions
 public:
     Zombie(int _level, string _name = "Zombie") : level(_level), Monster(_name,7,7,3,2,2,3,8)
     {
@@ -30,7 +26,9 @@ public:
 private:
     void levelIncrease()
     {
-        level_up();
+        level_up(30, hp, RANDOM_GENERATOR.nextInt(3)+1, 25);
+        level_up(30, hp, RANDOM_GENERATOR.nextInt(3)+1, 25);
+        level_up(30, hp, RANDOM_GENERATOR.nextInt(3)+1, 25);
         setLoot();
     }
     

@@ -26,14 +26,15 @@ public:
 	void set_id(int _id) { id = _id; }
     
     void level_up(int percent, int& stat, int amount, int secondRoll);
-    
     Item get_loot(){ return loot(); }
-    
     pair<int, bool> attack_player(Player& mo);
+    
+    int getLvl() { return level; }
 
 protected:
     Monster(){}
     DiscreteDistribution<Item> loot;
+    int level;
 
 private:
 	int id;	

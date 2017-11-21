@@ -40,11 +40,6 @@ public:
     int change_cur_hp(int s);
     int get_cur_hp()        { return cur_hp;  }
     
-    bool set_helm(Equipment eq);
-    bool set_vest(Equipment eq);
-    bool set_gloves(Equipment eq);
-    bool set_pants(Equipment eq);
-    bool set_weapon(Equipment eq);
     
     int get_hp_boost();
     int get_str_boost();
@@ -68,8 +63,18 @@ public:
     //return at what xp you will reach next level
     int nextLevel() { return 15+pow(level+1,2); }
     
+    void equip(Equipment& eq);
+    
 //private functions
 private:
+    
+    bool set_helm(Equipment& eq);
+    bool set_vest(Equipment& eq);
+    bool set_gloves(Equipment& eq);
+    bool set_boots(Equipment& eq);
+    bool set_pants(Equipment& eq);
+    bool set_weapon(Equipment& eq);
+    bool set_shield(Equipment& eq);
     
     //recursive level up
     int levelUp(int amnt)
@@ -85,6 +90,7 @@ private:
     void update_stats()
     {
         hp_eq  = hp + get_hp_boost();
+        if(hp_eq < cur_hp){cur_hp = hp_eq;}
         str_eq = str + get_str_boost();
         def_eq = def + get_def_boost();
         lck_eq = lck + get_lck_boost();
@@ -124,27 +130,32 @@ public:
     }
 };
 
-bool Player::set_helm(Equipment eq)
+bool Player::set_helm(Equipment& eq)
 {
     if(eq.get_equipType() == EquipType::HELMET) { helmet = eq; update_stats(); return true;   }
     return false;
 }
-bool Player::set_vest(Equipment eq)
+bool Player::set_vest(Equipment& eq)
 {
     if(eq.get_equipType() == EquipType::VEST)   { vest = eq; update_stats(); return true;   }
     return false;
 }
-bool Player::set_gloves(Equipment eq)
+bool Player::set_gloves(Equipment& eq)
 {
     if(eq.get_equipType() == EquipType::GLOVES) { gloves = eq; update_stats(); return true; }
     return false;
 }
-bool Player::set_pants(Equipment eq)
+bool Player::set_pants(Equipment& eq)
 {
     if(eq.get_equipType() == EquipType::PANTS)  { pants = eq; update_stats(); return true;  }
     return false;
 }
-bool Player::set_weapon(Equipment eq)
+bool Player::set_boots(Equipment& eq)
+{
+    if(eq.get_equipType() == EquipType::BOOTS)  { boots = eq; update_stats(); return true;  }
+    return false;
+}
+bool Player::set_weapon(Equipment& eq)
 {
     //need to fix for shield
     if(eq.get_equipType() == EquipType::ONE_HANDED)
@@ -160,6 +171,11 @@ bool Player::set_weapon(Equipment eq)
         update_stats();
         return true;
     }
+    return false;
+}
+bool Player::set_shield(Equipment& eq)
+{
+    //fix for one handed
     return false;
 }
 
@@ -213,7 +229,7 @@ int Player::get_spd_boost()
 
 int Player::change_cur_hp(int s)
 {
-    if(cur_hp + s >= hp_eq)
+    if(cur_hp + s > hp_eq)
     {
         int temp = hp_eq - cur_hp;
         cur_hp = hp_eq;
@@ -221,6 +237,17 @@ int Player::change_cur_hp(int s)
     }
     cur_hp+=s;
     return s;
+}
+
+void Player::equip(Equipment& eq)
+{
+    if(set_helm(eq)){}
+    else if(set_vest(eq)){}
+    else if(set_gloves(eq)){}
+    else if(set_boots(eq)){}
+    else if(set_pants(eq)){}
+    else if(set_weapon(eq)){}
+    else if(set_shield(eq)){}
 }
 
 #endif /* Player_h */
