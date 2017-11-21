@@ -22,11 +22,12 @@ class TestStage : public Stage{
 
 			Room room0(0, Room::DEAD_END, 1, Room::DEAD_END, Room::DEAD_END);
 			room0.set_description("There are fagets in this room.");
-			room0.add_monster(new Slime(1));
+			room0.add_monster();
 			rooms.push_back(room0);
 
 			Room room1(1, 2, 3, Room::DEAD_END, 0);
 			room1.set_description("You are the faget.");
+			room1.add_monster(new Slime(1));
 			rooms.push_back(room1);
 
 			Room room2(2, Room::DEAD_END, 4, 1, Room::DEAD_END);
