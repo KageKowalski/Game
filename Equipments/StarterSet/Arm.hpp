@@ -5,11 +5,8 @@
 
 class  Arm : public Equipment{
 public:
-    Arm()
-    {
-        name = "Arm";
-        equipType = EquipType::SHIELD;
-    }
+    Arm() : Equipment("Arm", EquipType::SHIELD)
+    {}
 };
 
 #endif /* Arm_h */

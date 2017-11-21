@@ -5,11 +5,8 @@
 
 class Nothing : public Equipment{
 public:
-    Nothing()
-    {
-        name = "Nothing";
-        equipType = EquipType::TWO_HANDED;
-    }
+    Nothing() : Equipment("Nothing", EquipType::TWO_HANDED)
+    {}
 };
 
 #endif /* Nothing_h */

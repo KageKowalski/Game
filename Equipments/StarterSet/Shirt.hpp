@@ -5,11 +5,8 @@
 
 class  Shirt : public Equipment{
 public:
-    Shirt()
-    {
-        name = "Shirt";
-        equipType = EquipType::VEST;
-    }
+    Shirt() : Equipment("Shirt", EquipType::VEST)
+    {}
 };
 
 #endif /* Shirt_h */

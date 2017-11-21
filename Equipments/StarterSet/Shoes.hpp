@@ -5,11 +5,8 @@
 
 class  Shoes : public Equipment{
 public:
-    Shoes()
-    {
-        name = "Shoes";
-        equipType = EquipType::BOOTS;
-    }
+    Shoes() : Equipment("Shoes", EquipType::BOOTS)
+    {}
 };
 
 #endif /* Shoes_h */

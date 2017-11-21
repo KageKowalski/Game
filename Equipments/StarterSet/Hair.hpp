@@ -5,11 +5,8 @@
 
 class  Hair : public Equipment{
 public:
-    Hair()
-    {
-        name = "Hair";
-        equipType = EquipType::HELMET;
-    }
+    Hair() : Equipment("Hair", EquipType::HELMET)
+    {}
 };
 
 #endif /* Hair_h */

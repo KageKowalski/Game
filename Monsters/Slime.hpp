@@ -13,9 +13,8 @@ private:
 
 //public functions
 public:
-    Slime(int _level, string _name = "Slime") : level(_level)
+    Slime(int _level, string _name = "Slime") : level(_level), Monster(_name,6,2,0,5,3,5,6)
     {
-        Monster(_name,6,2,0,5,3,5,6);
         levelIncrease();
     }
 
