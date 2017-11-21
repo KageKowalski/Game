@@ -18,9 +18,9 @@ public:
         level_up(20, spd, 2, 10);
         level_up(10, hp, -(RANDOM_GENERATOR.nextInt(3)), 10);
         level_up(10, str, -1, 25);
-        level_up(10, def, 1, 25);
-        level_up(10, lck, 1, 10);
-        level_up(10, spd, 1, 10);
+        level_up(10, def, -1, 25);
+        level_up(10, lck, -1, 10);
+        level_up(10, spd, -1, 10);
         level_up(5, hp, RANDOM_GENERATOR.nextInt(3)+1, 12);
     }
 };
