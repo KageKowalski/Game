@@ -55,7 +55,7 @@ protected:
     
     void updateDodge()
     {
-        dodge.add(false, 230-(int)(lck*.5)-spd);
+        dodge.add(false, 165-(int)(lck*.5)-spd);
         dodge.add(true, lck+spd);
     }
     
@@ -66,6 +66,7 @@ protected:
     }
     
     Combatant(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp) : Entity(_name), hp(_hp), spd(_spd), str(_str), def(_def), lck(_lck), gold(_gold), exp(_exp){}
+    
     Combatant(){}
     
 };
