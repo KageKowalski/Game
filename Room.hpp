@@ -69,7 +69,6 @@ class Room{
 		vector<Interactable*> interactables;
 };
 
-
 //  MUTATORS
 
 

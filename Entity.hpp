@@ -16,12 +16,16 @@ class Entity
 protected:
     string name;
     
-public:
     Entity(){}
+    Entity(string _name) : name(_name){}
+    
+public:
     
     //basic setter and getter for name
     void setName(string x) { name = x;   }
     string getName()       { return name;}
+private:
+
 };
 
 #endif /* Entity_h */
