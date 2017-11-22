@@ -6,18 +6,7 @@
 class Monster : public Combatant
 {
 public:
-    Monster(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp, DiscreteDistribution<Item> _loot = DiscreteDistribution<Item>())
-    {
-        name = _name;
-        hp   = _hp;
-        str  = _str;
-        def  = _def;
-        lck  = _lck;
-        spd  = _spd;
-        gold = _gold;
-        exp  = _exp;
-        loot = _loot;
-    }
+    Monster(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp, DiscreteDistribution<Item> _loot = DiscreteDistribution<Item>()) : Combatant(_name, _hp, _str, _def, _lck, _spd, _gold, _exp), loot(_loot){}
 
 	//  Get or set the id of this Monster.
 	//  set_id(int) is called in Room.hpp inside of add_monster(Monster).
@@ -32,7 +21,7 @@ public:
     int getLvl() { return level; }
 
 protected:
-    Monster(){}
+    Monster() : Combatant(){}
     DiscreteDistribution<Item> loot;
     int level;
 

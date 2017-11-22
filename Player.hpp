@@ -20,6 +20,7 @@ private:
     int spd_eq;
     
     int cur_hp;
+    int cur_pp;
     
     Equipment helmet;
     Equipment vest;
@@ -39,6 +40,10 @@ public:
     void max_heal()         { cur_hp = hp_eq; }
     int change_cur_hp(int s);
     int get_cur_hp()        { return cur_hp;  }
+    
+    void max_pprestore()    { cur_pp = pp; }
+    int change_cur_pp(int s);
+    int get_cur_pp()        { return cur_pp;  }
     
     
     int get_hp_boost();
@@ -111,6 +116,7 @@ private:
         pp  = 5;
         gold = 0;
         exp = 0;
+        update_stats();
         helmet = Hair();
         vest   = Shirt();
         pants  = Pants();
@@ -238,6 +244,19 @@ int Player::change_cur_hp(int s)
     }
     cur_hp+=s;
     return s;
+}
+
+int Player::change_cur_pp(int s)
+{
+    if(cur_pp + s > pp)
+    {
+        int temp = pp - cur_pp;
+        cur_pp = pp;
+        return temp;
+    }
+    cur_pp+=s;
+    return s;
+
 }
 
 void Player::equip(Equipment& eq)

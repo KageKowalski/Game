@@ -9,7 +9,7 @@ class Combatant : public Entity
 {
 public:
     int getExp() { return exp;     }
-	virtual int getHp()  { return hp;      }
+	int getHp()  { return hp;      }
 	int getStr() { return str;     }
 	int getDef() { return def;     }
 	int getLck() { return lck;     }
@@ -64,6 +64,9 @@ protected:
         crit.add(false, 100-lck);
         crit.add(true, lck);
     }
+    
+    Combatant(string _name, int _hp, int _str, int _def, int _lck, int _spd, int _gold, int _exp) : Entity(_name), hp(_hp), spd(_spd), str(_str), def(_def), lck(_lck), gold(_gold), exp(_exp){}
+    Combatant(){}
     
 };
 
