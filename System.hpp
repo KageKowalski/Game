@@ -12,6 +12,7 @@
 #include "Player.hpp"
 #include "RoomSpecifiers.hpp"
 #include "TestStage.hpp"
+#include "Monster.hpp"
 
 using namespace std;
 
@@ -19,15 +20,19 @@ class System {
 
 private:
 
-	// Player
-	Player* player;
-
 	// All possible traversal directions
 	enum class TraversalDir {
 		UP,
 		RIGHT,
 		DOWN,
 		LEFT
+	};
+
+	// All possible game states
+	enum class GameState {
+		FREEROAM,
+		BATTLE,
+		DEAD
 	};
 
 	// Contains game settings
@@ -68,6 +73,9 @@ private:
 		}
 	};
 
+	// Player
+	Player* player;
+
 	// Contains every stage in the game
 	vector<Stage*> stages;
 	
@@ -76,6 +84,12 @@ private:
 
 	// Game settings
 	Settings settings;
+
+	// Current state that the game is in
+	GameState gameState;
+
+	// Is debug mode enabled?
+	bool debug;
 
 public:
 
@@ -103,7 +117,7 @@ private:
 	void drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
 		const pair<int, int>& numEntities, RoomExit prevRoomDir) const;
 
-	void overworld();
+	GameState overworld();
 
 	// Traverse the current stage
 	void traverse(TraversalDir dir);
@@ -132,19 +146,57 @@ private:
 	// Thread sleeps depending on textSpeedOverride
 	void sleep(Settings::TextSpeed textSpeedOverride) const;
 
-	// Thread sleeps for milliseconds, simulating a pause
+	// Thread sleeps for milliseconds, simulating an extended pause
 	void sleep(int milliseconds) const;
+
+	// Battle sequence
+	bool battle(Monster* monster);
+
+	// Asks to play again after death
+	bool death() const;
+
+	// Sets up the game
+	void setUp();
+
+	// Player attack logic
+	bool playerAttack(Monster* monster);
+
+	// Monster attack logic
+	bool monsterAttack(Monster* monster);
+
+	// Converts capital letters to lowercase letters in string
+	void toLowerCase(string& str);
+	
+	// Wraps up a battle after victory
+	void victory(Monster* monster);
+
+	// Allows player to enter an array of extra commands which manipulate the game in some way
+	// Toggles debug mode for easy debugging
+	void toggleDebugMode();
+
+	// Prints list of all debug commands
+	void debugHelpList() const;
+
+	// DEBUG command: kills the player
+	void suicide();
 	
 };
 
 int System::run() {
 	int retCode = 0;
 
-	init();
+	setUp();
 
-	introSequence();
+	bool exit = false;
 
-	overworld();
+	while (!exit) {
+		gameState = overworld();
+
+		if (gameState == GameState::DEAD) {
+			if (death()) exit = true;
+			else exit = true;
+		}
+	}
 	
 	return retCode;
 }
@@ -153,6 +205,8 @@ void System::init() {
 	player = &Player::get();
 	stages.push_back(&TestStage::get());
 	currStageID = TestStage::get().get_id();
+	gameState = GameState::FREEROAM;
+	debug = false;
 }
 
 void System::shutDown() {
@@ -163,7 +217,8 @@ void System::playerSpecs() const {
 	cout << endl;
 	cout << "  -------- PLAYER SPECS --------" << endl;
 	cout << "  Name            = " << player->getName() << endl;
-	cout << "  Health          = " << player->getHp() << " + " << player->get_hp_boost() << endl;
+	cout << "  Max Health      = " << player->getHp() << " + " << player->get_hp_boost() << endl;
+	cout << "  Health          = " << player->get_cur_hp() << endl;
 	cout << "  Strength        = " << player->getStr() << " + " << player->get_str_boost() << endl;
 	cout << "  Defense         = " << player->getDef() << " + " << player->get_def_boost() << endl;
 	cout << "  Speed           = " << player->getSpd() << " + " << player->get_spd_boost() << endl;
@@ -273,10 +328,10 @@ void System::statPointDistribution(int points) {
 	playerSpecs();
 
 	ostringstream output;
-	output << "\n  You have " << points << " available stat points.\n  Enter '1' to increase HEALTH   +5\n"
-		<< "  Enter '2' to increase STRENGTH +1\n  Enter '3' to increase DEFENSE  +1\n"
-		<< "  Enter '4' to increase SPEED    +1\n  Enter '5' to increase LUCK     +1\n"
-		<< "  Enter '6' to increase STAMINA  +2\n";
+	output << "\\n  You have " << points << " available stat points.\\n  Enter '1' to increase HEALTH   +5\\n"
+		<< "  Enter '2' to increase STRENGTH +1\\n  Enter '3' to increase DEFENSE  +1\\n"
+		<< "  Enter '4' to increase SPEED    +1\\n  Enter '5' to increase LUCK     +1\\n"
+		<< "  Enter '6' to increase STAMINA  +2\\n\\n";
 	printDelay(output.str());
 	output.str("");
 
@@ -288,36 +343,37 @@ void System::statPointDistribution(int points) {
 		switch (key) {
 		case 1:
 			player->setHp(5);
-			output << "  Your health has increased! Health = " << player->getHp() << "\n";
+			player->change_cur_hp(5);
+			output << "\\n  Your health has increased! Health = " << player->getHp() << "\\n";
 			points--;
 			break;
 		case 2:
 			player->setStr(1);
-			output << "  Your strength has increased! Strength = " << player->getStr() << "\n";
+			output << "\\n  Your strength has increased! Strength = " << player->getStr() << "\\n";
 			points--;
 			break;
 		case 3:
 			player->setDef(1);
-			output << "  Your defense has increased! Defense = " << player->getDef() << "\n";
+			output << "\\n  Your defense has increased! Defense = " << player->getDef() << "\\n";
 			points--;
 			break;
 		case 4:
 			player->setSpd(1);
-			output << "  Your speed has increased! Speed = " << player->getSpd() << "\n";
+			output << "\\n  Your speed has increased! Speed = " << player->getSpd() << "\\n";
 			points--;
 			break;
 		case 5:
 			player->setLck(1);
-			output << "  Your luck has increased! Luck = " << player->getLck() << "\n";
+			output << "\\n  Your luck has increased! Luck = " << player->getLck() << "\\n";
 			points--;
 			break;
 		case 6:
 			player->setPp(2);
-			output << "  Your stamina has increased! Stamina = " << player->getPp() << "\n";
+			output << "\\n  Your stamina has increased! Stamina = " << player->getPp() << "\\n";
 			points--;
 			break;
 		default:
-			output << "  Trying to break the system, eh?" << "\n";
+			output << "\\n  Trying to break the system, eh?" << "\\n";
 			i--;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -326,7 +382,7 @@ void System::statPointDistribution(int points) {
 		printDelay(output.str());
 		output.str("");
 
-		output << "  You have " << points << " available stat points." << "\n";
+		output << "\\n  You have " << points << " available stat points." << "\\n\\n";
 		printDelay(output.str());
 		output.str("");
 	}
@@ -334,50 +390,63 @@ void System::statPointDistribution(int points) {
 	playerSpecs();
 }
 
-void System::overworld() {
-	while (true) {
-		drawRoom(stages.at(currStageID)->get_room_exits(), stages.at(currStageID)->get_room_entities(),
-			stages.at(currStageID)->get_num_entities(), stages.at(currStageID)->get_prev_room_dir());
-		printDelay(stages.at(currStageID)->get_description() + "\n");
+System::GameState System::overworld() {
+	GameState ret = System::GameState::FREEROAM;
 
-		cout << endl;
-		string input = "";
-		cin >> input;
+	drawRoom(stages.at(currStageID)->get_room_exits(), stages.at(currStageID)->get_room_entities(),
+		stages.at(currStageID)->get_num_entities(), stages.at(currStageID)->get_prev_room_dir());
+	printDelay("  " + stages.at(currStageID)->get_description() + "\\n");
 
-		for (auto i = 0; i < input.size(); i++)
-			if (input.at(i) >= 'A' && input.at(i) <= 'Z') input.at(i) += 32;
+	cout << endl;
+	string input = "";
+	cin >> input;
 
-		if (input == "h" || input == "help") {
-			helpList();
-		}
-		else if (input == "c" || input == "configure") {
-			configure();
-		}
-		else if (input == "se" || input == "settings") {
-			gameSettings();
-		}
-		else if (input == "sp" || input == "specs") {
-			playerSpecs();
-		}
-		else if(input == "n" || input == "north") {
-			traverse(TraversalDir::UP);
-		}
-		else if (input == "e" || input == "east") {
-			traverse(TraversalDir::RIGHT);
-		}
-		else if (input == "s" || input == "south") {
-			traverse(TraversalDir::DOWN);
-		}
-		else if (input == "w" || input == "west") {
-			traverse(TraversalDir::LEFT);
-		}
-		else if (input == "inspect" || input == "i") {
+	toLowerCase(input);
 
-		}
+	if (input == "h" || input == "help") helpList();
+	else if (input == "c" || input == "configure") configure();
+	else if (input == "se" || input == "settings") gameSettings();
+	else if (input == "sp" || input == "specs") playerSpecs();
+	else if (debug && (input == "dhelp" || input == "dh")) debugHelpList();
+	else if (input == "n" || input == "north") traverse(TraversalDir::UP);
+	else if (input == "e" || input == "east") traverse(TraversalDir::RIGHT);
+	else if (input == "s" || input == "south") traverse(TraversalDir::DOWN);
+	else if (input == "w" || input == "west") traverse(TraversalDir::LEFT);
+	else if (input == "inspect" || input == "i") {
+
+	}
+	else if (input == "fight" || input == "f") {
+		vector<Monster*> monsters = stages.at(currStageID)->get_monsters();
+		if (monsters.size() == 0) printDelay("  There's nothing to fight!\\n");
 		else {
-			printDelay("  Tongue tied? Give yourself some leeway and type 'h'!\n");
+			Monster* currMonster = monsters.at(0);
+			if (battle(currMonster)) {
+				victory(currMonster);
+				stages.at(currStageID)->remove_monster(currMonster);
+			}
+			else ret = GameState::DEAD;
 		}
 	}
+	else if (input == "d" || input == "debug") {
+		if (debug == false) {
+			printDelay("\\n  Enter access code: ");
+			string code;
+			cin >> code;
+
+			if (code == "112117") {
+				toggleDebugMode();
+				printDelay("  Debug mode enabled.\\n");
+			}
+			else printDelay("  Incorrect code.\\n");
+		}
+		else {
+			toggleDebugMode();
+			printDelay("\\n  Debug mode disabled.\\n");
+		}
+	}
+	else printDelay("  Tongue tied? Try typing 'h'!\\n");
+
+	return ret;
 }
 
 void System::traverse(TraversalDir dir) {
@@ -397,28 +466,28 @@ void System::traverse(TraversalDir dir) {
 		break;
 	}
 
-	if (result == 1) {
-		printDelay("  There's a wall in the way!\n");
-	}
-	else if (result == 2) {
-		printDelay("  A monster guards the path.\n");
-	}
+	if (result == 1) printDelay("  There's a wall in the way!\\n");
+	else if (result == 2) printDelay("  A monster guards the path.\\n");
 }
 
 void System::helpList() const {
-	cout << endl;
-	cout << "  --- LIST OF COMMANDS ---" << endl;
+	cout << endl << "  --- LIST OF COMMANDS ---" << endl;
 	cout << "  [Always]" << endl;
-	cout << "  help,       h" << endl;
-	cout << "  configure,  c" << endl;
-	cout << "  settings,   se" << endl;
-	cout << "  specs,      sp" << endl;
+	cout << "  help        h" << endl;
+	cout << "  configure   c" << endl;
+	cout << "  settings    se" << endl;
+	cout << "  specs       sp" << endl;
+	if(debug) cout << "  dhelp       dh" << endl;
 	cout << endl << "  [Overworld]" << endl;
-	cout << "  north,      n" << endl;
-	cout << "  east,       e" << endl;
-	cout << "  south,      s" << endl;
-	cout << "  west,       w" << endl;
-	cout << "  inspect,    i" << endl;
+	cout << "  north       n" << endl;
+	cout << "  east        e" << endl;
+	cout << "  south       s" << endl;
+	cout << "  west        w" << endl;
+	cout << "  inspect     i" << endl;
+	cout << "  fight       f" << endl;
+	cout << "  debug       d" << endl;
+	cout << endl << "  [Battle]" << endl;
+	cout << "  attack      a" << endl;
 	cout << "  ------------------------" << endl;
 }
 
@@ -427,12 +496,12 @@ void System::configure() {
 
 	ostringstream output;
 	output << "  TEXT SPEED" << "\n";
-	cout << "  Enter '1' for Very Slow" << "\n";
-	cout << "  Enter '2' for Slow" << "\n";
-	cout << "  Enter '3' for Moderate" << "\n";
-	cout << "  Enter '4' for Fast" << "\n";
-	cout << "  Enter '5' for Very Fast" << "\n";
-	cout << "  Enter '6' for Instant" << "\n";
+	output << "  Enter '1' for Very Slow" << "\n";
+	output << "  Enter '2' for Slow" << "\n";
+	output << "  Enter '3' for Moderate" << "\n";
+	output << "  Enter '4' for Fast" << "\n";
+	output << "  Enter '5' for Very Fast" << "\n";
+	output << "  Enter '6' for Instant" << "\n";
 	printDelay(output.str());
 	output.str("");
 	
@@ -488,10 +557,29 @@ void System::gameSettings() const {
 }
 
 void System::introSequence() {
-	printDelay("\n  ...Hello?", Settings::TextSpeed::VERY_SLOW);
-	printDelay("\n\n  ...You there...", Settings::TextSpeed::SLOW);
-	printDelay("\n\n  ...What's your name?", Settings::TextSpeed::MODERATE);
-	cout << endl << endl;
+	printDelay("\\n  Enter a startup code: ");
+	string code;
+	getline(cin, code);
+	
+	vector<string> codes;
+	size_t index = 0;
+	while ((index = code.find(' ')) != string::npos) {
+		codes.push_back(code.substr(0, index));
+		code.erase(0, index + 1);
+	}
+	codes.push_back(code);
+
+	bool skipIntro = false;
+	while (codes.size() > 0) {
+		if (codes.front() == "skipintro") skipIntro = true;
+		else if (codes.front() == "startindebugmode") toggleDebugMode();
+		codes.erase(codes.cbegin());
+	}
+	if (skipIntro) return;
+
+	printDelay("\\n  ...Hello?", Settings::TextSpeed::VERY_SLOW);
+	printDelay("\\n\\n  ...You there...", Settings::TextSpeed::SLOW);
+	printDelay("\\n\\n  ...What's your name?\\n\\n", Settings::TextSpeed::MODERATE);
 
 	string name;
 	getline(cin, name);
@@ -502,27 +590,27 @@ void System::introSequence() {
 
 void System::printDelay(string output) const {
 	for (auto i = 0; i < output.size(); i++) {
-		if (i < output.size() - 1 && output.substr(i, 2) == "\n") {
+		if (i < output.size() - 1 && output.substr(i, 2) == "\\n") {
 			cout << endl;
 			i++;
-			continue;
 		}
-
-		cout << output.at(i);
-		sleep();
+		else {
+			cout << output.at(i);
+			if (output.at(i) != ' ') sleep();
+		}
 	}
 }
 
 void System::printDelay(string output, Settings::TextSpeed textSpeedOverride) const {
 	for (auto i = 0; i < output.size(); i++) {
-		if (i < output.size() - 1 && output.substr(i, 2) == "\n") {
+		if (i < output.size() - 1 && output.substr(i, 2) == "\\n") {
 			cout << endl;
 			i++;
-			continue;
 		}
-
-		cout << output.at(i);
-		sleep(textSpeedOverride);
+		else {
+			cout << output.at(i);
+			if (output.at(i) != ' ') sleep(textSpeedOverride);
+		}
 	}
 }
 
@@ -535,7 +623,7 @@ void System::sleep() const {
 		this_thread::sleep_for(chrono::milliseconds(250));
 		break;
 	case Settings::TextSpeed::MODERATE:
-		this_thread::sleep_for(chrono::milliseconds(75));
+		this_thread::sleep_for(chrono::milliseconds(60));
 		break;
 	case Settings::TextSpeed::FAST:
 		this_thread::sleep_for(chrono::milliseconds(15));
@@ -555,7 +643,7 @@ void System::sleep(Settings::TextSpeed textSpeedOverride) const {
 		this_thread::sleep_for(chrono::milliseconds(250));
 		break;
 	case Settings::TextSpeed::MODERATE:
-		this_thread::sleep_for(chrono::milliseconds(75));
+		this_thread::sleep_for(chrono::milliseconds(60));
 		break;
 	case Settings::TextSpeed::FAST:
 		this_thread::sleep_for(chrono::milliseconds(15));
@@ -568,6 +656,177 @@ void System::sleep(Settings::TextSpeed textSpeedOverride) const {
 
 void System::sleep(int milliseconds) const {
 	this_thread::sleep_for(chrono::milliseconds(milliseconds));
+}
+
+bool System::battle(Monster* monster) {
+	const int SWORD_WIDTH = 29;
+	const int SWORD_HEIGHT = 3;
+	string output = "";
+	output += "        /| _________________ ";
+	output += "  O|===|* >______FIGHT______>";
+	output += "        \\|                   ";
+
+	cout << endl;
+	for (auto i = 0; i < SWORD_HEIGHT; i++) {
+		cout << output.substr(SWORD_WIDTH * i, SWORD_WIDTH) << endl;
+	}
+	sleep(1000);
+
+	printDelay("\\n  " + player->getName() + " Lv. " + to_string(player->getLevel()) + "  VS  "
+		+ monster->getName() + " Lv. " + to_string(monster->getLvl()) + "\\n\\n");
+
+	string input;
+	while (true) {
+		printDelay("  " + player->getName() + ": " + to_string(player->get_cur_hp()) + "  "
+			+ monster->getName() + ": " + to_string(monster->getHp()) + "\\n  It's your call...\\n");
+		cout << "  |attack|" << endl << endl;
+		cin >> input;
+
+		toLowerCase(input);
+
+		if (input == "a" || input == "attack") {
+			if (player->getSpd() >= monster->getSpd()) {
+				if (playerAttack(monster)) return true;
+				if (monsterAttack(monster)) return false;
+			}
+			else {
+				if (monsterAttack(monster)) return false;
+				if (playerAttack(monster)) return true;
+			}
+		}
+		else printDelay("  Do not fool around while in combat!\\n");
+		cout << endl;
+	}
+}
+
+bool System::death() const {
+	const int SKULL_WIDTH = 30;
+	const int SKULL_HEIGHT = 6;
+	string output = "";
+	output += "    _____              _____  ";
+	output += "   /     \\            /     \\ ";
+	output += "  | () () | YOU DIED | () () |";
+	output += "   \\  ^  /            \\  ^  / ";
+	output += "    |||||              |||||  ";
+	output += "    |||||              |||||  ";
+
+	cout << endl;
+	for (auto i = 0; i < SKULL_HEIGHT; i++) {
+		cout << output.substr(SKULL_WIDTH * i, SKULL_WIDTH) << endl;
+	}
+	sleep(1000);
+
+	printDelay("\\n  Try again?\\n  Enter '1' for a better run.\\n  Enter '2' if you have homework to do.\\n");
+
+	while (true) {
+		int key = 0;
+		cin >> key;
+
+		switch (key) {
+		case 1:
+			return true;
+		case 2:
+			return false;
+		default:
+			printDelay("  Hesitant? It's tempting to give it another go!\\n");
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
+		}
+	}
+}
+
+void System::setUp() {
+	init();
+	introSequence();
+}
+
+bool System::playerAttack(Monster* monster) {
+	pair<int, bool> atRet;
+
+	bool monsterDodged = monster->rollDodge();
+	if (monsterDodged) printDelay("\\n  " + monster->getName() + " dodged the attack!");
+	else {
+		atRet = player->attack(*monster);
+
+		if (atRet.second == false)
+			printDelay("\\n  You dealt " + to_string(atRet.first) + " damage to "
+				+ monster->getName() + "!\\n");
+		else printDelay("\\n  You dealt a whopping" + to_string(atRet.first) + " damage to "
+			+ monster->getName() + "!\\n");
+		sleep(1000);
+
+		if (monster->isDead()) return true;
+	}
+
+	return false;
+}
+
+bool System::monsterAttack(Monster* monster) {
+	pair<int, bool> atRet;
+
+	bool playerDodged = player->rollDodge();
+	if (playerDodged) printDelay("\\n  You dodged the attack!");
+	else {
+		atRet = monster->attack_player(*player);
+
+		if (atRet.second == false)
+			printDelay("\\n  " + monster->getName() + " dealt " + to_string(atRet.first)
+				+ " damage to you!\\n");
+		else printDelay("\\n  " + monster->getName() + " dealt a whopping " + to_string(atRet.first)
+			+ " damage to you!\\n");
+
+		if (player->isDead()) return true;
+	}
+
+	return false;
+}
+
+void System::toLowerCase(string& str) {
+	for (auto i = 0; i < str.size(); i++)
+		if (str.at(i) >= 'A' && str.at(i) <= 'Z') str.at(i) += 32;
+}
+
+void System::victory(Monster* monster) {
+	const int V_WIDTH = 10;
+	const int V_HEIGHT = 3;
+	string output = "";
+	output += "  \\\\    //";
+	output += "   \\\\  // ";
+	output += "    \\\\//  ";
+
+	cout << endl;
+	for (auto i = 0; i < V_HEIGHT - 1; i++) {
+		cout << output.substr(V_WIDTH * i, V_WIDTH) << endl;
+	}
+	cout << output.substr(V_WIDTH * (V_HEIGHT - 1), V_WIDTH) << "ICTORY!" << endl << endl;
+	sleep(1000);
+
+	int levelUpRec = player->increaseExp(monster->getExp());
+	printDelay("  You gained " + to_string(monster->getExp()) + " experience!\\n");
+	sleep(1000);
+
+	for (auto i = levelUpRec; i > 0; i--) levelUp(3);
+}
+
+void System::toggleDebugMode() {
+	debug = !debug;
+}
+
+void System::debugHelpList() const {
+	cout << endl << "  --- LIST OF DEBUG COMMANDS ---" << endl;
+	cout << "  [Always]" << endl;
+	cout << "  heal(X)      [1 <= X <= " << player->get_hp_tot() << "]" << endl;
+	cout << "  damage(X)    [1 <= X <= " << player->get_cur_hp() - 1 << "]" << endl;
+	cout << "  suicide()" << endl;
+	cout << endl << "  [Startup]" << endl;
+	cout << "  skipintro" << endl;
+	cout << "  startindebugmode" << endl;
+	cout << "  ------------------------------" << endl;
+}
+
+void System::suicide() {
+
 }
 
 #endif

@@ -28,13 +28,6 @@ private:
     void setLoot()
     {
         loot.add(Equipment(), 70);
-        loot.add(WornLadle(level), 10);
-        loot.add(RustyPot(level), 10);
-        loot.add(CardboardBox(level), 10);
-        loot.add(TrashBag(level), 10);
-        loot.add(DiscardedCrocs(level), 10);
-        loot.add(TornMittens(level), 10);
-        loot.add(BrokenBoard(level), 10);
     }
     
 };
