@@ -34,8 +34,8 @@ class Room{
 
 
 		//  Return address of vector of pointers to Monsters or Interactables in this Room.
-		const vector<Monster*>& get_monsters() {return monsters;}
-		const vector<Interactable*>& get_interactables() {return interactables;}
+		const vector<Monster*> get_monsters() {return monsters;}
+		const vector<Interactable*> get_interactables() {return interactables;}
 
 
 		//  Adds passed Monster or Interactable to this Room.
