@@ -28,8 +28,8 @@ class Stage{
 		//  get_prev_room_dir() returns the RoomExit (direction) of the previous room, relative to the current room. Returns RoomExit::NONE if previous room can't be found.
 		//  get_name() returns the name of the current Room.
 		//  get_description() returns the description of this Room.
-		const vector<Monster*> get_monsters() {return rooms.at(curRoom).get_monsters();}
-		const vector<Interactable*> get_interactables() {return rooms.at(curRoom).get_interactables();}
+		const vector<Monster> get_monsters() {return rooms.at(curRoom).get_monsters();}
+		const vector<Interactable> get_interactables() {return rooms.at(curRoom).get_interactables();}
 		pair<int, int> get_num_entities() {return pair<int, int>(rooms.at(curRoom).get_num_monsters(), rooms.at(curRoom).get_num_interactables());}
 		vector<RoomExit> get_room_exits();
 		vector<RoomEntity> get_room_entities();
@@ -40,8 +40,8 @@ class Stage{
 
 
 		//  Removes passed Monster or Interactable from the current Room.
-		void remove_monster(Monster* mo) {rooms.at(curRoom).remove_monster(mo);}
-		void remove_interactable(Interactable* in) {rooms.at(curRoom).remove_interactable(in);}
+		void remove_monster(Monster mo) {rooms.at(curRoom).remove_monster(mo);}
+		void remove_interactable(Interactable in) {rooms.at(curRoom).remove_interactable(in);}
 
 
 	protected:

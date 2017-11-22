@@ -416,12 +416,12 @@ System::GameState System::overworld() {
 
 	}
 	else if (input == "fight" || input == "f") {
-		vector<Monster*> monsters = stages.at(currStageID)->get_monsters();
+		vector<Monster> monsters = stages.at(currStageID)->get_monsters();
 		if (monsters.size() == 0) printDelay("  There's nothing to fight!\\n");
 		else {
-			Monster* currMonster = monsters.at(0);
-			if (battle(currMonster)) {
-				victory(currMonster);
+			Monster currMonster = monsters.at(0);
+			if (battle(&currMonster)) {
+				victory(&currMonster);
 				stages.at(currStageID)->remove_monster(currMonster);
 			}
 			else ret = GameState::DEAD;

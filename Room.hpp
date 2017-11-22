@@ -34,8 +34,8 @@ class Room{
 
 
 		//  Return address of vector of pointers to Monsters or Interactables in this Room.
-		const vector<Monster*> get_monsters() {return monsters;}
-		const vector<Interactable*> get_interactables() {return interactables;}
+		const vector<Monster> get_monsters() {return monsters;}
+		const vector<Interactable> get_interactables() {return interactables;}
 
 
 		//  Adds passed Monster or Interactable to this Room.
@@ -49,8 +49,8 @@ class Room{
 
 
 		//  Removes passed Monster or Interactable from this Room.
-		void remove_monster(Monster*);
-		void remove_interactable(Interactable*);
+		void remove_monster(Monster);
+		void remove_interactable(Interactable);
 
 		
 		//  Constants designating dead ends and stage exits.
@@ -65,28 +65,28 @@ class Room{
 		int south;
 		int west;
 		string description;
-		vector<Monster*> monsters;
-		vector<Interactable*> interactables;
+		vector<Monster> monsters;
+		vector<Interactable> interactables;
 };
 
 //  MUTATORS
 
 
 void Room::add_monster(Monster& mo){
-	monsters.push_back(&mo);
+	monsters.push_back(mo);
 }
 
 
 void Room::add_interactable(Interactable& in){
-	interactables.push_back(&in);
+	interactables.push_back(in);
 }
 
 
-void Room::remove_monster(Monster* mo){
-	vector<Monster*> updatedMonsters;
+void Room::remove_monster(Monster mo){
+	vector<Monster> updatedMonsters;
 	bool monsterFound = false;
 	for(int i = 0; i < monsters.size(); i++){
-		if(monsters.at(i) != mo) updatedMonsters.push_back(monsters.at(i));
+		if(monsters.at(i).get_id() != mo.get_id()) updatedMonsters.push_back(monsters.at(i));
 		else { monsterFound = true; }
 	}
 	monsters = updatedMonsters;
@@ -94,11 +94,11 @@ void Room::remove_monster(Monster* mo){
 }
 
 
-void Room::remove_interactable(Interactable* in){
-	vector<Interactable*> updatedInteractables;
+void Room::remove_interactable(Interactable in){
+	vector<Interactable> updatedInteractables;
 	bool interactableFound = false;
 	for(int i = 0; i < interactables.size(); i++){
-		if(interactables.at(i) != in) updatedInteractables.push_back(interactables.at(i));
+		if(interactables.at(i).get_id() != in.get_id()) updatedInteractables.push_back(interactables.at(i));
 		else { interactableFound = true; }
 	}
 	interactables = updatedInteractables;
