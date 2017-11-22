@@ -17,11 +17,11 @@ public:
     int getGold(){ return gold;    }
 
     virtual void setHp(int x)  { hp += x;  }
-	void setStr(int x) { str += x; }
-	void setDef(int x) { def += x; }
-	void setLck(int x) { lck += x; }
-	void setSpd(int x) { spd += x; }
-    void setGold(int x){ gold +=x; }
+	virtual void setStr(int x) { str += x; }
+	virtual void setDef(int x) { def += x; }
+	virtual void setLck(int x) { lck += x; }
+	virtual void setSpd(int x) { spd += x; }
+    virtual void setGold(int x){ gold +=x; }
     
     bool rollDodge()   { updateDodge(); return dodge(); }
     virtual bool isDead()      { return getHp()<=0;             }

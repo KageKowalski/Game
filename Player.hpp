@@ -57,7 +57,14 @@ public:
     int get_def_tot()   { return def_eq; }
     int get_lck_tot()   { return lck_eq; }
     int get_spd_tot()   { return spd_eq; }
-
+    
+    void setHp(int x)  { hp += x; update_stats();  }
+    void setStr(int x) { str += x; update_stats(); }
+    void setDef(int x) { def += x; update_stats(); }
+    void setLck(int x) { lck += x; update_stats(); }
+    void setSpd(int x) { spd += x; update_stats(); }
+    void setGold(int x){ gold +=x; update_stats(); }
+    
     pair<int, bool> attack(Combatant& mo);
     
     bool isDead(){ return cur_hp <= 0; }
@@ -116,7 +123,6 @@ private:
         pp  = 5;
         gold = 0;
         exp = 0;
-        update_stats();
         helmet = Hair();
         vest   = Shirt();
         pants  = Pants();
@@ -125,6 +131,7 @@ private:
         shield = Arm();
         oneHanded = Fists();
         twoHanded = Nothing();
+        update_stats();
     }
 public:
     Player(Player const&)          = delete;
