@@ -103,6 +103,7 @@ private:
         inv = Inventory();
         level = 1;
         hp  = 10;
+        cur_hp = hp;
         str = 1;
         def = 0;
         lck = 0;
