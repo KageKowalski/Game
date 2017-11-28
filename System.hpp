@@ -177,8 +177,11 @@ private:
 	// Prints list of all debug commands
 	void debugHelpList() const;
 
-	// DEBUG command: kills the player
-	void suicide();
+	// DEBUG: Heals the player
+	void heal(int hp);
+
+	// DEBUG: Damages the player
+	void damage(int hp);
 	
 };
 
@@ -227,8 +230,8 @@ void System::playerSpecs() const {
 	cout << "  Crit Chance     = " << player->getCritPercent() << "%" << endl;
 	cout << "  Dodge Chance    = " << player->getDodgePercent() << "%" << endl;
 	cout << "  Experience      = " << player->getExp() << endl;
-	cout << "  Level           = " << player->getLevel() << endl;
 	cout << "  Next Level At   = " << player->nextLevel() << endl;
+	cout << "  Level           = " << player->getLevel() << endl;
 	cout << "  Gold            = " << player->getGold() << endl;
 	cout << "  ------------------------------" << endl;
 }
@@ -427,6 +430,9 @@ System::GameState System::overworld() {
 			else ret = GameState::DEAD;
 		}
 	}
+	else if (input == "inventory" || input == "in") {
+
+	}
 	else if (input == "d" || input == "debug") {
 		if (debug == false) {
 			printDelay("\\n  Enter access code: ");
@@ -444,7 +450,33 @@ System::GameState System::overworld() {
 			printDelay("\\n  Debug mode disabled.\\n");
 		}
 	}
-	else printDelay("  Tongue tied? Try typing 'h'!\\n");
+	else if (debug && input.size() >= 7 && input.substr(0, 4) == "heal") {
+		bool valid = true;
+		string arg = input.substr(5, input.size() - 1 - 5);
+		
+		if (input.back() != ')') valid = false;
+		for (int i = 0; i < arg.size(); i++) if (arg.at(i) < '0' || arg.at(i) > '9') valid = false;
+
+		if (valid) {
+			int arg = atoi(input.substr(5, input.size() - 1 - 5).c_str());
+			heal(arg);
+		}
+		else printDelay("\\n  Argument not recognized.\\n");
+	}
+	else if (debug && input.size() >= 9 && input.substr(0, 6) == "damage") {
+		bool valid = true;
+		string arg = input.substr(7, input.size() - 1 - 7);
+
+		if (input.back() != ')') valid = false;
+		for (int i = 0; i < arg.size(); i++) if (arg.at(i) < '0' || arg.at(i) > '9') valid = false;
+
+		if (valid) {
+			int arg = atoi(input.substr(7, input.size() - 1 - 7).c_str());
+			damage(arg);
+		}
+		else printDelay("\\n  Argument not recognized.\\n");
+	}
+	else printDelay("\\n  Tongue tied? Try typing 'h'!\\n");
 
 	return ret;
 }
@@ -485,6 +517,7 @@ void System::helpList() const {
 	cout << "  west        w" << endl;
 	cout << "  inspect     i" << endl;
 	cout << "  fight       f" << endl;
+	cout << "  inventory   in" << endl;
 	cout << "  debug       d" << endl;
 	cout << endl << "  [Battle]" << endl;
 	cout << "  attack      a" << endl;
@@ -816,17 +849,30 @@ void System::toggleDebugMode() {
 void System::debugHelpList() const {
 	cout << endl << "  --- LIST OF DEBUG COMMANDS ---" << endl;
 	cout << "  [Always]" << endl;
-	cout << "  heal(X)      [1 <= X <= " << player->get_hp_tot() << "]" << endl;
-	cout << "  damage(X)    [1 <= X <= " << player->get_cur_hp() - 1 << "]" << endl;
-	cout << "  suicide()" << endl;
+	cout << "  heal(X)      [MAX: " << player->get_hp_tot() - player->get_cur_hp() << "]" << endl;
+	cout << "  damage(X)    [MAX: " << player->get_cur_hp() - 1 << "]" << endl;
 	cout << endl << "  [Startup]" << endl;
 	cout << "  skipintro" << endl;
 	cout << "  startindebugmode" << endl;
 	cout << "  ------------------------------" << endl;
 }
 
-void System::suicide() {
+void System::heal(int hp) {
+	if (hp < 1 || hp > player->get_hp_tot() - player->get_cur_hp())
+		printDelay("\\n  Argument out of bounds.\\n");
+	else {
+		player->change_cur_hp(hp);
+		printDelay("\\n  Player healed " + to_string(hp) + " points.\\n");
+	}
+}
 
+void System::damage(int hp) {
+	if (hp < 1 || hp > player->get_cur_hp() - 1)
+		printDelay("\\n  Argument out of bounds.\\n");
+	else {
+		player->change_cur_hp(-hp);
+		printDelay("\\n  Player damaged " + to_string(hp) + " points.\\n");
+	}
 }
 
 #endif

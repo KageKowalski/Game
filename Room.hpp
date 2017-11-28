@@ -33,9 +33,9 @@ class Room{
 		int get_num_interactables() {return interactables.size();}
 
 
-		//  Return address of vector of pointers to Monsters or Interactables in this Room.
-		const vector<Monster> get_monsters() {return monsters;}
-		const vector<Interactable> get_interactables() {return interactables;}
+		//  Return address of vector of Monsters or Interactables in this Room.
+		const vector<Monster>& get_monsters() {return monsters;}
+		const vector<Interactable>& get_interactables() {return interactables;}
 
 
 		//  Adds passed Monster or Interactable to this Room.
@@ -49,8 +49,8 @@ class Room{
 
 
 		//  Removes passed Monster or Interactable from this Room.
-		void remove_monster(Monster);
-		void remove_interactable(Interactable);
+		void remove_monster(Monster&);
+		void remove_interactable(Interactable&);
 
 		
 		//  Constants designating dead ends and stage exits.
@@ -82,7 +82,7 @@ void Room::add_interactable(Interactable& in){
 }
 
 
-void Room::remove_monster(Monster mo){
+void Room::remove_monster(Monster& mo){
 	vector<Monster> updatedMonsters;
 	bool monsterFound = false;
 	for(int i = 0; i < monsters.size(); i++){
@@ -94,7 +94,7 @@ void Room::remove_monster(Monster mo){
 }
 
 
-void Room::remove_interactable(Interactable in){
+void Room::remove_interactable(Interactable& in){
 	vector<Interactable> updatedInteractables;
 	bool interactableFound = false;
 	for(int i = 0; i < interactables.size(); i++){

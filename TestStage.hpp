@@ -31,10 +31,14 @@ class TestStage : public Stage{
 			rooms.push_back(room1);
 
 			Room room2(2, Room::DEAD_END, 4, 1, Room::DEAD_END);
+			Slime h = Slime(1);
+			room1.add_monster(h);
 			room2.set_description("Beep beep.");
 			rooms.push_back(room2);
 
 			Room room3(3, 4, Room::DEAD_END, Room::DEAD_END, 1);
+			Slime r = Slime(1);
+			room1.add_monster(r);
 			room3.set_description("Donuts litter the floor.");
 			rooms.push_back(room3);
 
