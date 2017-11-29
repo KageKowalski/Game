@@ -117,7 +117,8 @@ private:
 	void drawRoom(const vector<RoomExit>& roomExits, const vector<RoomEntity>& roomEntities,
 		const pair<int, int>& numEntities, RoomExit prevRoomDir) const;
 
-	GameState overworld();
+	// Executes one pass of the overworld
+	void overworld();
 
 	// Traverse the current stage
 	void traverse(TraversalDir dir);
@@ -152,7 +153,7 @@ private:
 	// Battle sequence
 	bool battle(Monster* monster);
 
-	// Asks to play again after death
+	// Death sequence
 	bool death() const;
 
 	// Sets up the game
@@ -177,11 +178,34 @@ private:
 	// Prints list of all debug commands
 	void debugHelpList() const;
 
+	// Checks for debug command validity
+	bool validateDebugCommand(const string& blueprint, const string& command);
+
+	// Converts debug command argument to numerical value
+	// NOTE: ASSUMES BOTH COMMAND AND ARGUMENT ARE VALID
+	int extractDebugArg(const string& command);
+
+	// Converts debug command argument to string
+	// NOTE: ASSUMES COMMAND IS VALID (ARGUMENT MAY BE INVALID)
+	string extractDebugArgRaw(const string& command);
+
 	// DEBUG: Heals the player
 	void heal(int hp);
 
 	// DEBUG: Damages the player
 	void damage(int hp);
+
+	// Checks for [Always] command triggers
+	bool checkAlwaysCommands(const string& command);
+
+	// Checks for [Overworld] command triggers
+	bool checkOverworldCommands(const string& command);
+
+	// Checks for [Battle] command triggers
+	bool checkBattleCommands(const string& command);
+
+	// Checks for [Always] debug command triggers
+	bool checkAlwaysDebugCommands(const string& command);
 	
 };
 
@@ -193,7 +217,7 @@ int System::run() {
 	bool exit = false;
 
 	while (!exit) {
-		gameState = overworld();
+		overworld();
 
 		if (gameState == GameState::DEAD) {
 			if (death()) exit = true;
@@ -393,8 +417,8 @@ void System::statPointDistribution(int points) {
 	playerSpecs();
 }
 
-System::GameState System::overworld() {
-	GameState ret = System::GameState::FREEROAM;
+void System::overworld() {
+	gameState = GameState::FREEROAM;
 
 	drawRoom(stages.at(currStageID)->get_room_exits(), stages.at(currStageID)->get_room_entities(),
 		stages.at(currStageID)->get_num_entities(), stages.at(currStageID)->get_prev_room_dir());
@@ -406,79 +430,8 @@ System::GameState System::overworld() {
 
 	toLowerCase(input);
 
-	if (input == "h" || input == "help") helpList();
-	else if (input == "c" || input == "configure") configure();
-	else if (input == "se" || input == "settings") gameSettings();
-	else if (input == "sp" || input == "specs") playerSpecs();
-	else if (debug && (input == "dhelp" || input == "dh")) debugHelpList();
-	else if (input == "n" || input == "north") traverse(TraversalDir::UP);
-	else if (input == "e" || input == "east") traverse(TraversalDir::RIGHT);
-	else if (input == "s" || input == "south") traverse(TraversalDir::DOWN);
-	else if (input == "w" || input == "west") traverse(TraversalDir::LEFT);
-	else if (input == "inspect" || input == "i") {
-
-	}
-	else if (input == "fight" || input == "f") {
-		vector<Monster> monsters = stages.at(currStageID)->get_monsters();
-		if (monsters.size() == 0) printDelay("  There's nothing to fight!\\n");
-		else {
-			Monster currMonster = monsters.at(0);
-			if (battle(&currMonster)) {
-				victory(&currMonster);
-				stages.at(currStageID)->remove_monster(currMonster);
-			}
-			else ret = GameState::DEAD;
-		}
-	}
-	else if (input == "inventory" || input == "in") {
-
-	}
-	else if (input == "d" || input == "debug") {
-		if (debug == false) {
-			printDelay("\\n  Enter access code: ");
-			string code;
-			cin >> code;
-
-			if (code == "112117") {
-				toggleDebugMode();
-				printDelay("  Debug mode enabled.\\n");
-			}
-			else printDelay("  Incorrect code.\\n");
-		}
-		else {
-			toggleDebugMode();
-			printDelay("\\n  Debug mode disabled.\\n");
-		}
-	}
-	else if (debug && input.size() >= 7 && input.substr(0, 4) == "heal") {
-		bool valid = true;
-		string arg = input.substr(5, input.size() - 1 - 5);
-		
-		if (input.back() != ')') valid = false;
-		for (int i = 0; i < arg.size(); i++) if (arg.at(i) < '0' || arg.at(i) > '9') valid = false;
-
-		if (valid) {
-			int arg = atoi(input.substr(5, input.size() - 1 - 5).c_str());
-			heal(arg);
-		}
-		else printDelay("\\n  Argument not recognized.\\n");
-	}
-	else if (debug && input.size() >= 9 && input.substr(0, 6) == "damage") {
-		bool valid = true;
-		string arg = input.substr(7, input.size() - 1 - 7);
-
-		if (input.back() != ')') valid = false;
-		for (int i = 0; i < arg.size(); i++) if (arg.at(i) < '0' || arg.at(i) > '9') valid = false;
-
-		if (valid) {
-			int arg = atoi(input.substr(7, input.size() - 1 - 7).c_str());
-			damage(arg);
-		}
-		else printDelay("\\n  Argument not recognized.\\n");
-	}
-	else printDelay("\\n  Tongue tied? Try typing 'h'!\\n");
-
-	return ret;
+	if(!checkAlwaysCommands(input) && !checkOverworldCommands(input) && !checkAlwaysDebugCommands(input))
+		printDelay("\\n  Tongue tied? Try typing 'h'!\\n");
 }
 
 void System::traverse(TraversalDir dir) {
@@ -873,6 +826,134 @@ void System::damage(int hp) {
 		player->change_cur_hp(-hp);
 		printDelay("\\n  Player damaged " + to_string(hp) + " points.\\n");
 	}
+}
+
+bool System::validateDebugCommand(const string& blueprint, const string& command) {
+	if (command.size() < blueprint.size()) return false;
+	if (command.substr(0, blueprint.find('(') + 1) != blueprint.substr(0, blueprint.find('(') + 1)) return false;
+	if (command.find(')') != command.size() - 1) {
+		printDelay("\\n  Command failed.\\n  Enter a single command on a single line.\\n");
+		printDelay("  Remember to enclose argument in parentheses.\\n");
+		return false;
+	}
+	string arg = extractDebugArgRaw(command);
+	size_t count = 0;
+	while (count != arg.size() && arg.at(count) >= '0' && arg.at(count) <= '9') count++;
+	if (count != arg.size()) {
+		printDelay("\\n  Argument invalid.\\n");
+		return false;
+	}
+	return true;
+}
+
+int System::extractDebugArg(const string& command) {
+	size_t pos = command.find('(');
+	string arg = command.substr(pos + 1, command.size() - (pos + 1) - 1);
+	int retVal = atoi(arg.c_str());
+	return retVal;
+}
+
+string System::extractDebugArgRaw(const string& command) {
+	size_t pos = command.find('(');
+	string arg = command.substr(pos + 1, command.size() - (pos + 1) - 1);
+	return arg;
+}
+
+bool System::checkAlwaysCommands(const string& command) {
+	if (command == "h" || command == "help") {
+		helpList();
+		return true;
+	}
+	else if (command == "c" || command == "configure") {
+		configure();
+		return true;
+	}
+	else if (command == "se" || command == "settings") {
+		gameSettings();
+		return true;
+	}
+	else if (command == "sp" || command == "specs") {
+		playerSpecs();
+		return true;
+	}
+	else if (debug && (command == "dhelp" || command == "dh")) {
+		debugHelpList();
+		return true;
+	}
+	return false;
+}
+
+bool System::checkOverworldCommands(const string& command) {
+	if (command == "n" || command == "north") {
+		traverse(TraversalDir::UP);
+		return true;
+	}
+	else if (command == "e" || command == "east") {
+		traverse(TraversalDir::RIGHT);
+		return true;
+	}
+	else if (command == "s" || command == "south") {
+		traverse(TraversalDir::DOWN);
+		return true;
+	}
+	else if (command == "w" || command == "west") {
+		traverse(TraversalDir::LEFT);
+		return true;
+	}
+	else if (command == "inspect" || command == "i") {
+		return true;
+	}
+	else if (command == "fight" || command == "f") {
+		vector<Monster> monsters = stages.at(currStageID)->get_monsters();
+		if (monsters.size() == 0) printDelay("  There's nothing to fight!\\n");
+		else {
+			Monster currMonster = monsters.at(0);
+			if (battle(&currMonster)) {
+				victory(&currMonster);
+				stages.at(currStageID)->remove_monster(currMonster);
+			}
+			else gameState = GameState::DEAD;
+		}
+		return true;
+	}
+	else if (command == "inventory" || command == "in") {
+		return true;
+	}
+	else if (command == "d" || command == "debug") {
+		if (debug == false) {
+			printDelay("\\n  Enter access code: ");
+			string code;
+			cin >> code;
+
+			if (code == "112117") {
+				toggleDebugMode();
+				printDelay("  Debug mode enabled.\\n");
+			}
+			else printDelay("  Incorrect code.\\n");
+		}
+		else {
+			toggleDebugMode();
+			printDelay("\\n  Debug mode disabled.\\n");
+		}
+		return true;
+	}
+	return false;
+}
+
+bool System::checkBattleCommands(const string& command) {
+	return false;
+}
+
+bool System::checkAlwaysDebugCommands(const string& command) {
+	if (debug && validateDebugCommand("heal(X)", command)) {
+		heal(extractDebugArg(command));
+		return true;
+	}
+	else if (debug && validateDebugCommand("damage(X)", command)) {
+		damage(extractDebugArg(command));
+		return true;
+	}
+	return false;
 }
 
 #endif
