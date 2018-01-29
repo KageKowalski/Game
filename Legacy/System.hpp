@@ -35,6 +35,13 @@ private:
 		DEAD
 	};
 
+	// All possible times when certain commands may be used
+	enum class CmdRestriction {
+		ALWAYS,
+		OVERWORLD,
+		BATTLE
+	};
+
 	// Contains game settings
 	struct Settings {
 
@@ -206,6 +213,13 @@ private:
 
 	// Checks for [Always] debug command triggers
 	bool checkAlwaysDebugCommands(const string& command);
+
+	// Receives input through cin, but also checks for other commands based on CmdRestriction
+	bool read(CmdRestriction restriction, int& into);
+	bool read(CmdRestriction restriction, string& into);
+
+	// Checks command trigger combonations
+	bool checkCommands(CmdRestriction restriction, string& toCheck);
 	
 };
 
@@ -365,7 +379,7 @@ void System::statPointDistribution(int points) {
 	const int ARG = points;
 	for (auto i = 0; i < ARG; i++) {
 		int key = 0;
-		cin >> key;
+		bool divert = read(CmdRestriction::ALWAYS, key);
 
 		switch (key) {
 		case 1:
@@ -400,10 +414,12 @@ void System::statPointDistribution(int points) {
 			points--;
 			break;
 		default:
-			output << "\\n  Trying to break the system, eh?" << "\\n";
-			i--;
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			if (!divert) {
+				output << "\\n  Trying to break the system, eh?" << "\\n";
+				i--;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
 			break;
 		}
 		printDelay(output.str());
@@ -426,12 +442,11 @@ void System::overworld() {
 
 	cout << endl;
 	string input = "";
-	cin >> input;
+	bool divert = read(CmdRestriction::OVERWORLD, input);
 
 	toLowerCase(input);
 
-	if(!checkAlwaysCommands(input) && !checkOverworldCommands(input) && !checkAlwaysDebugCommands(input))
-		printDelay("\\n  Tongue tied? Try typing 'h'!\\n");
+	if(!divert) printDelay("\\n  Tongue tied? Try typing 'h'!\\n");
 }
 
 void System::traverse(TraversalDir dir) {
@@ -494,7 +509,7 @@ void System::configure() {
 	bool loop = true;
 	while (loop) {
 		int key = 0;
-		cin >> key;
+		bool divert = read(CmdRestriction::ALWAYS, key);
 
 		switch (key) {
 		case 1:
@@ -522,12 +537,14 @@ void System::configure() {
 			loop = false;
 			break;
 		default:
-			output << "  This is serious stuff, you know..." << "\n";
-			printDelay(output.str());
-			output.str("");
+			if (!divert) {
+				output << "  This is serious stuff, you know..." << "\n";
+				printDelay(output.str());
+				output.str("");
 
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
 			break;
 		}
 	}
@@ -661,12 +678,13 @@ bool System::battle(Monster* monster) {
 	printDelay("\\n  " + player->getName() + " Lv. " + to_string(player->getLevel()) + "  VS  "
 		+ monster->getName() + " Lv. " + to_string(monster->getLvl()) + "\\n\\n");
 
-	string input;
+	string input = "";
 	while (true) {
+		if (input == "a" || input == "attack") player->change_cur_pp(1);
 		printDelay("  " + player->getName() + ": " + to_string(player->get_cur_hp()) + "  "
 			+ monster->getName() + ": " + to_string(monster->getHp()) + "\\n  It's your call...\\n");
 		cout << "  |attack|" << endl << endl;
-		cin >> input;
+		bool divert = read(CmdRestriction::BATTLE, input);
 
 		toLowerCase(input);
 
@@ -954,6 +972,40 @@ bool System::checkAlwaysDebugCommands(const string& command) {
 		return true;
 	}
 	return false;
+}
+
+bool System::read(CmdRestriction restriction, int& into) {
+	bool retVal = false;
+
+	string temp;
+	cin >> temp;
+
+	retVal = checkCommands(restriction, temp);
+
+	into = atoi(temp.c_str());
+
+	return retVal;
+}
+
+bool System::read(CmdRestriction restriction, string& into) {
+	bool retVal = false;
+
+	cin >> into;
+	
+	retVal = checkCommands(restriction, into);
+
+	return retVal;
+}
+
+bool System::checkCommands(CmdRestriction restriction, string& toCheck) {
+	bool retVal = false;
+	if (restriction == CmdRestriction::ALWAYS)
+		retVal = checkAlwaysCommands(toCheck);
+	else if (restriction == CmdRestriction::OVERWORLD)
+		retVal = (checkAlwaysCommands(toCheck) || checkOverworldCommands(toCheck));
+	else if (restriction == CmdRestriction::BATTLE)
+		retVal = (checkAlwaysCommands(toCheck) || checkBattleCommands(toCheck));
+	return retVal;
 }
 
 #endif
