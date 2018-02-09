@@ -4,14 +4,12 @@ Application::Application() {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;
-	m_Console = nullptr;
 }
 
 Application::~Application() {
 	delete m_Window;
 	delete m_Settings;
 	delete m_Camera;
-	delete m_Console;
 }
 
 int Application::run() {
@@ -25,6 +23,8 @@ int Application::run() {
 	while (m_Window->m_RenderWindow.isOpen()) {
 		// Progress clock forward once per frame
 		m_Clock.tick();
+
+		m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())));
 
 		// Process any events that have occurred
 		while (m_Window->m_RenderWindow.pollEvent(e)) {
@@ -44,7 +44,6 @@ int Application::run() {
 
 		// Present graphics
 		m_Window->m_RenderWindow.clear(sf::Color::Black);
-		m_Window->m_RenderWindow.draw(*m_Console);
 		m_Window->m_RenderWindow.display();
 	}
 
@@ -60,8 +59,6 @@ bool Application::init() {
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
 
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
-
-	m_Console = new Console();
 
 	return true;
 }

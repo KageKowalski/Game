@@ -7,7 +7,6 @@
 #include "Settings.h"
 #include "Camera.h"
 #include "Chrono.h"
-#include "Console.h"
 
 class Application {
 
@@ -37,9 +36,6 @@ private:
 
 	// Viewable area
 	Camera* m_Camera;
-
-	// Content of physical window
-	Console* m_Console;
 
 	// High-performance clock
 	Chrono m_Clock;
