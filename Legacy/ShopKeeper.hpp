@@ -1,4 +1,3 @@
-
 #ifndef ShopKeeper_h
 #define ShopKeeper_h
 
