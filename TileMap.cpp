@@ -53,11 +53,11 @@ TileMap::~TileMap()
     delete[] _map;
 }
 
-void TileMap::vertexFill(int i, int j) {
+void TileMap::vertexFill(int y, int x) {
 	// Cache ID, y position, and x position
-	int tileID = _map[i][j].getID();
-	float i = _map[i][j].getPosition().x;
-	float j = _map[i][j].getPosition().y;
+	int tileID = _map[y][x].getID();
+	float i = _map[y][x].getPosition().x;
+	float j = _map[y][x].getPosition().y;
 
 	// Calculate position of tile graphic in tileset in tile units
 	int tilePosX = tileID % (int)(_tileset.getSize().x / 16);

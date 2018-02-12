@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "Camera.h"
 #include "Chrono.h"
+#include "TextSequence.h"
 
 class Application {
 

@@ -32,7 +32,7 @@ public:
     virtual ~TileMap();
 
 private:
-	void vertexFill(int i, int j);
+	void vertexFill(int y, int x);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     
 };

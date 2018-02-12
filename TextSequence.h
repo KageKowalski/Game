@@ -26,13 +26,16 @@ public:
 	~TextSequence();
 
 	// Appends another instance of text to the end of the cutscene
-	void appendInstance(const Instance& instance);
+	void appendInstance(const sf::Text& text, sf::Time characterDelay);
 
 	// Updates the sequence
 	void update(sf::Time deltaTime);
 
 	// Draws the current state of the sequence
 	void draw(sf::RenderWindow& window);
+
+	// Mutators
+	void setInstanceDelay(sf::Time instanceDelay);
 
 private:
 
@@ -42,7 +45,7 @@ private:
 	// Delay between text outputs
 	sf::Time m_InstanceDelay;
 
-	// Current instance to render in vector
+	// Current instance to render
 	size_t m_Index;
 
 	// Time elapsed since last measuring milestone (character delay, instance delay, etc)

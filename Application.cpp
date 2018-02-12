@@ -19,6 +19,25 @@ int Application::run() {
 	// Stores event triggers
 	sf::Event e;
 
+	TextSequence ts(sf::seconds(2));
+	sf::Font font;
+	if(!font.loadFromFile("sansation.ttf")) return EXIT_FAILURE;
+	sf::Text t1(L"1. This is a line of text that is being drawn onto the screen.", font);
+	t1.setFillColor(sf::Color::Red);
+	sf::Text t2(L"2. This is a line of text that is being drawn onto the screen.", font, 64);
+	t2.setFillColor(sf::Color::Red);
+	sf::Text t3(L"3. This is a line of text that is being drawn onto the screen.", font, 64);
+	t3.setFillColor(sf::Color::Red);
+	sf::Text t4(L"4. This is a line of text that is being drawn onto the screen.", font, 64);
+	t4.setFillColor(sf::Color::Red);
+	sf::Text t5(L"5. This is a line of text that is being drawn onto the screen.", font, 64);
+	t5.setFillColor(sf::Color::Red);
+	ts.appendInstance(t1, sf::seconds(0.1f));
+	ts.appendInstance(t2, sf::seconds(0.1f));
+	ts.appendInstance(t3, sf::seconds(0.1f));
+	ts.appendInstance(t4, sf::seconds(0.1f));
+	ts.appendInstance(t5, sf::seconds(0.1f));
+
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
 		// Progress clock forward once per frame
@@ -42,8 +61,11 @@ int Application::run() {
 		// Process input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F11)) toggleFullscreen();
 
+		ts.update(m_Clock.getDeltaTime());
+
 		// Present graphics
 		m_Window->m_RenderWindow.clear(sf::Color::Black);
+		ts.draw(m_Window->m_RenderWindow);
 		m_Window->m_RenderWindow.display();
 	}
 
