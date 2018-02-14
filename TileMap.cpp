@@ -23,7 +23,7 @@ TileMap::TileMap(const sf::Vector2f& scale)
 	setScale(scale);
 }
 
-bool TileMap::build(int** intMap, int width, int height, std::string tilesetFileName)
+bool TileMap::build(int* intMap, int width, int height, std::string tilesetFileName)
 {
     if(!_tileset.loadFromFile(tilesetFileName)) return false;
     _width = width;
@@ -35,8 +35,7 @@ bool TileMap::build(int** intMap, int width, int height, std::string tilesetFile
     {
         for(int j = 0; j < _width; j++)
         {
-            _map[i][j] = Tile(intMap[i][j],
-				sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+            _map[i][j] = Tile(intMap[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
 
 			vertexFill(i, j);
         }

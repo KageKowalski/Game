@@ -11,6 +11,7 @@ class TileMap : public sf::Transformable, public sf::Drawable
     {
     private:
         int tileID;
+    
     public:
         Tile();
         Tile(int ID, const sf::Vector2f& position);
@@ -28,7 +29,7 @@ private:
     
 public:
     TileMap(const sf::Vector2f& scale);
-    bool build(int** intMap, int width, int height, std::string tilesetFileName);
+    bool build(int* intMap, int width, int height, std::string tilesetFileName);
     virtual ~TileMap();
 
 private:

@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Chrono.h"
 #include "TextSequence.h"
+#include "TileMapBank.h"
 
 class Application {
 
