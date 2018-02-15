@@ -4,29 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "Instruction.h"
+
 class TextSequence {
-
-	// Instance of text that rolls in the cutscene along with its properties
-	struct Instance {
-
-		// String to display
-		sf::Text m_Text;
-
-		// Delay between individual character outputs
-		sf::Time m_CharacterDelay;
-
-		Instance(const sf::Text& text, sf::Time characterDelay);
-
-	};
 
 public:
 
 	TextSequence();
-	TextSequence(sf::Time instanceDelay);
 	~TextSequence();
-
-	// Appends another instance of text to the end of the cutscene
-	void appendInstance(const sf::Text& text, sf::Time characterDelay);
 
 	// Updates the sequence
 	void update(sf::Time deltaTime);
@@ -34,31 +19,25 @@ public:
 	// Draws the current state of the sequence
 	void draw(sf::RenderWindow& window);
 
-	// Mutators
-	void setInstanceDelay(sf::Time instanceDelay);
+	// Appends an instruction to the sequence
+	void appendInstruction(Instruction instruction);
 
 private:
 
-	// Instances of text will roll throughout the cutscene
-	std::vector<Instance> m_Instances;
+	// Text that will scroll throughout the cutscene
+	std::vector<sf::Text> m_TextBank;
 
-	// Delay between text outputs
-	sf::Time m_InstanceDelay;
-
-	// Current instance to render
+	// Current text to render
 	size_t m_Index;
 
-	// Time elapsed since last measuring milestone (character delay, instance delay, etc)
+	// Time elapsed since last measuring milestone
 	sf::Time m_ElapsedTime;
 
 	// Current text being built and drawn onto the screen
 	sf::Text m_CurrOutput;
 
-	// Waiting for the next instance to begin rendering
-	bool m_WaitInstance;
-
-	// Waiting for the next character to begin rendering within current instance
-	bool m_WaitCharacter;
+	// Sequence instructions
+	std::vector<Instruction> m_Instructions;
 
 };
 

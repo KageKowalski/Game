@@ -28,6 +28,10 @@ bool TileMap::build(int* intMap, int width, int height, std::string tilesetFileN
     if(!_tileset.loadFromFile(tilesetFileName)) return false;
     _width = width;
     _height = height;
+
+	// Vertex array consists of (_width * _height * 4) verticies
+	m_Verticies.resize(_width * _height * 4);
+
     _map = new Tile*[_height];
     for(int i = 0; i<_height;i++) _map[i] = new Tile[_width];
     

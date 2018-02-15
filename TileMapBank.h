@@ -7,17 +7,14 @@
 class TileMapBank
 {
 private:
-    std::vector<TileMap> _mapBank;
+    std::vector<TileMap*> _mapBank;
     
 public:
     TileMapBank();
     
     bool init();
     
-    TileMap& getMap()
-    {
-        return _mapBank[0];
-    }
+	TileMap& getMap();
     
 };
 
