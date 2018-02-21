@@ -49,8 +49,8 @@ int Application::run() {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Camera->setVelocity(sf::Vector2f( 0,-300));
         if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)))
             m_Camera->setVelocity(sf::Vector2f( 0,0));
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) m_Camera->zoom(1.01f);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O)) m_Camera->zoom(.99f);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O)) m_Camera->zoom(1.01f);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) m_Camera->zoom(.99f);
         
         //Update Camera
         m_Camera->update(m_Clock.getDeltaTime());

@@ -4,14 +4,16 @@
     Tile Functions/Constructors
  ********************************/
 
-TileMap::Tile::Tile() : tileID(-1) {}
-TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : tileID(ID) {
+TileMap::Tile::Tile() : tileID(-1), styles(-1) {}
+TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : tileID(ID)
+{
 	setPosition(postition);
+    
 }
 
-int TileMap::Tile::getID()       { return tileID; }
-void TileMap::Tile::setID(int ID){ tileID = ID;   }
-
+int  TileMap::Tile::getID()         { return tileID; }
+void TileMap::Tile::setID(int ID)   { tileID = ID;   }
+int  TileMap::Tile::getStyleAmount(){ return styles; }
 
 /********************************
   TileMap Functions/Constructors
@@ -57,14 +59,15 @@ TileMap::~TileMap()
 }
 
 void TileMap::vertexFill(int y, int x) {
-	// Cache ID, y position, and x position
+	// Sets up random tile, Cache ID, y position, and x position
+    int rTex = tileSelect.nextInt(_map[y][x].getStyleAmount() - 1);
 	int tileID = _map[y][x].getID();
 	float i = _map[y][x].getPosition().x;
 	float j = _map[y][x].getPosition().y;
 
 	// Calculate position of tile graphic in tileset in tile units
 	int tilePosX = tileID % (int)(_tileset.getSize().x / 16);
-	int tilePosY = tileID % (int)(_tileset.getSize().y / 16);
+    int tilePosY = 0;
 	m_Verticies[(size_t)((i * _width + j) * 4)];
 
 	// Get a pointer to tile's first top-left corner in vertex array
@@ -72,22 +75,22 @@ void TileMap::vertexFill(int y, int x) {
 
 	// Define top-left corner
 	quad->position = sf::Vector2f(j * 16.0f, i * 16.0f);
-	quad->texCoords = sf::Vector2f(tilePosX * 16.0f, tilePosY * 16.0f);
+	quad->texCoords = sf::Vector2f(tilePosX * 16.0f, (tilePosY + rTex) * 16.0f);
 
 	// Define top-right corner
 	quad++;
 	quad->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-	quad->texCoords = sf::Vector2f((tilePosX + 1) * 16.0f, tilePosY * 16.0f);
+	quad->texCoords = sf::Vector2f((tilePosX + 1) * 16.0f, (tilePosY + rTex)* 16.0f);
 
 	// Define bottom-right corner
 	quad++;
 	quad->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-	quad->texCoords = sf::Vector2f((tilePosX + 1) * 16.0f, (tilePosY + 1) * 16.0f);
+	quad->texCoords = sf::Vector2f((tilePosX + 1) * 16.0f, (tilePosY + 1 + rTex) * 16.0f);
 
 	// Define bottom-left corner
 	quad++;
 	quad->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-	quad->texCoords = sf::Vector2f(tilePosX * 16.0f, (tilePosY + 1) * 16.0f);
+	quad->texCoords = sf::Vector2f(tilePosX * 16.0f, (tilePosY + 1 + rTex) * 16.0f);
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {

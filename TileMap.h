@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "Random.h"
 
 class TileMap : public sf::Transformable, public sf::Drawable
 {
@@ -11,6 +12,7 @@ class TileMap : public sf::Transformable, public sf::Drawable
     {
     private:
         int tileID;
+        int styles;
     
     public:
         Tile();
@@ -18,11 +20,13 @@ class TileMap : public sf::Transformable, public sf::Drawable
         
         int  getID();
         void setID(int ID);
+        int  getStyleAmount();
     };
     
 private:
     Tile** _map;
     sf::Texture _tileset;
+    Random tileSelect;
     int _width;
     int _height;
 	sf::VertexArray m_Verticies;
