@@ -1,3 +1,5 @@
+// Klayton Kowalski
+
 #include "Camera.h"
 
 Camera::Camera(const sf::Vector2f& size) {
@@ -15,8 +17,7 @@ void Camera::setVelocity(const sf::Vector2f& velocity) {
     m_Velocity = velocity;
 }
 
-void Camera::zoom(float factor)
-{
+void Camera::zoom(float factor) {
     m_View.zoom(factor);
 }
 
@@ -24,12 +25,8 @@ const sf::View& Camera::getView() const {
 	return m_View;
 }
 
-void Camera::update(sf::Time deltaTime)
-{
-    sf::Vector2f offset;
-    offset.x = m_Velocity.x * deltaTime.asSeconds();
-    offset.y = m_Velocity.y * deltaTime.asSeconds();
-    m_View.move(offset);
+void Camera::update(sf::Time deltaTime) {
+    m_View.move(m_Velocity.x * deltaTime.asSeconds(), m_Velocity.y * deltaTime.asSeconds());
 }
 
 

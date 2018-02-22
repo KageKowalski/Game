@@ -60,7 +60,7 @@ TileMap::~TileMap()
 
 void TileMap::vertexFill(int y, int x) {
 	// Sets up random tile, Cache ID, y position, and x position
-    int rTex = tileSelect.nextInt(_map[y][x].getStyleAmount() - 1);
+	int rTex = 3;//tileSelect.nextInt(_map[y][x].getStyleAmount() - 1);
 	int tileID = _map[y][x].getID();
 	float i = _map[y][x].getPosition().x;
 	float j = _map[y][x].getPosition().y;

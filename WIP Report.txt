@@ -1,10 +1,2 @@
 ----- WIP REPORT -----
 
--- Inside this txt: eventual changes, clarifications, other notes, etc. --
-
-* Window class has a function called construct(). Inside of construct(), there is the line:
-m_RenderWindow.setFramerateLimit(60). This sets the newly constructed window's maximum framerate
-clamp to 60 FPS. Josh said this isn't always optimal based on hardware, so eventually this
-function will need to be altered for a smarter FPS cap based on the particular hardware being used.
-
-* 

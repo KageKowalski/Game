@@ -2,6 +2,11 @@
 
 TileMapBank::TileMapBank() {}
 
+TileMapBank::~TileMapBank() {
+	for (size_t i = 0; i < _mapBank.size(); i++)
+		delete[] _mapBank.at(i);
+}
+
 bool TileMapBank::init()
 {
 	TileMap* testMap = new TileMap(sf::Vector2f(10.0f, 10.0f));

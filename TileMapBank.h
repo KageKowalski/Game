@@ -11,6 +11,7 @@ private:
     
 public:
     TileMapBank();
+	~TileMapBank();
     
     bool init();
     
