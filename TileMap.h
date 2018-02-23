@@ -1,3 +1,4 @@
+//Josh Seelye
 #ifndef TileMap_hpp
 #define TileMap_hpp
 
@@ -12,7 +13,7 @@ class TileMap : public sf::Transformable, public sf::Drawable
     {
     private:
         int tileID;
-        int styles;
+        int steps;
     
     public:
         Tile();
@@ -20,20 +21,21 @@ class TileMap : public sf::Transformable, public sf::Drawable
         
         int  getID();
         void setID(int ID);
-        int  getStyleAmount();
+        int  getStepAmount();
     };
     
 private:
-    Tile** _map;
+    Tile** _ground;
+    Tile** _layerOne;
+    Tile** _layerTwo;
     sf::Texture _tileset;
-    Random tileSelect;
     int _width;
     int _height;
-	sf::VertexArray m_Verticies;
+	sf::VertexArray m_groundVerticies;
     
 public:
     TileMap(const sf::Vector2f& scale);
-    bool build(int* intMap, int width, int height, std::string tilesetFileName);
+    bool build(int* ground, int* layerOne, int* layerTwo, int width, int height, std::string tilesetFileName);
     virtual ~TileMap();
 
 private:

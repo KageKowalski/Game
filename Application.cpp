@@ -57,7 +57,7 @@ int Application::run() {
         m_Window->m_RenderWindow.setView(m_Camera->getView());
 
 		// Present graphics
-		m_Window->m_RenderWindow.clear(sf::Color::Black);
+		m_Window->m_RenderWindow.clear(sf::Color::White);
         m_Window->m_RenderWindow.draw(maps.getMap());
 		m_Window->m_RenderWindow.display();
 	}
@@ -86,5 +86,5 @@ void Application::toggleFullscreen() {
 
 	m_Camera->resize(sf::Vector2f(static_cast<float>(mode.width), static_cast<float>(mode.height)));
 
-	m_Window->toggleFullscreen(m_Settings, m_Camera->getView());
+	m_Window->toggleFullscreen(m_Settings->getCurrVideoMode(),m_Camera->getView(),m_Settings->isFullscreen());
 }

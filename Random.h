@@ -1,10 +1,4 @@
-/***************************************************************
- <Josh Seelye>
- <Random.h>
- <Project1>
- <Describe, in general, the code contained.>
- ***************************************************************/
-
+//Josh Seelye
 #ifndef _RANDOM_GUARD
 #define _RANDOM_GUARD
 

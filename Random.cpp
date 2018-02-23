@@ -1,10 +1,4 @@
-/***************************************************************
- <Josh Seelye>
- <Random.cpp>
- <Project 1>
- <Class contains code to organize the built in random generator>
- ***************************************************************/
-
+//Josh Seelye
 #include <stdio.h>
 #include "Random.h"
 
