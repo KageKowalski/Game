@@ -21,6 +21,14 @@ void Camera::zoom(float factor) {
     m_View.zoom(factor);
 }
 
+void Camera::rotate(float angle) {
+	m_View.rotate(angle);
+}
+
+void Camera::resetOrientation() {
+	m_View.setRotation(0.0f);
+}
+
 const sf::View& Camera::getView() const {
 	return m_View;
 }

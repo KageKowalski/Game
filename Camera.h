@@ -29,6 +29,15 @@ public:
 	// This function works relative to the current viewport size.
 	void zoom(float factor);
 
+	// Rotates the viewport by the specified angle, measured in degrees.
+	// Does not change the controls of the game, so a wonky orientation can lead to
+	// confusing or unintuitive controls.
+	// This function works relative to the current viewport orientation.
+	void rotate(float angle);
+
+	// Resets the viewport orientation to zero degrees.
+	void resetOrientation();
+
 	// Updates the camera relative to change in time since last frame.
 	// Extract deltaTime from Clock.
 	void update(sf::Time deltaTime);
