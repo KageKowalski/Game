@@ -13,16 +13,17 @@ void Camera::resize(const sf::Vector2f& size) {
 	m_View.setSize(size);
 }
 
-void Camera::setVelocity(const sf::Vector2f& velocity) {
-    m_Velocity = velocity;
+void Camera::zoom(float factor, sf::Time deltaTime) {
+	if (factor < 0) m_View.zoom(1.0f - (-factor * deltaTime.asSeconds()));
+	else m_View.zoom(1.0f + factor * deltaTime.asSeconds());
 }
 
-void Camera::zoom(float factor) {
-    m_View.zoom(factor);
+void Camera::rotate(float angle, sf::Time deltaTime) {
+	m_View.rotate(angle * deltaTime.asSeconds());
 }
 
-void Camera::rotate(float angle) {
-	m_View.rotate(angle);
+void Camera::pan(const sf::Vector2f& velocity, sf::Time deltaTime) {
+	m_View.move(velocity * deltaTime.asSeconds());
 }
 
 void Camera::resetOrientation() {
@@ -32,9 +33,3 @@ void Camera::resetOrientation() {
 const sf::View& Camera::getView() const {
 	return m_View;
 }
-
-void Camera::update(sf::Time deltaTime) {
-    m_View.move(m_Velocity.x * deltaTime.asSeconds(), m_Velocity.y * deltaTime.asSeconds());
-}
-
-

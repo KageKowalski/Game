@@ -19,12 +19,14 @@ int Application::run() {
 
 	// Stores event triggers
 	sf::Event e;
-    TileMapBank maps;
-    maps.init();
+
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
 		// Progress clock forward once per frame
 		m_Clock.tick();
+
+		// Cache change in time since last frame
+		sf::Time deltaTime = m_Clock.getDeltaTime();
 
 		m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())));
 
@@ -35,6 +37,8 @@ int Application::run() {
 				m_Window->m_RenderWindow.close();
 				break;
 			case sf::Event::EventType::Resized:
+				sf::VideoMode updatedVideoMode(e.size.width, e.size.height);
+				m_Settings->setCurrentVideoMode(updatedVideoMode);
 				m_Camera->resize(sf::Vector2f(static_cast<float>(e.size.width), static_cast<float>(e.size.height)));
 				m_Window->resize(m_Camera->getView());
 				break;
@@ -43,26 +47,20 @@ int Application::run() {
 
 		// Process input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F11)) toggleFullscreen();
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Camera->setVelocity(sf::Vector2f(-500, 0));
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Camera->setVelocity(sf::Vector2f( 0, 500));
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Camera->setVelocity(sf::Vector2f( 500, 0));
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Camera->setVelocity(sf::Vector2f( 0,-500));
-        if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)))
-            m_Camera->setVelocity(sf::Vector2f( 0,0));
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O)) m_Camera->zoom(1.05f);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) m_Camera->zoom(0.95f);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) m_Camera->rotate(1);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U)) m_Camera->rotate(-1);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Camera->pan(sf::Vector2f(500.0f, 0.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Camera->pan(sf::Vector2f(0.0f, -500.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O)) m_Camera->zoom(3.0f, deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) m_Camera->zoom(-3.0f, deltaTime);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) m_Camera->rotate(120.0f, deltaTime);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U)) m_Camera->rotate(-120.0f, deltaTime);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Y)) m_Camera->resetOrientation();
-        
-        // Update mechanics
-        m_Camera->update(m_Clock.getDeltaTime());
-        m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		// Present graphics
-		m_Window->m_RenderWindow.clear(sf::Color::White);
-        m_Window->m_RenderWindow.draw(maps.getMap());
-		m_Window->m_RenderWindow.display();
+		m_Window->m_RenderWindow.setView(m_Camera->getView());
+
+		// Draw graphics
+		draw();
 	}
 
 	return EXIT_SUCCESS;
@@ -78,7 +76,15 @@ bool Application::init() {
 
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
 
+	if (!m_TileMapBank.init()) return false;
+
 	return true;
+}
+
+void Application::draw() {
+	m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
+	m_Window->m_RenderWindow.draw(m_TileMapBank.getMap());
+	m_Window->m_RenderWindow.display();
 }
 
 void Application::toggleFullscreen() {

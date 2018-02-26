@@ -27,23 +27,21 @@ public:
 
 	// Dialates or magnifies the viewport, effectively zooming.
 	// This function works relative to the current viewport size.
-	void zoom(float factor);
+	// Extract deltaTime from Clock.
+	void zoom(float factor, sf::Time deltaTime);
 
 	// Rotates the viewport by the specified angle, measured in degrees.
-	// Does not change the controls of the game, so a wonky orientation can lead to
-	// confusing or unintuitive controls.
+	// WARNING: A wonky orientation can lead to confusing or unintuitive controls.
 	// This function works relative to the current viewport orientation.
-	void rotate(float angle);
-
-	// Resets the viewport orientation to zero degrees.
-	void resetOrientation();
-
-	// Updates the camera relative to change in time since last frame.
 	// Extract deltaTime from Clock.
-	void update(sf::Time deltaTime);
-    
-    // Sets the velocity of the camera.
-    void setVelocity(const sf::Vector2f& velocity);
+	void rotate(float angle, sf::Time deltaTime);
+
+	// Pans the camera in the cardinal directions.
+	// Extract deltaTime from Clock.
+	void pan(const sf::Vector2f& velocity, sf::Time deltaTime);
+
+	// Instantly resets the viewport orientation to zero degrees.
+	void resetOrientation();
 
 	// Retrieves the viewport.
 	const sf::View& getView() const;
@@ -52,9 +50,6 @@ private:
 
 	// The actual camera itself. Dictates the viewport.
 	sf::View m_View;
-    
-    // Camera's velocity. Used when moving the camera independently of the player.
-    sf::Vector2f m_Velocity;
 
 };
 

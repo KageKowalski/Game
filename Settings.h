@@ -12,6 +12,7 @@ public:
 
 	// Mutators
 	void toggleFullscreen();
+	void setCurrentVideoMode(const sf::VideoMode& mode);
 
 	// Accessors
 	const sf::VideoMode& getCurrVideoMode() const;

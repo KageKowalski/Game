@@ -31,7 +31,6 @@ bool TileMap::build(int* ground, int* layerOne, int* layerTwo, int width, int he
     _width = width;
     _height = height;
 
-	// Vertex array consists of (_width * _height * 4 * 3) verticies
 	m_groundVerticies.resize(_width * _height * 4 * 3);
 
     _ground   = new Tile*[_height];
@@ -83,7 +82,7 @@ void TileMap::vertexFill(int y, int x)
     int groundTilePosY = (groundTileID / _tileset.getSize().x) * 16;
 	m_groundVerticies[(size_t)((i * _width + j) * 4 * 3)];
 
-	// Get a pointer to tile's first top-left corner in vertex array
+	// Get a pointer to tile's top-left corner in vertex array
 	sf::Vertex* quad = &m_groundVerticies[(size_t)((i * _width + j) * 4 * 3)];
 
     if(groundTileID != -1)

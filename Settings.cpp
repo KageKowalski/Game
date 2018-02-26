@@ -18,6 +18,10 @@ void Settings::toggleFullscreen() {
 	else m_CurrVideoMode = sf::VideoMode(800, 600);
 }
 
+void Settings::setCurrentVideoMode(const sf::VideoMode& mode) {
+	m_CurrVideoMode = mode;
+}
+
 const sf::VideoMode& Settings::getCurrVideoMode() const {
 	return m_CurrVideoMode;
 }

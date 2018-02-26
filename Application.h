@@ -7,7 +7,6 @@
 #include "Settings.h"
 #include "Camera.h"
 #include "Chrono.h"
-#include "TextSequence.h"
 #include "TileMapBank.h"
 
 class Application {
@@ -25,6 +24,9 @@ private:
 	// Init application
 	bool init();
 
+	// Draw graphics
+	void draw();
+
 	// Toggle fullscreen mode
 	void toggleFullscreen();
 
@@ -41,6 +43,9 @@ private:
 
 	// High-performance clock
 	Chrono m_Clock;
+
+	// All preloaded tilemaps
+	TileMapBank m_TileMapBank;
 
 };
 
