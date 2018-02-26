@@ -1,25 +1,30 @@
-//Josh Seelye
-#ifndef Entity_hpp
-#define Entity_hpp
+// Klayton Kowalski
 
-#include <string>
+#ifndef ENTITY_H
+#define ENTITY_H
+
 #include <SFML/Graphics.hpp>
 
-class Entity
-{
-protected:
-    std::string  _name;
-    bool     _movement;
-    sf::Sprite _sprite;
-    
+class Entity {
+
 public:
-    Entity() = delete;
-    Entity(std::string name);
-    
-    bool getMovement();
-    
-    std::string getName();
-    void setName(std::string name);
+
+	Entity(const sf::Vector2f& position);
+	~Entity();
+
+	unsigned int getTotalEntities() const;
+	const sf::Vector2f& getPosition() const;
+
+protected:
+
+	sf::Vector2f m_Position;
+
+private:
+
+	static unsigned int m_TotalEntities;
+
 };
+
+unsigned int Entity::m_TotalEntities = 0;
 
 #endif

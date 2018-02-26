@@ -1,23 +1,20 @@
-//Josh Seelye
+// Klayton Kowalski
+
 #include "Entity.h"
 
-Entity::Entity(std::string name)
-{
-    _name = name;
+Entity::Entity(const sf::Vector2f& position) {
+	m_TotalEntities++;
+	m_Position = position;
 }
 
-bool Entity::getMovement()
-{
-    return _movement;
+Entity::~Entity() {
+	m_TotalEntities--;
 }
 
-std::string Entity::getName()
-{
-    return _name;
+unsigned int Entity::getTotalEntities() const {
+	return m_TotalEntities;
 }
 
-
-void Entity::setName(std::string name)
-{
-    _name = name;
+const sf::Vector2f& Entity::getPosition() const {
+	return m_Position;
 }

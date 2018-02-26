@@ -25,6 +25,10 @@ public:
 	// Retrieves the time step.
 	sf::Time getTimeStep() const;
 
+	// Collects change in time since last frame and adds it to elapsed time.
+	// Once elapsed time reaches the time step, the animation step moves forward by one frame.
+	void update(sf::Time deltaTime);
+
 protected:
 
 	// Time step of the animation.
