@@ -2,8 +2,9 @@
 
 #include "Animation.h"
 
-Animation::Animation(unsigned int initAnimStep, unsigned int frameWidth, unsigned int frameHeight) {
+Animation::Animation(unsigned int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth, unsigned int frameHeight) {
 	m_CurrAnimStep = initAnimStep;
+	m_TotalAnimSteps = totalAnimSteps;
 	m_FrameWidth = frameWidth;
 	m_FrameHeight = frameHeight;
 }
