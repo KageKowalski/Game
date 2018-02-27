@@ -59,7 +59,7 @@ int Application::run() {
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		// Draw graphics
+		// Draw/ update graphics
 		draw();
 	}
 
@@ -83,6 +83,8 @@ bool Application::init() {
 
 void Application::draw() {
 	m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
+    m_TileMapBank.getMap().updateMap(m_Clock.getDeltaTime());
+	m_Window->m_RenderWindow.draw(m_TileMapBank.getMap());
 	m_Window->m_RenderWindow.display();
 }
 
