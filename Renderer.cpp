@@ -60,20 +60,14 @@ void Renderer::updateTransform(const sf::Transform& transform, int z) {
 		m_BackgroundTransform = transform;
 		break;
 	case 1:
-		m_GroundTransform = transform;
-		break;
 	case 2:
-		m_Z2Transform = transform;
-		break;
 	case 3:
-		m_Z3Transform = transform;
+	case 6:
+		m_TilesTransform = transform;
 		break;
 	case 4:
 	case 5:
 		m_SpritesTransform = transform;
-		break;
-	case 6:
-		m_Z6Transform = transform;
 		break;
 	case 7:
 		m_GUITransform = transform;
@@ -112,20 +106,12 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 		target.draw(m_Background, backgroundStates);
 	}
 	if (m_Tileset != nullptr) {
-		sf::RenderStates groundStates;
-		groundStates.transform *= m_GroundTransform;
-		groundStates.texture = m_Tileset;
-		target.draw(m_Ground, groundStates);
-
-		sf::RenderStates Z2States;
-		Z2States.transform *= m_Z2Transform;
-		Z2States.texture = m_Tileset;
-		target.draw(m_Z2, Z2States);
-
-		sf::RenderStates Z3States;
-		Z3States.transform *= m_Z3Transform;
-		Z3States.texture = m_Tileset;
-		target.draw(m_Z3, Z3States);
+		sf::RenderStates tilesStates;
+		tilesStates.transform *= m_TilesTransform;
+		tilesStates.texture = m_Tileset;
+		target.draw(m_Ground, tilesStates);
+		target.draw(m_Z2, tilesStates);
+		target.draw(m_Z3, tilesStates);
 	}
 	if (m_UniversalSpriteSheet != nullptr || m_LocalSpriteSheet != nullptr) {
 		sf::RenderStates spritesStates;
@@ -137,10 +123,10 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 		target.draw(m_LocalSprites, spritesStates);
 	}
 	if (m_Tileset != nullptr) {
-		sf::RenderStates Z6States;
-		Z6States.transform *= m_Z6Transform;
-		Z6States.texture = m_Tileset;
-		target.draw(m_Z6, Z6States);
+		sf::RenderStates tilesStates;
+		tilesStates.transform *= m_TilesTransform;
+		tilesStates.texture = m_Tileset;
+		target.draw(m_Z6, tilesStates);
 	}
 	if (m_GUITexture != nullptr) {
 		sf::RenderStates GUIStates;
