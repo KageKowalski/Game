@@ -29,14 +29,12 @@ private:
 	const sf::Texture* m_BackgroundTexture;
 
 	sf::VertexArray m_Ground;
-	sf::Transform m_GroundTransform;
+	sf::Transform m_TilesTransform;
 	const sf::Texture* m_Tileset;
 
 	sf::VertexArray m_Z2;
-	sf::Transform m_Z2Transform;
 
 	sf::VertexArray m_Z3;
-	sf::Transform m_Z3Transform;
 
 	sf::VertexArray m_UniversalSprites;
 	sf::Transform m_SpritesTransform;
@@ -46,7 +44,6 @@ private:
 	const sf::Texture* m_LocalSpriteSheet;
 
 	sf::VertexArray m_Z6;
-	sf::Transform m_Z6Transform;
 
 	sf::VertexArray m_GUI;
 	sf::Transform m_GUITransform;
