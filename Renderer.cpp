@@ -81,7 +81,7 @@ void Renderer::updateTransform(const sf::Transform& transform, int z) {
 	}
 }
 
-void Renderer::updateTexture(sf::Texture& texture, int z) {
+void Renderer::updateTexture(const sf::Texture& texture, int z) {
 	switch (z) {
 	case 0:
 		m_BackgroundTexture = &texture;

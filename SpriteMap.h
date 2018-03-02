@@ -18,6 +18,12 @@ public:
 	bool build(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
 		const std::vector<Character*>& characters);
 
+	const sf::Texture& getUniversalSpriteSheet() const;
+	const sf::Texture& getLocalSpriteSheet() const;
+
+	const sf::VertexArray& getUniversalSpriteVerticies() const;
+	const sf::VertexArray& getLocalSpriteVerticies() const;
+
 private:
 
 	void vertexFill(const Character* const character, size_t offset);

@@ -4,7 +4,7 @@
 
 Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
 	unsigned int frameHeight)
-	: Entity(position), Animation(initAnimStep, totalAnimSteps, frameWidth, m_FrameHeight)
+	: Entity(position), Animation(initAnimStep, totalAnimSteps, frameWidth, frameHeight)
 {}
 
 Character::~Character() {}

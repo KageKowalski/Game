@@ -38,6 +38,22 @@ bool SpriteMap::build(const std::string& universalSpriteSheetFileName, const std
 	return true;
 }
 
+const sf::Texture& SpriteMap::getUniversalSpriteSheet() const {
+	return m_UniversalSpriteSheet;
+}
+
+const sf::Texture& SpriteMap::getLocalSpriteSheet() const {
+	return m_LocalSpriteSheet;
+}
+
+const sf::VertexArray& SpriteMap::getUniversalSpriteVerticies() const {
+	return m_UniversalSpriteVerticies;
+}
+
+const sf::VertexArray& SpriteMap::getLocalSpriteVerticies() const {
+	return m_LocalSpriteVerticies;
+}
+
 void SpriteMap::vertexFill(const Character* const character, size_t offset) {
 	float i = character->getPosition().y;
 	float j = character->getPosition().x;

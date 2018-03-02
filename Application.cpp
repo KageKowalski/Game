@@ -19,6 +19,12 @@ int Application::run() {
 	// Stores event triggers
 	sf::Event e;
 
+	SpriteMap spritemap(sf::Vector2f(5.0f, 5.0f));
+	Character* larvitar = new Player(sf::Vector2f(0.0f, 0.0f), 0, 1, 32, 32, "Larvitar the Bodybuilder");
+	std::vector<Character*> characters;
+	characters.push_back(larvitar);
+	spritemap.build("lar.png", "lar.png", characters);
+
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
 		// Progress clock forward once per frame
@@ -60,6 +66,10 @@ int Application::run() {
 
 		// Update components
 		update();
+		m_Renderer.updateTexture(spritemap.getUniversalSpriteSheet(), 4);
+		m_Renderer.updateTexture(spritemap.getLocalSpriteSheet(), 5);
+		m_Renderer.updateVerticies(spritemap.getUniversalSpriteVerticies(), 4);
+		m_Renderer.updateVerticies(spritemap.getLocalSpriteVerticies(), 5);
 
 		// Draw graphics
 		draw();
