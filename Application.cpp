@@ -70,6 +70,7 @@ int Application::run() {
         
         background.startMusic();
         background.setMusic(m_TileMapBank.getMap().getMusic());
+        background.setVolume(100.0f);
         
         m_Renderer.updateTexture(m_TileMapBank.getMap().getTileSet(), 1);
         m_Renderer.updateVerticies(m_TileMapBank.getMap().getGroundVertices(), 1);

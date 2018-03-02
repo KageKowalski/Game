@@ -4,4 +4,8 @@
 
 #include <SFML/Audio.hpp>
 
+class Sound
+{
+    
+};
 #endif
