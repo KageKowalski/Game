@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "Random.h"
 #include "AutoAnimation.h"
 #include "TileSet.h"
 
@@ -17,6 +16,8 @@ class TileMap : public sf::Transformable, public sf::Drawable
         AutoAnimation animate;
         int tileID;
         int step;
+        
+        AutoAnimation getTileAnimation(int ID);
     
     public:
         Tile();
@@ -38,11 +39,13 @@ private:
     int _width;
     int _height;
 	sf::VertexArray _groundVerticies;
+    std::string _music;
     
 public:
-    TileMap(const sf::Vector2f& scale);
+    TileMap(const sf::Vector2f& scale, std::string music);
     bool build(int* ground, int* layerOne, int* layerTwo, int width, int height, std::string tilesetFileName);
     void updateMap(sf::Time);
+    std::string getMusic();
     virtual ~TileMap();
 
 private:
