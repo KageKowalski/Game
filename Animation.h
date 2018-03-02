@@ -24,6 +24,12 @@ public:
 	// Retrieves the total amount of animation steps that exist.
 	unsigned int getTotalAnimSteps() const;
 
+	// Retrieves the width of a single frame of the animation.
+	unsigned int getFrameWidth() const;
+
+	// Retrieves the height of a single frame of the animation.
+	unsigned int getFrameHeight() const;
+
 protected:
 
 	// Current animation step being rendered.

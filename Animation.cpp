@@ -22,3 +22,11 @@ unsigned int Animation::getCurrAnimStep() const {
 unsigned int Animation::getTotalAnimSteps() const {
 	return m_TotalAnimSteps;
 }
+
+unsigned int Animation::getFrameWidth() const {
+	return m_FrameWidth;
+}
+
+unsigned int Animation::getFrameHeight() const {
+	return m_FrameHeight;
+}

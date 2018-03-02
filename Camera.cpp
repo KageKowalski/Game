@@ -30,6 +30,10 @@ void Camera::resetOrientation() {
 	m_View.setRotation(0.0f);
 }
 
+const sf::FloatRect& Camera::getBounds() const {
+	return sf::FloatRect(m_View.getCenter() - m_View.getSize() / 2.0f, m_View.getSize());
+}
+
 const sf::View& Camera::getView() const {
 	return m_View;
 }

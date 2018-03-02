@@ -1,18 +1,36 @@
+// Klayton Kowalski
+
 #ifndef SPRITEMAP_H
 #define SPRITEMAP_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
-class SpriteMap : public sf::Drawable, public sf::Transformable {
+#include "Character.h"
+
+class SpriteMap : public sf::Transformable {
 
 public:
 
-	SpriteMap();
-	virtual ~SpriteMap();
+	SpriteMap(const sf::Vector2f& scale);
+	~SpriteMap();
+
+	bool build(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
+		const std::vector<Character*>& characters);
 
 private:
 
-	sf::VertexArray m_Verticies;
+	void vertexFill(const Character* const character, size_t offset);
+
+private:
+
+	sf::Texture m_UniversalSpriteSheet;
+	sf::Texture m_LocalSpriteSheet;
+
+	sf::VertexArray m_UniversalSpriteVerticies;
+	sf::VertexArray m_LocalSpriteVerticies;
+
+	std::vector<Character*> m_Characters;
 
 };
 

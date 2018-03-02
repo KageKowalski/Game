@@ -14,17 +14,17 @@ public:
 
 	unsigned int getTotalEntities() const;
 	const sf::Vector2f& getPosition() const;
+	const sf::Vector2f& getTextureCoords() const;
 
 protected:
 
 	sf::Vector2f m_Position;
+	sf::Vector2f m_TextureCoords;
 
 private:
 
 	static unsigned int m_TotalEntities;
 
 };
-
-unsigned int Entity::m_TotalEntities = 0;
 
 #endif

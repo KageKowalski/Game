@@ -1,6 +1,5 @@
 #include "Application.h"
 
-
 Application::Application() {
 	m_Window = nullptr;
 	m_Settings = nullptr;
@@ -59,7 +58,10 @@ int Application::run() {
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		// Draw/ update graphics
+		// Update components
+		update();
+
+		// Draw graphics
 		draw();
 	}
 
@@ -81,10 +83,13 @@ bool Application::init() {
 	return true;
 }
 
+void Application::update() {
+	m_TileMapBank.getMap().updateMap(m_Clock.getDeltaTime());
+}
+
 void Application::draw() {
 	m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
-    m_TileMapBank.getMap().updateMap(m_Clock.getDeltaTime());
-	m_Window->m_RenderWindow.draw(m_TileMapBank.getMap());
+	m_Window->m_RenderWindow.draw(m_Renderer);
 	m_Window->m_RenderWindow.display();
 }
 
