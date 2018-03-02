@@ -24,6 +24,8 @@ public:
 	const sf::VertexArray& getUniversalSpriteVerticies() const;
 	const sf::VertexArray& getLocalSpriteVerticies() const;
 
+	const sf::Transform& getTransform() const;
+
 private:
 
 	void vertexFill(const Character* const character, size_t offset);

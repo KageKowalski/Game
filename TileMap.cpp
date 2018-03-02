@@ -208,7 +208,7 @@ const sf::Texture& TileMap::getTileSet() const
 }
 const sf::Transform& TileMap::getTransform() const
 {
-    return getTransform();
+    return sf::Transformable::getTransform();
 }
 
 AutoAnimation TileMap::Tile::getTileAnimation(int ID)

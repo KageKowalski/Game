@@ -54,6 +54,10 @@ const sf::VertexArray& SpriteMap::getLocalSpriteVerticies() const {
 	return m_LocalSpriteVerticies;
 }
 
+const sf::Transform& SpriteMap::getTransform() const {
+	return sf::Transformable::getTransform();
+}
+
 void SpriteMap::vertexFill(const Character* const character, size_t offset) {
 	float i = character->getPosition().y;
 	float j = character->getPosition().x;
