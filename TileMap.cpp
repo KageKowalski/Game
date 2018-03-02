@@ -44,6 +44,8 @@ bool TileMap::build(int* ground, int* layerOne, int* layerTwo, int width, int he
     _height = height;
 
 	_groundVerticies.resize(_width * _height * 4 * 3);
+    _layerOneVerticies.resize(_width * _height * 4 * 3);
+    _layerTwoVerticies.resize(_width * _height * 4 * 3);
 
     _ground   = new Tile*[_height];
     _layerOne = new Tile*[_height];
