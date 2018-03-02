@@ -18,7 +18,8 @@ int Application::run() {
 
 	// Stores event triggers
 	sf::Event e;
-
+    
+    Music background("Game_Test.wav");
 	SpriteMap spritemap(sf::Vector2f(5.0f, 5.0f));
 	Character* larvitar = new Player(sf::Vector2f(0.0f, 0.0f), 0, 1, 32, 32, "Larvitar the Bodybuilder");
 	std::vector<Character*> characters;
@@ -66,10 +67,19 @@ int Application::run() {
 
 		// Update components
 		update();
+        
+        background.startMusic();
+        background.setMusic(m_TileMapBank.getMap().getMusic());
+        
+        m_Renderer.updateTexture(m_TileMapBank.getMap().getTileSet(), 1);
+        m_Renderer.updateVerticies(m_TileMapBank.getMap().getGroundVertices(), 1);
+        m_Renderer.updateVerticies(m_TileMapBank.getMap().getLayerOneVertices(), 2);
+        m_Renderer.updateVerticies(m_TileMapBank.getMap().getLayerTwoVertices(), 3);
 		m_Renderer.updateTexture(spritemap.getUniversalSpriteSheet(), 4);
 		m_Renderer.updateTexture(spritemap.getLocalSpriteSheet(), 5);
 		m_Renderer.updateVerticies(spritemap.getUniversalSpriteVerticies(), 4);
 		m_Renderer.updateVerticies(spritemap.getLocalSpriteVerticies(), 5);
+
 
 		// Draw graphics
 		draw();

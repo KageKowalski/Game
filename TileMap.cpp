@@ -5,23 +5,25 @@
     Tile Functions/Constructors
  ********************************/
 
-TileMap::Tile::Tile() : tileID(-1), step(0), animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
+TileMap::Tile::Tile() : _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
-TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : tileID(ID), step(0), animate(getTileAnimation(ID))
-{
-	setPosition(postition);
-}
+TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition)
+{}
 //Moves the animation step forward one if the the time exceeds that last 
 void TileMap::Tile::updateAnimStep(sf::Time deltaTime)
 {
     //arbitrary value until i consult Klayton
-    animate.update(deltaTime);
-    step = animate.getCurrAnimStep();
+    _animate.update(deltaTime);
+    _step = _animate.getCurrAnimStep();
 }
 
-int  TileMap::Tile::getID()         { return tileID; }
-void TileMap::Tile::setID(int ID)   { tileID = ID;   }
-int  TileMap::Tile::getAnimStep()       { return step;   }
+int  TileMap::Tile::getID()         { return _tileID; }
+void TileMap::Tile::setID(int ID)   { _tileID = ID;   }
+int  TileMap::Tile::getAnimStep()   { return _step;   }
+const sf::Vector2f& TileMap::Tile::getPosition() const
+{
+    return _position;
+}
 
 /********************************
   TileMap Functions/Constructors
@@ -30,6 +32,8 @@ int  TileMap::Tile::getAnimStep()       { return step;   }
 TileMap::TileMap(const sf::Vector2f& scale, std::string music) : _music(music)
 {
 	_groundVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
+    _layerOneVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
+    _layerTwoVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 	setScale(scale);
 }
 
@@ -96,78 +100,77 @@ void TileMap::vertexFill(int y, int x)
 	_groundVerticies[(size_t)((i * _width + j) * 4 * 3)];
 
 	// Get a pointer to tile's top-left corner in vertex array
-	sf::Vertex* quad = &_groundVerticies[(size_t)((i * _width + j) * 4 * 3)];
+	sf::Vertex* quadGro = &_groundVerticies[(size_t)  ((i * _width + j) * 4 )];
+    sf::Vertex* quadOne = &_layerOneVerticies[(size_t)((i * _width + j) * 4 )];
+    sf::Vertex* quadTwo = &_layerTwoVerticies[(size_t)((i * _width + j) * 4 )];
 
     if(groundTileID != -1)
     {
         // Define top-left corner
-        quad->position = sf::Vector2f(j * 16.0f, i * 16.0f);
-        quad->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep()) * 16.0f);
+        quadGro->position = sf::Vector2f(j * 16.0f, i * 16.0f);
+        quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep()) * 16.0f);
 
         // Define top-right corner
-        quad++;
-        quad->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quad->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep())* 16.0f);
+        quadGro++;
+        quadGro->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
+        quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep())* 16.0f);
 
         // Define bottom-right corner
-        quad++;
-        quad->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quad->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
+        quadGro++;
+        quadGro->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
+        quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
 
         // Define bottom-left corner
-        quad++;
-        quad->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quad->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
+        quadGro++;
+        quadGro->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
+        quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
         
-        quad++;
     }
     if(layerOneTileID != -1)
     {
         int layOneTilePosX = layerOneTileID % static_cast<int>(_tileset.getWidth() / 16);
         int layOneTilePosY = (layerOneTileID / _tileset.getWidth()) * 16;
 
-        quad->position = sf::Vector2f(j * 16.0f, i * 16.0f);
-        quad->texCoords = sf::Vector2f(layOneTilePosX * 16.0f, (layOneTilePosY + _layerOne[y][x].getAnimStep()) * 16.0f);
+        quadOne->position = sf::Vector2f(j * 16.0f, i * 16.0f);
+        quadOne->texCoords = sf::Vector2f(layOneTilePosX * 16.0f, (layOneTilePosY + _layerOne[y][x].getAnimStep()) * 16.0f);
         
         // Define top-right corner
-        quad++;
-        quad->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quad->texCoords = sf::Vector2f((layOneTilePosX + 1) * 16.0f, (layOneTilePosY + _layerOne[y][x].getAnimStep())* 16.0f);
+        quadOne++;
+        quadOne->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
+        quadOne->texCoords = sf::Vector2f((layOneTilePosX + 1) * 16.0f, (layOneTilePosY + _layerOne[y][x].getAnimStep())* 16.0f);
         
         // Define bottom-right corner
-        quad++;
-        quad->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quad->texCoords = sf::Vector2f((layOneTilePosX + 1) * 16.0f, (layOneTilePosY + 1 + _layerOne[y][x].getAnimStep()) * 16.0f);
+        quadOne++;
+        quadOne->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
+        quadOne->texCoords = sf::Vector2f((layOneTilePosX + 1) * 16.0f, (layOneTilePosY + 1 + _layerOne[y][x].getAnimStep()) * 16.0f);
         
         // Define bottom-left corner
-        quad++;
-        quad->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quad->texCoords = sf::Vector2f(layOneTilePosX * 16.0f, (layOneTilePosY + 1 + _layerOne[y][x].getAnimStep()) * 16.0f);
-        
-        quad++;
+        quadOne++;
+        quadOne->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
+        quadOne->texCoords = sf::Vector2f(layOneTilePosX * 16.0f, (layOneTilePosY + 1 + _layerOne[y][x].getAnimStep()) * 16.0f);
     }
     if(layerTwoTileID != -1)
     {
         int layTwoTilePosX = layerTwoTileID % static_cast<int>(_tileset.getWidth() / 16);
         int layTwoTilePosY = (layerTwoTileID / _tileset.getWidth()) * 16;
         
-        quad->position = sf::Vector2f(j * 16.0f, i * 16.0f);
-        quad->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep()) * 16.0f);
+        quadTwo->position = sf::Vector2f(j * 16.0f, i * 16.0f);
+        quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep()) * 16.0f);
         
         // Define top-right corner
-        quad++;
-        quad->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quad->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep())* 16.0f);
+        quadTwo++;
+        quadTwo->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
+        quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep())* 16.0f);
         
         // Define bottom-right corner
-        quad++;
-        quad->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quad->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
+        quadTwo++;
+        quadTwo->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
+        quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
         
         // Define bottom-left corner
-        quad++;
-        quad->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quad->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
+        quadTwo++;
+        quadTwo->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
+        quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
     }
 }
 
@@ -185,10 +188,25 @@ void TileMap::updateMap(sf::Time deltaTime)
     }
 }
 
-void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	states.transform *= getTransform();
-	states.texture = &_tileset.getTexture();
-	target.draw(_groundVerticies, states);
+const sf::VertexArray& TileMap::getGroundVertices()   const
+{
+    return _groundVerticies;
+}
+const sf::VertexArray& TileMap::getLayerOneVertices() const
+{
+    return _layerOneVerticies;
+}
+const sf::VertexArray& TileMap::getLayerTwoVertices() const
+{
+    return _layerTwoVerticies;
+}
+const sf::Texture& TileMap::getTileSet() const
+{
+    return _tileset.getTexture();
+}
+const sf::Transform& TileMap::getTransform() const
+{
+    return getTransform();
 }
 
 AutoAnimation TileMap::Tile::getTileAnimation(int ID)

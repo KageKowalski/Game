@@ -12,6 +12,7 @@
 #include "Renderer.h"
 #include "Player.h"
 #include "SpriteMap.h"
+#include "Music.h"
 
 class Application {
 
