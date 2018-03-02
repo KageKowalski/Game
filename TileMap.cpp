@@ -7,22 +7,9 @@
 
 TileMap::Tile::Tile() : tileID(-1), step(0), animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
-TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : tileID(ID), step(0), animate(AutoAnimation(0,0,0,0,sf::seconds(1.0f)))
+TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : tileID(ID), step(0), animate(getTileAnimation(ID))
 {
-    
 	setPosition(postition);
-    switch(ID)
-    {
-        case  1:
-            animate = AutoAnimation(0,2,16,16,sf::seconds(.4f));
-            break;
-        case  2:
-            animate = AutoAnimation(0,3,16,16,sf::seconds(1.0f));
-            break;
-        default:
-            animate = AutoAnimation(0,1,16,16,sf::seconds(1.0f));
-            break;
-    }
 }
 //Moves the animation step forward one if the the time exceeds that last 
 void TileMap::Tile::updateAnimStep(sf::Time deltaTime)
@@ -40,7 +27,7 @@ int  TileMap::Tile::getAnimStep()       { return step;   }
   TileMap Functions/Constructors
  ********************************/
 
-TileMap::TileMap(const sf::Vector2f& scale)
+TileMap::TileMap(const sf::Vector2f& scale, std::string music) : _music(music)
 {
 	_groundVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 	setScale(scale);
@@ -87,6 +74,11 @@ TileMap::~TileMap()
     delete[] _ground;
     delete[] _layerOne;
     delete[] _layerTwo;
+}
+
+std::string TileMap::getMusic()
+{
+    return _music;
 }
 
 void TileMap::vertexFill(int y, int x)
@@ -197,4 +189,28 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	states.texture = &_tileset.getTexture();
 	target.draw(_groundVerticies, states);
+}
+
+AutoAnimation TileMap::Tile::getTileAnimation(int ID)
+{
+    switch(ID)
+    {
+        case  0:
+        case  1:
+        case  2:
+        case  3:
+        case  4:
+        case  5:
+        case  6:
+        case  7:
+        case  8:
+            return AutoAnimation(0,8,16,16,sf::seconds(.2f));
+            break;
+        //case  :
+          //  return AutoAnimation(0,3,16,16,sf::seconds(1.0f));
+            //break;
+        default:
+            return AutoAnimation(0,1,16,16,sf::seconds(1.0f));
+            break;
+    }
 }

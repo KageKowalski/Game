@@ -8,6 +8,10 @@
 #include "Camera.h"
 #include "Chrono.h"
 #include "TileMapBank.h"
+#include "Character.h"
+#include "Renderer.h"
+#include "Player.h"
+#include "SpriteMap.h"
 
 class Application {
 
@@ -23,6 +27,9 @@ private:
 
 	// Init application
 	bool init();
+
+	// Update components
+	void update();
 
 	// Draw graphics
 	void draw();
@@ -40,6 +47,9 @@ private:
 
 	// Viewable area
 	Camera* m_Camera;
+
+	// Renderer
+	Renderer m_Renderer;
 
 	// High-performance clock
 	Chrono m_Clock;

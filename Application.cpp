@@ -1,6 +1,5 @@
 #include "Application.h"
 
-
 Application::Application() {
 	m_Window = nullptr;
 	m_Settings = nullptr;
@@ -19,6 +18,12 @@ int Application::run() {
 
 	// Stores event triggers
 	sf::Event e;
+
+	SpriteMap spritemap(sf::Vector2f(5.0f, 5.0f));
+	Character* larvitar = new Player(sf::Vector2f(0.0f, 0.0f), 0, 1, 32, 32, "Larvitar the Bodybuilder");
+	std::vector<Character*> characters;
+	characters.push_back(larvitar);
+	spritemap.build("lar.png", "lar.png", characters);
 
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
@@ -59,7 +64,14 @@ int Application::run() {
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		// Draw/ update graphics
+		// Update components
+		update();
+		m_Renderer.updateTexture(spritemap.getUniversalSpriteSheet(), 4);
+		m_Renderer.updateTexture(spritemap.getLocalSpriteSheet(), 5);
+		m_Renderer.updateVerticies(spritemap.getUniversalSpriteVerticies(), 4);
+		m_Renderer.updateVerticies(spritemap.getLocalSpriteVerticies(), 5);
+
+		// Draw graphics
 		draw();
 	}
 
@@ -81,10 +93,13 @@ bool Application::init() {
 	return true;
 }
 
+void Application::update() {
+	m_TileMapBank.getMap().updateMap(m_Clock.getDeltaTime());
+}
+
 void Application::draw() {
 	m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
-    m_TileMapBank.getMap().updateMap(m_Clock.getDeltaTime());
-	m_Window->m_RenderWindow.draw(m_TileMapBank.getMap());
+	m_Window->m_RenderWindow.draw(m_Renderer);
 	m_Window->m_RenderWindow.display();
 }
 
