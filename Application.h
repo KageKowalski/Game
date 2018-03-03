@@ -7,7 +7,6 @@
 #include "Settings.h"
 #include "Camera.h"
 #include "Chrono.h"
-#include "TileMapBank.h"
 #include "Character.h"
 #include "Renderer.h"
 #include "Player.h"

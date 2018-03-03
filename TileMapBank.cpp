@@ -10,7 +10,7 @@ TileMapBank::~TileMapBank() {
 
 bool TileMapBank::init()
 {
-	TileMap* testMap = new TileMap(sf::Vector2f(10.0f, 10.0f), "Game_Test.wav");
+	TileMap* testMap = new TileMap( "Game_Test.wav");
     _mapBank.push_back(testMap);
     int blank[1] = { -2 };
     int mapOne[100] =

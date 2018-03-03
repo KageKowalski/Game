@@ -38,14 +38,13 @@ const sf::Vector2f& TileMap::Tile::getPosition() const
   TileMap Functions/Constructors
  ********************************/
 
-TileMap::TileMap(const sf::Vector2f& scale, std::string music) : _music(music)
+TileMap::TileMap(std::string music) : _music(music)
 {
 	_groundVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerTwoVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerThreeVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerSixVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _canopyVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
-	setScale(scale);
 }
 
 bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string tilesetFileName)
@@ -288,10 +287,7 @@ const sf::Texture& TileMap::getTileSet() const
 {
     return _tileset.getTexture();
 }
-const sf::Transform& TileMap::getTransform() const
-{
-    return sf::Transformable::getTransform();
-}
+
 
 
 /************************

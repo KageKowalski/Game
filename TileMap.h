@@ -8,7 +8,7 @@
 #include "AutoAnimation.h"
 #include "TileSet.h"
 
-class TileMap : public sf::Transformable
+class TileMap
 {
     class Tile
     {
@@ -92,7 +92,7 @@ private:
     
 public:
     //basic constructor
-    TileMap(const sf::Vector2f& scale, std::string music);
+    TileMap(std::string music);
     
     //builds the map and returns true on a successful build
     //send maps with a -1 value for invalid textures
@@ -109,7 +109,6 @@ public:
     const sf::VertexArray& getLayerSixVertices()   const;
     const sf::VertexArray& getCanopyVertices()     const;
     const sf::Texture&     getTileSet()            const;
-    const sf::Transform&   getTransform()          const;
     
     //returns the maps music
     std::string getMusic();
