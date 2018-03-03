@@ -25,28 +25,23 @@ private:
 private:
 
 	sf::VertexArray m_Background;
-	sf::Transform m_BackgroundTransform;
-	const sf::Texture* m_BackgroundTexture;
-
 	sf::VertexArray m_Ground;
-	sf::Transform m_TilesTransform;
-	const sf::Texture* m_Tileset;
-
 	sf::VertexArray m_Z2;
-
 	sf::VertexArray m_Z3;
-
 	sf::VertexArray m_UniversalSprites;
-	sf::Transform m_SpritesTransform;
-	const sf::Texture* m_UniversalSpriteSheet;
-
 	sf::VertexArray m_LocalSprites;
-	const sf::Texture* m_LocalSpriteSheet;
-
 	sf::VertexArray m_Z6;
-
+	sf::VertexArray m_Canopy;
 	sf::VertexArray m_GUI;
+
+	sf::Transform m_BackgroundTransform;
+	sf::Transform m_MapTransform;
 	sf::Transform m_GUITransform;
+
+	const sf::Texture* m_BackgroundTexture;
+	const sf::Texture* m_Tileset;
+	const sf::Texture* m_UniversalSpriteSheet;
+	const sf::Texture* m_LocalSpriteSheet;
 	const sf::Texture* m_GUITexture;
 
 };

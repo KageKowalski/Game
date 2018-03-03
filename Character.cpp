@@ -9,6 +9,23 @@ Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int
 
 Character::~Character() {}
 
+void Character::turn(Frame direction) {
+	switch (direction) {
+	case Frame::LOOK_DOWN:
+		m_CurrAnimStep = 0;
+		break;
+	case Frame::LOOK_UP:
+		m_CurrAnimStep = 1;
+		break;
+	case Frame::LOOK_LEFT:
+		m_CurrAnimStep = 2;
+		break;
+	case Frame::LOOK_RIGHT:
+		m_CurrAnimStep = 3;
+		break;
+	}
+}
+
 const sf::Vector2f& Character::getVelocity() const {
 	return m_Velocity;
 }

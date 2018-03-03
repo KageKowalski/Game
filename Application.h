@@ -7,11 +7,9 @@
 #include "Settings.h"
 #include "Camera.h"
 #include "Chrono.h"
-#include "Character.h"
 #include "Renderer.h"
-#include "Player.h"
-#include "SpriteMap.h"
 #include "Music.h"
+#include "MapBank.h"
 
 class Application {
 
@@ -54,6 +52,8 @@ private:
 	// High-performance clock
 	Chrono m_Clock;
 
+	// All maps
+	MapBank m_Maps;
 };
 
 #endif

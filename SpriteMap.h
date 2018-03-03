@@ -8,11 +8,11 @@
 
 #include "Character.h"
 
-class SpriteMap : public sf::Transformable {
+class SpriteMap {
 
 public:
 
-	SpriteMap(const sf::Vector2f& scale);
+	SpriteMap();
 	~SpriteMap();
 
 	bool build(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
@@ -23,8 +23,6 @@ public:
 
 	const sf::VertexArray& getUniversalSpriteVerticies() const;
 	const sf::VertexArray& getLocalSpriteVerticies() const;
-
-	const sf::Transform& getTransform() const;
 
 private:
 

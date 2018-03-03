@@ -10,6 +10,7 @@ Renderer::Renderer() {
 	m_UniversalSprites.setPrimitiveType(sf::PrimitiveType::Quads);
 	m_LocalSprites.setPrimitiveType(sf::PrimitiveType::Quads);
 	m_Z6.setPrimitiveType(sf::PrimitiveType::Quads);
+	m_Canopy.setPrimitiveType(sf::PrimitiveType::Quads);
 	m_GUI.setPrimitiveType(sf::PrimitiveType::Quads);
 	clear();
 }
@@ -48,6 +49,9 @@ void Renderer::updateVerticies(const sf::VertexArray& verticies, int z) {
 		m_Z6 = verticies;
 		break;
 	case 7:
+		if (m_Canopy.getVertexCount() != vertexCount) m_Canopy.resize(vertexCount);
+		m_Canopy = verticies;
+	case 8:
 		if (m_GUI.getVertexCount() != vertexCount) m_GUI.resize(vertexCount);
 		m_GUI = verticies;
 		break;
@@ -62,14 +66,13 @@ void Renderer::updateTransform(const sf::Transform& transform, int z) {
 	case 1:
 	case 2:
 	case 3:
-	case 6:
-		m_TilesTransform = transform;
-		break;
 	case 4:
 	case 5:
-		m_SpritesTransform = transform;
-		break;
+	case 6:
 	case 7:
+		m_MapTransform = transform;
+		break;
+	case 8:
 		m_GUITransform = transform;
 		break;
 	}
@@ -84,6 +87,7 @@ void Renderer::updateTexture(const sf::Texture& texture, int z) {
 	case 2:
 	case 3:
 	case 6:
+	case 7:
 		m_Tileset = &texture;
 		break;
 	case 4:
@@ -92,7 +96,7 @@ void Renderer::updateTexture(const sf::Texture& texture, int z) {
 	case 5:
 		m_LocalSpriteSheet = &texture;
 		break;
-	case 7:
+	case 8:
 		m_GUITexture = &texture;
 		break;
 	}
@@ -107,7 +111,7 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 	}
 	if (m_Tileset != nullptr) {
 		sf::RenderStates tilesStates;
-		tilesStates.transform *= m_TilesTransform;
+		tilesStates.transform *= m_MapTransform;
 		tilesStates.texture = m_Tileset;
 		target.draw(m_Ground, tilesStates);
 		target.draw(m_Z2, tilesStates);
@@ -115,7 +119,7 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 	}
 	if (m_UniversalSpriteSheet != nullptr || m_LocalSpriteSheet != nullptr) {
 		sf::RenderStates spritesStates;
-		spritesStates.transform *= m_SpritesTransform;
+		spritesStates.transform *= m_MapTransform;
 		spritesStates.texture = m_UniversalSpriteSheet;
 		target.draw(m_UniversalSprites, spritesStates);
 
@@ -124,9 +128,10 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 	}
 	if (m_Tileset != nullptr) {
 		sf::RenderStates tilesStates;
-		tilesStates.transform *= m_TilesTransform;
+		tilesStates.transform *= m_MapTransform;
 		tilesStates.texture = m_Tileset;
 		target.draw(m_Z6, tilesStates);
+		target.draw(m_Canopy, tilesStates);
 	}
 	if (m_GUITexture != nullptr) {
 		sf::RenderStates GUIStates;
@@ -138,23 +143,18 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 
 void Renderer::clear() {
 	m_Background.clear();
-	m_BackgroundTexture = nullptr;
-	
 	m_Ground.clear();
-	m_Tileset = nullptr;
-
 	m_Z2.clear();
-
 	m_Z3.clear();
-
 	m_UniversalSprites.clear();
-	m_UniversalSpriteSheet = nullptr;
-
 	m_LocalSprites.clear();
-	m_LocalSpriteSheet = nullptr;
-
 	m_Z6.clear();
-
+	m_Canopy.clear();
 	m_GUI.clear();
+
+	m_BackgroundTexture = nullptr;
+	m_Tileset = nullptr;
+	m_UniversalSpriteSheet = nullptr;
+	m_LocalSpriteSheet = nullptr;
 	m_GUITexture = nullptr;
 }

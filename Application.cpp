@@ -1,6 +1,6 @@
 #include "Application.h"
 
-Application::Application() {
+Application::Application() : m_Maps(sf::Vector2f(10.0f, 10.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;
@@ -20,11 +20,6 @@ int Application::run() {
 	sf::Event e;
     
     Music background("Game_Test.wav");
-	SpriteMap spritemap(sf::Vector2f(5.0f, 5.0f));
-	Character* larvitar = new Player(sf::Vector2f(0.0f, 0.0f), 0, 1, 32, 32, "Larvitar the Bodybuilder");
-	std::vector<Character*> characters;
-	characters.push_back(larvitar);
-	spritemap.build("lar.png", "lar.png", characters);
 
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
@@ -53,15 +48,22 @@ int Application::run() {
 
 		// Process input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F11)) toggleFullscreen();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f), deltaTime);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f), deltaTime);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Camera->pan(sf::Vector2f(500.0f, 0.0f), deltaTime);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Camera->pan(sf::Vector2f(0.0f, -500.0f), deltaTime);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) m_Camera->pan(sf::Vector2f(500.0f, 0.0f), deltaTime);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) m_Camera->pan(sf::Vector2f(0.0f, -500.0f), deltaTime);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O)) m_Camera->zoom(3.0f, deltaTime);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) m_Camera->zoom(-3.0f, deltaTime);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) m_Camera->rotate(120.0f, deltaTime);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U)) m_Camera->rotate(-120.0f, deltaTime);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Y)) m_Camera->resetOrientation();
+
+		/*
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) larvitar->turn(Frame::LOOK_DOWN);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) larvitar->turn(Frame::LOOK_UP);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) larvitar->turn(Frame::LOOK_LEFT);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) larvitar->turn(Frame::LOOK_RIGHT);
+		*/
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
@@ -69,12 +71,19 @@ int Application::run() {
 		update();
         
         background.startMusic();
-		m_Renderer.updateTransform(spritemap.getTransform(), 4);
-		m_Renderer.updateTexture(spritemap.getUniversalSpriteSheet(), 4);
-		m_Renderer.updateTexture(spritemap.getLocalSpriteSheet(), 5);
-		m_Renderer.updateVerticies(spritemap.getUniversalSpriteVerticies(), 4);
-		m_Renderer.updateVerticies(spritemap.getLocalSpriteVerticies(), 5);
-
+		m_Renderer.updateTransform(m_Maps.getTransform(), 1);
+		std::vector<sf::Texture> textures = m_Maps.getTextures();
+		m_Renderer.updateTexture(textures.at(0), 1);
+		m_Renderer.updateTexture(textures.at(1), 4);
+		m_Renderer.updateTexture(textures.at(2), 5);
+		std::vector<sf::VertexArray> verticies = m_Maps.getVerticies();
+		m_Renderer.updateVerticies(verticies.at(0), 1);
+		m_Renderer.updateVerticies(verticies.at(1), 2);
+		m_Renderer.updateVerticies(verticies.at(2), 3);
+		m_Renderer.updateVerticies(verticies.at(3), 4);
+		m_Renderer.updateVerticies(verticies.at(4), 5);
+		m_Renderer.updateVerticies(verticies.at(5), 6);
+        background.setVolume(100.0f);
 
 		// Draw graphics
 		draw();
@@ -93,10 +102,13 @@ bool Application::init() {
 
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
 
+	if (!m_Maps.loadMap(0)) return false;
+
 	return true;
 }
 
 void Application::update() {
+
 }
 
 void Application::draw() {

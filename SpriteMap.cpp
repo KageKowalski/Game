@@ -2,10 +2,9 @@
 
 #include "SpriteMap.h"
 
-SpriteMap::SpriteMap(const sf::Vector2f& scale) {
+SpriteMap::SpriteMap() {
 	m_UniversalSpriteVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 	m_LocalSpriteVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
-	setScale(scale);
 }
 
 SpriteMap::~SpriteMap() {}
@@ -52,10 +51,6 @@ const sf::VertexArray& SpriteMap::getUniversalSpriteVerticies() const {
 
 const sf::VertexArray& SpriteMap::getLocalSpriteVerticies() const {
 	return m_LocalSpriteVerticies;
-}
-
-const sf::Transform& SpriteMap::getTransform() const {
-	return sf::Transformable::getTransform();
 }
 
 void SpriteMap::vertexFill(const Character* const character, size_t offset) {
