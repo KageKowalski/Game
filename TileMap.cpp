@@ -38,8 +38,11 @@ const sf::Vector2f& TileMap::Tile::getPosition() const
   TileMap Functions/Constructors
  ********************************/
 
-TileMap::TileMap(std::string music) : _music(music)
+TileMap::TileMap(std::string name) : _name(name)
 {
+    static int mapCounter = 0;
+    _mapIdentifier = mapCounter;
+    mapCounter++;
 	_groundVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerTwoVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerThreeVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
@@ -47,7 +50,7 @@ TileMap::TileMap(std::string music) : _music(music)
     _canopyVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 }
 
-bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string tilesetFileName)
+bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName)
 {
     if(!_tileset.load(tilesetFileName)) return false;
     _width = width;
@@ -102,11 +105,6 @@ TileMap::~TileMap()
     delete[] _layerThree;
     delete[] _layerSix;
     delete[] _canopy;
-}
-
-std::string TileMap::getMusic()
-{
-    return _music;
 }
 
 void TileMap::vertexFill(int y, int x)
@@ -288,7 +286,20 @@ const sf::Texture& TileMap::getTileSet() const
     return _tileset.getTexture();
 }
 
+std::string TileMap::getMusic()
+{
+    return _music;
+}
 
+std::string TileMap::getName()
+{
+    return _name;
+}
+
+int TileMap::getMapID()
+{
+    return _mapIdentifier;
+}
 
 /************************
   Tile Animation Handler

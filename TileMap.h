@@ -69,6 +69,7 @@ private:
     Tile** _layerSix;
     Tile** _canopy;
     TileSet _tileset;
+    std::string name;
     
     //width and height of the current tilemap
     int _width;
@@ -90,14 +91,17 @@ private:
     //this cannot be changed after initialization
     std::string _music;
     
+    //name of map/area
+    std::string _name;
+    
 public:
     //basic constructor
-    TileMap(std::string music);
+    TileMap(std::string name);
     
     //builds the map and returns true on a successful build
     //send maps with a -1 value for invalid textures
     //if a map has a -2 value in the 0 position the map will be thrown out
-    bool build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string tilesetFileName);
+    bool build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName);
     
     //updates all animated tiles in the map
     void updateMap(sf::Time);
@@ -112,6 +116,12 @@ public:
     
     //returns the maps music
     std::string getMusic();
+    
+    //returns map name
+    std::string getName();
+    
+    //returns the map id
+    int getMapID();
     
     virtual ~TileMap();
 

@@ -26,7 +26,7 @@ bool TileMapBank::init()
         13,7,6,6,6,6,6,6,5,13,
         13,13,13,13,13,13,13,13,13,13
     };
-    _mapBank.at(0)->build(mapOne, blank, blank, blank, blank, 10, 10, "TestTileSet.png");
+    _mapBank.at(0)->build(mapOne, blank, blank, blank, blank, 10, 10, "Eternal Forrest", "TestTileSet.png");
 	return true;
 }
 

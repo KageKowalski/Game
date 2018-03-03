@@ -54,9 +54,6 @@ private:
 	// High-performance clock
 	Chrono m_Clock;
 
-	// All preloaded tilemaps
-	TileMapBank m_TileMapBank;
-
 };
 
 #endif

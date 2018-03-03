@@ -69,14 +69,7 @@ int Application::run() {
 		update();
         
         background.startMusic();
-        background.setMusic(m_TileMapBank.getMap().getMusic());
-        background.setVolume(100.0f);
-        m_Renderer.updateTexture(m_TileMapBank.getMap().getTileSet(), 1);
-		m_Renderer.updateTransform(m_TileMapBank.getMap().getTransform(), 1);
 		m_Renderer.updateTransform(spritemap.getTransform(), 4);
-        m_Renderer.updateVerticies(m_TileMapBank.getMap().getGroundVertices(), 1);
-        m_Renderer.updateVerticies(m_TileMapBank.getMap().getLayerOneVertices(), 2);
-        m_Renderer.updateVerticies(m_TileMapBank.getMap().getLayerTwoVertices(), 3);
 		m_Renderer.updateTexture(spritemap.getUniversalSpriteSheet(), 4);
 		m_Renderer.updateTexture(spritemap.getLocalSpriteSheet(), 5);
 		m_Renderer.updateVerticies(spritemap.getUniversalSpriteVerticies(), 4);
@@ -100,13 +93,10 @@ bool Application::init() {
 
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
 
-	if (!m_TileMapBank.init()) return false;
-
 	return true;
 }
 
 void Application::update() {
-	m_TileMapBank.getMap().updateMap(m_Clock.getDeltaTime());
 }
 
 void Application::draw() {
