@@ -68,6 +68,9 @@ int Application::run() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::LEFT);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::LEFT);
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::RIGHT);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::RIGHT);
+
 		// Update components
 		update();
 
