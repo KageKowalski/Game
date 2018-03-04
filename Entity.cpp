@@ -8,6 +8,7 @@ Entity::Entity(const sf::Vector2f& position) {
 	m_TotalEntities++;
 
 	m_Position = position;
+	m_CenterPosition = position;
 	m_TextureCoords = sf::Vector2f(-1.0f, -1.0f);
 }
 
@@ -21,6 +22,10 @@ unsigned int Entity::getTotalEntities() const {
 
 const sf::Vector2f& Entity::getPosition() const {
 	return m_Position;
+}
+
+const sf::Vector2f& Entity::getCenterPosition() const {
+	return m_CenterPosition;
 }
 
 const sf::Vector2f& Entity::getTextureCoords() const {

@@ -28,3 +28,8 @@ void AutoAnimation::update(sf::Time deltaTime) {
 		m_ElapsedTime = sf::Time::Zero;
 	}
 }
+
+void AutoAnimation::reset() {
+	m_CurrAnimStep = 0;
+	m_ElapsedTime = sf::Time::Zero;
+}

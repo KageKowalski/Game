@@ -20,7 +20,7 @@ int Application::run() {
 	sf::Event e;
     
     Music background("Game_Test.wav");
-	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getPosition(), m_Maps.getScale());
+	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Maps.getScale());
 
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {

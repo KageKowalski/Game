@@ -29,6 +29,9 @@ public:
 	// Once elapsed time reaches the time step, the animation step moves forward by one frame.
 	void update(sf::Time deltaTime);
 
+	// Resets the animation back to its very first step.
+	void reset();
+
 protected:
 
 	// Time step of the animation.

@@ -15,7 +15,7 @@ enum class Direction {
 
 class Character : public Entity, public Animation {
 
-	enum class Frame {
+	enum Frame {
 		LOOK_DOWN,
 		LOOK_UP,
 		LOOK_LEFT,
@@ -39,9 +39,15 @@ public:
 	void turn(Direction direction);
 	void walk(sf::Time deltaTime, Direction direction);
 
+	void update(sf::Time deltaTime);
+
 	const sf::Vector2f& getVelocity() const;
 	bool isUniversal() const;
 	int getCharacterID() const;
+
+private:
+
+	Direction mapFrameToDirection(Frame frame);
 
 protected:
 
@@ -50,6 +56,10 @@ protected:
 	bool m_Universal;
 
 	int m_CharacterID;
+
+	Frame m_CurrFrame;
+
+	sf::Time m_ElapsedTime;
 
 };
 
