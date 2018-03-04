@@ -41,7 +41,9 @@ bool MapBank::loadMap(int mapID) {
 		if (!testMap->build(mapOne, blank, blank, blank, blank, 10, 10, "Game_Test.wav", "TestTileSet.png"))
 			return false;
 		
-		if (!spriteMap->build("lar.png", "lar.png", std::vector<Character*>()))
+		std::vector<Character*> characters;
+		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 32, 32, "Larvitar the Bodybuiler"));
+		if (!spriteMap->build("lar.png", "lar.png", characters))
 			return false;
 
 		std::pair<TileMap*, SpriteMap*> pair;
@@ -54,33 +56,48 @@ bool MapBank::loadMap(int mapID) {
 	return false;
 }
 
+void MapBank::update(sf::Time deltaTime) {
+	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
+	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
+
+	currTileMap->updateMap(deltaTime);
+	currSpriteMap->update(deltaTime);
+
+	m_CurrMapVerticies.clear();
+	m_CurrMapTextures.clear();
+
+	m_CurrMapVerticies.push_back(currTileMap->getGroundVertices());
+	m_CurrMapVerticies.push_back(currTileMap->getLayerTwoVertices());
+	m_CurrMapVerticies.push_back(currTileMap->getLayerThreeVertices());
+	m_CurrMapVerticies.push_back(currSpriteMap->getUniversalSpriteVerticies());
+	m_CurrMapVerticies.push_back(currSpriteMap->getLocalSpriteVerticies());
+	m_CurrMapVerticies.push_back(currTileMap->getLayerSixVertices());
+	m_CurrMapVerticies.push_back(currTileMap->getCanopyVertices());
+	m_CurrMapTextures.push_back(currTileMap->getTileSet());
+	m_CurrMapTextures.push_back(currSpriteMap->getUniversalSpriteSheet());
+	m_CurrMapTextures.push_back(currSpriteMap->getLocalSpriteSheet());
+}
+
+void MapBank::setCurrMapID(int mapID) {
+	m_CurrMap = mapID;
+}
+
+std::pair<TileMap*, SpriteMap*>& MapBank::getCurrMap() {
+	return m_Maps.at(m_CurrMap);
+}
+
 const sf::Transform& MapBank::getTransform() const {
 	return sf::Transformable::getTransform();
 }
 
-const std::vector<sf::VertexArray> MapBank::getVerticies() const {
-	sf::VertexArray ground = m_Maps.at(m_CurrMap).first->getGroundVertices();
-	sf::VertexArray Z2 = m_Maps.at(m_CurrMap).first->getLayerTwoVertices();
-	sf::VertexArray Z3 = m_Maps.at(m_CurrMap).first->getLayerThreeVertices();
-	sf::VertexArray Z6 = m_Maps.at(m_CurrMap).first->getLayerSixVertices();
-	sf::VertexArray canopy = m_Maps.at(m_CurrMap).first->getCanopyVertices();
-	sf::VertexArray universal = m_Maps.at(m_CurrMap).second->getUniversalSpriteVerticies();
-	sf::VertexArray local = m_Maps.at(m_CurrMap).second->getLocalSpriteVerticies();
-	std::vector<sf::VertexArray> retVerticies;
-	retVerticies.push_back(ground);
-	retVerticies.push_back(Z2);
-	retVerticies.push_back(Z3);
-	retVerticies.push_back(Z6);
-	retVerticies.push_back(canopy);
-	retVerticies.push_back(universal);
-	retVerticies.push_back(local);
-	return retVerticies;
+const std::vector<sf::VertexArray>& MapBank::getVerticies() const {
+	return m_CurrMapVerticies;
 }
 
-const std::vector<sf::Texture> MapBank::getTextures() const {
-	std::vector<sf::Texture> retTextures;
-	retTextures.push_back(m_Maps.at(m_CurrMap).first->getTileSet());
-	retTextures.push_back(m_Maps.at(m_CurrMap).second->getUniversalSpriteSheet());
-	retTextures.push_back(m_Maps.at(m_CurrMap).second->getLocalSpriteSheet());
-	return retTextures;
+const std::vector<sf::Texture>& MapBank::getTextures() const {
+	return m_CurrMapTextures;
+}
+
+int MapBank::getCurrMapID() const {
+	return m_CurrMap;
 }

@@ -5,7 +5,10 @@
 Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
 	unsigned int frameHeight)
 	: Entity(position), Animation(initAnimStep, totalAnimSteps, frameWidth, frameHeight)
-{}
+{
+	m_Universal = true;
+	m_CharacterID = -1;
+}
 
 Character::~Character() {}
 
@@ -32,4 +35,8 @@ const sf::Vector2f& Character::getVelocity() const {
 
 bool Character::isUniversal() const {
 	return m_Universal;
+}
+
+int Character::getCharacterID() const {
+	return m_CharacterID;
 }

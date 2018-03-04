@@ -25,12 +25,15 @@ public:
 
 	const sf::Vector2f& getVelocity() const;
 	bool isUniversal() const;
+	int getCharacterID() const;
 
 protected:
 
 	sf::Vector2f m_Velocity;
 
 	bool m_Universal;
+
+	int m_CharacterID;
 
 };
 

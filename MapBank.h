@@ -8,6 +8,7 @@
 #include <string>
 #include "TileMap.h"
 #include "SpriteMap.h"
+#include "Player.h"
 
 class MapBank : sf::Transformable {
 
@@ -18,9 +19,16 @@ public:
 
 	bool loadMap(int mapID);
 
+	void update(sf::Time deltaTime);
+
+	void setCurrMapID(int mapID);
+
+	std::pair<TileMap*, SpriteMap*>& getCurrMap();
 	const sf::Transform& getTransform() const;
-	const std::vector<sf::VertexArray> getVerticies() const;
-	const std::vector<sf::Texture> getTextures() const;
+	const std::vector<sf::VertexArray>& getVerticies() const;
+	const std::vector<sf::Texture>& getTextures() const;
+
+	int getCurrMapID() const;
 
 private:
 
@@ -32,6 +40,9 @@ private:
 	std::vector<std::string> m_BackgroundMusicFileNames;
 
 	int m_CurrMap;
+
+	std::vector<sf::VertexArray> m_CurrMapVerticies;
+	std::vector<sf::Texture> m_CurrMapTextures;
 
 };
 

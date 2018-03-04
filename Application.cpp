@@ -1,6 +1,6 @@
 #include "Application.h"
 
-Application::Application() : m_Maps(sf::Vector2f(10.0f, 10.0f)) {
+Application::Application() : m_Maps(sf::Vector2f(8.0f, 8.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;
@@ -58,17 +58,17 @@ int Application::run() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U)) m_Camera->rotate(-120.0f, deltaTime);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Y)) m_Camera->resetOrientation();
 
-		/*
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) larvitar->turn(Frame::LOOK_DOWN);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) larvitar->turn(Frame::LOOK_UP);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) larvitar->turn(Frame::LOOK_LEFT);
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) larvitar->turn(Frame::LOOK_RIGHT);
-		*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->turn(Frame::LOOK_DOWN);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->turn(Frame::LOOK_UP);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->turn(Frame::LOOK_LEFT);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->turn(Frame::LOOK_RIGHT);
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
 		// Update components
 		update();
+
+		m_Maps.update(deltaTime);
         
         background.startMusic();
 		m_Renderer.updateTransform(m_Maps.getTransform(), 1);

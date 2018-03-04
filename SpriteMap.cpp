@@ -37,6 +37,10 @@ bool SpriteMap::build(const std::string& universalSpriteSheetFileName, const std
 	return true;
 }
 
+void SpriteMap::update(sf::Time deltaTime) {
+	vertexFill(m_Characters.at(0), 0);
+}
+
 const sf::Texture& SpriteMap::getUniversalSpriteSheet() const {
 	return m_UniversalSpriteSheet;
 }
@@ -53,28 +57,32 @@ const sf::VertexArray& SpriteMap::getLocalSpriteVerticies() const {
 	return m_LocalSpriteVerticies;
 }
 
+Character* SpriteMap::getPlayer() {
+	return m_Characters.at(0);
+}
+
 void SpriteMap::vertexFill(const Character* const character, size_t offset) {
 	float i = character->getPosition().y;
 	float j = character->getPosition().x;
 	unsigned int width = character->getFrameWidth();
 	unsigned int height = character->getFrameHeight();
 	sf::Vector2f texCoords = character->getTextureCoords();
-	bool universal = character->isUniversal();
+	unsigned int animStep = character->getCurrAnimStep();
 
-	sf::Vertex* quad = universal ? &m_UniversalSpriteVerticies[offset] : &m_LocalSpriteVerticies[offset];
+	sf::Vertex* quad = character->isUniversal() ? &m_UniversalSpriteVerticies[offset] : &m_LocalSpriteVerticies[offset];
 
 	quad->position = sf::Vector2f(j, i);
-	quad->texCoords = texCoords;
+	quad->texCoords = sf::Vector2f(texCoords.x + (animStep * width), texCoords.y);
 
 	quad++;
 	quad->position = sf::Vector2f(j + width, i);
-	quad->texCoords = sf::Vector2f(texCoords.x + width, texCoords.y);
+	quad->texCoords = sf::Vector2f(texCoords.x + width + (animStep * width), texCoords.y);
 
 	quad++;
 	quad->position = sf::Vector2f(j + width, i + height);
-	quad->texCoords = sf::Vector2f(texCoords.x + width, texCoords.y + height);
+	quad->texCoords = sf::Vector2f(texCoords.x + width + (animStep * width), texCoords.y + height);
 
 	quad++;
 	quad->position = sf::Vector2f(j, i + height);
-	quad->texCoords = sf::Vector2f(texCoords.x, texCoords.y + height);
+	quad->texCoords = sf::Vector2f(texCoords.x + (animStep * width), texCoords.y + height);
 }
