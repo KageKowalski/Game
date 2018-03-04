@@ -5,6 +5,7 @@
 Camera::Camera(const sf::Vector2f& size) {
 	resize(size);
 	m_View.setCenter(sf::Vector2f(size.x / 2.0f, size.y / 2.0f));
+	m_TargetPosition = nullptr;
 }
 
 Camera::~Camera() {}
@@ -28,6 +29,25 @@ void Camera::pan(const sf::Vector2f& velocity, sf::Time deltaTime) {
 
 void Camera::resetOrientation() {
 	m_View.setRotation(0.0f);
+}
+
+void Camera::update() {
+	if (m_TargetPosition == nullptr) return;
+	setPosition(sf::Vector2f(m_TargetPosition->x * m_TargetScale->x, m_TargetPosition->y * m_TargetScale->y));
+}
+
+void Camera::setPosition(const sf::Vector2f& position) {
+	m_View.move(position - m_View.getCenter());
+}
+
+void Camera::setTarget(const sf::Vector2f& targetPosition, const sf::Vector2f& targetScale) {
+	m_TargetPosition = &targetPosition;
+	m_TargetScale = &targetScale;
+}
+
+void Camera::detach() {
+	m_TargetPosition = nullptr;
+	m_TargetScale = nullptr;
 }
 
 const sf::FloatRect& Camera::getBounds() const {

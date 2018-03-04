@@ -1,6 +1,6 @@
 #include "Application.h"
 
-Application::Application() : m_Maps(sf::Vector2f(8.0f, 8.0f)) {
+Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;
@@ -20,6 +20,7 @@ int Application::run() {
 	sf::Event e;
     
     Music background("Game_Test.wav");
+	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getPosition(), m_Maps.getScale());
 
 	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
@@ -67,10 +68,10 @@ int Application::run() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::LEFT);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::LEFT);
 
-		m_Window->m_RenderWindow.setView(m_Camera->getView());
-
 		// Update components
 		update();
+
+		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
 		m_Maps.update(deltaTime);
         
@@ -112,7 +113,7 @@ bool Application::init() {
 }
 
 void Application::update() {
-
+	m_Camera->update();
 }
 
 void Application::draw() {

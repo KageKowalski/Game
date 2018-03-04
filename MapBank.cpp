@@ -42,8 +42,8 @@ bool MapBank::loadMap(int mapID) {
 			return false;
 		
 		std::vector<Character*> characters;
-		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 32, 32, "Larvitar the Bodybuiler"));
-		if (!spriteMap->build("lar.png", "lar.png", characters))
+		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 16, 32, "Josh smells like my grandmother's penis"));
+		if (!spriteMap->build("testplayer.png", "testplayer.png", characters))
 			return false;
 
 		std::pair<TileMap*, SpriteMap*> pair;

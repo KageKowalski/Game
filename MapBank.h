@@ -10,7 +10,7 @@
 #include "SpriteMap.h"
 #include "Player.h"
 
-class MapBank : sf::Transformable {
+class MapBank : public sf::Transformable {
 
 public:
 

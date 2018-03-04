@@ -32,22 +32,23 @@ void Character::turn(Direction direction) {
 void Character::walk(sf::Time deltaTime, Direction direction) {
 	switch (direction) {
 	case Direction::DOWN:
-		m_Velocity = sf::Vector2f(0.0f, 35.0f);
+		m_Velocity = sf::Vector2f(0.0f, 25.0f);
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		break;
 	case Direction::UP:
-		m_Velocity = sf::Vector2f(0.0f, -35.0f);
+		m_Velocity = sf::Vector2f(0.0f, -25.0f);
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		break;
 	case Direction::LEFT:
-		m_Velocity = sf::Vector2f(-35.0f, 0.0f);
+		m_Velocity = sf::Vector2f(-25.0f, 0.0f);
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		break;
 	case Direction::RIGHT:
-		m_Velocity = sf::Vector2f(35.0f, 0.0f);
+		m_Velocity = sf::Vector2f(25.0f, 0.0f);
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		break;
 	}
+	m_Velocity = sf::Vector2f(0.0f, 0.0f);
 }
 
 const sf::Vector2f& Character::getVelocity() const {
