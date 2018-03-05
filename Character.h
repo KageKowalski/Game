@@ -3,6 +3,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <cmath>
 #include "Entity.h"
 #include "Animation.h"
 
@@ -28,6 +29,7 @@ public:
 
 	const sf::Vector2f& getVelocity() const;
 	bool isUniversal() const;
+	bool isMoving() const;
 	int getCharacterID() const;
 
 protected:
@@ -55,6 +57,8 @@ protected:
 	size_t m_SequenceStep;
 
 	Direction m_DirectionFacing;
+
+	bool m_Moving;
 
 };
 

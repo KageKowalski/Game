@@ -21,6 +21,7 @@ Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int
 	m_CenterPosition = sf::Vector2f(position.x + (static_cast<float>(frameWidth) / 2.0f),
 		position.y + static_cast<float>(frameHeight - 8.0f));
 	m_Universal = true;
+	m_Moving = false;
 	m_CharacterID = -1;
 	m_SequenceStep = 0;
 	m_DirectionFacing = Direction::DOWN;
@@ -70,10 +71,13 @@ void Character::update(sf::Time deltaTime) {
 	bool useWalkSequence = true;
 
 	if (m_Velocity == sf::Vector2f(0.0f, 0.0f)) {
+		m_Moving = false;
 		m_ElapsedTime = sf::Time::Zero;
 		m_SequenceStep = 0;
 	}
 	else {
+		m_Moving = true;
+
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		m_CenterPosition += m_Velocity * deltaTime.asSeconds();
 
@@ -111,6 +115,10 @@ const sf::Vector2f& Character::getVelocity() const {
 
 bool Character::isUniversal() const {
 	return m_Universal;
+}
+
+bool Character::isMoving() const {
+	return m_Moving;
 }
 
 int Character::getCharacterID() const {
