@@ -59,17 +59,17 @@ int Application::run() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U)) m_Camera->rotate(-120.0f, deltaTime);
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Y)) m_Camera->resetOrientation();
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::DOWN);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::DOWN);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::DOWN);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::DOWN);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::UP);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::UP);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::UP);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::UP);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::LEFT);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::LEFT);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::LEFT);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::LEFT);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->turn(Direction::RIGHT);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->walk(deltaTime, Direction::RIGHT);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::RIGHT);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::RIGHT);
 
 		// Update components
 		update();

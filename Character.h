@@ -15,39 +15,20 @@ enum class Direction {
 
 class Character : public Entity, public Animation {
 
-	enum Frame {
-		LOOK_DOWN,
-		LOOK_UP,
-		LOOK_LEFT,
-		LOOK_RIGHT,
-		STEP_DOWN_LEFT_FOOT_FORWARD,
-		STEP_DOWN_RIGHT_FOOT_FORWARD,
-		STEP_UP_LEFT_FOOT_FORWARD,
-		STEP_UP_RIGHT_FOOT_FORWARD,
-		STEP_LEFT_LEFT_FOOT_FORWARD,
-		STEP_LEFT_RIGHT_FOOT_FOWARD,
-		STEP_RIGHT_LEFT_FOOT_FORWARD,
-		STEP_RIGHT_RIGHT_FOOT_FOWARD
-	};
-
 public:
 
 	Character(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
 		unsigned int frameHeight);
 	~Character();
 
-	void turn(Direction direction);
-	void walk(sf::Time deltaTime, Direction direction);
+	void walk(Direction direction);
+	void run(Direction direction);
 
 	void update(sf::Time deltaTime);
 
 	const sf::Vector2f& getVelocity() const;
 	bool isUniversal() const;
 	int getCharacterID() const;
-
-private:
-
-	Direction mapFrameToDirection(Frame frame);
 
 protected:
 
@@ -57,9 +38,23 @@ protected:
 
 	int m_CharacterID;
 
-	Frame m_CurrFrame;
-
 	sf::Time m_ElapsedTime;
+
+	static const unsigned int m_WALK_DOWN_SEQUENCE[4];
+	static const unsigned int m_WALK_UP_SEQUENCE[4];
+	static const unsigned int m_WALK_LEFT_SEQUENCE[4];
+	static const unsigned int m_WALK_RIGHT_SEQUENCE[4];
+	static const unsigned int m_RUN_DOWN_SEQUENCE[4];
+	static const unsigned int m_RUN_UP_SEQUENCE[4];
+	static const unsigned int m_RUN_LEFT_SEQUENCE[4];
+	static const unsigned int m_RUN_RIGHT_SEQUENCE[4];
+
+	static const float m_WALK_VELOCITY;
+	static const float m_RUN_VELOCITY;
+
+	size_t m_SequenceStep;
+
+	Direction m_DirectionFacing;
 
 };
 
