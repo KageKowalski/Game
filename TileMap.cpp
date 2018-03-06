@@ -7,15 +7,33 @@
 
 TileMap::Tile::Tile() : _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
-TileMap::Tile::Tile(int ID, const sf::Vector2f& postition) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition)
-{}
-//Moves the animation step forward one if the the time exceeds that last 
-void TileMap::Tile::updateAnimStep(sf::Time deltaTime)
+TileMap::Tile::Tile(int ID, const sf::Vector2f& postition, const float &volume, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _properties(properties), _soundFilename(soundFilename)
 {
-    if(_animate.getTotalAnimSteps() > 1)
+    _volume = volume;
+    _centerPosition.x = _position.x + 8;
+    _centerPosition.y = _position.y + 8;
+    if(properties&0x02) _tileSound = new Sound(soundFilename, sf::seconds(0.0f));
+    else if(properties&0x04) _tileSound = new Sound(soundFilename, sf::seconds(0.0f));
+}
+TileMap::Tile::~Tile()
+{}
+
+//Moves the animation step forward one if the the time exceeds that last and deals with the sound
+void TileMap::Tile::update(sf::Time deltaTime, const sf::Vector2f& pposition)
+{
+    if((_animate.getTotalAnimSteps() > 1) && (256 - sqrt(pow(_centerPosition.x-pposition.x,2)+pow(_centerPosition.y-pposition.y,2)) > 0))
     {
         _animate.update(deltaTime);
         _step = _animate.getCurrAnimStep();
+    }
+    if(_properties&0x02)
+    {
+        
+    }
+    if(_properties&0x04)
+    {
+        _tileSound->setVolume(_volume - .5*sqrt(pow(_centerPosition.x-pposition.x,2)+pow(_centerPosition.y-pposition.y,2)));
+        _tileSound->playSound(deltaTime);
     }
 }
 void TileMap::Tile::setAnimStep(unsigned int step)
@@ -29,10 +47,19 @@ void TileMap::Tile::setAnimStep(unsigned int step)
 int  TileMap::Tile::getID()        { return _tileID; }
 void TileMap::Tile::setID(int ID)  { _tileID = ID;   }
 int  TileMap::Tile::getAnimStep()  { return _step;   }
-const sf::Vector2f& TileMap::Tile::getPosition() const
+const sf::Vector2f& TileMap::Tile::getPosition()       const
 {
     return _position;
 }
+const sf::Vector2f& TileMap::Tile::getCenterPosition() const
+{
+    return _centerPosition;
+}
+const char TileMap::Tile::getProperties() const
+{
+    return _properties;
+}
+
 
 /********************************
   TileMap Functions/Constructors
@@ -50,7 +77,7 @@ TileMap::TileMap(std::string name) : _name(name)
     _canopyVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 }
 
-bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName)
+bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, const float &volume, std::string Music, std::string tilesetFileName)
 {
     if(!_tileset.load(tilesetFileName)) return false;
     _width = width;
@@ -79,11 +106,43 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
     {
         for(int j = 0; j < _width; j++)
         {
-            if(ground[0]!=-2) _ground[i][j]   = Tile(ground[i*_width+j],   sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
-            if(layerTwo[0]!=-2) _layerTwo[i][j] = Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
-            if(layerThree[0]!=-2)_layerThree[i][j] = Tile(layerThree[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
-            if(layerSix[0]!=-2) _layerSix[i][j] = Tile(layerSix[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
-            if(canopy[0]!=-2) _canopy[i][j] = Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+            if(ground[0]!=-2)
+            {
+                switch(ground[i*_width+j])
+                {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                        _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x05, "waves.wav");
+                        break;
+                    case 0:
+                    case 2:
+                    case 4:
+                    case 6:
+                    case 8:
+                        _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x01);
+                        break;
+                    default:
+                        _ground[i][j] = Tile(ground[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+                }
+            }
+            if(layerTwo[0]!=-2)
+            {
+                _layerTwo[i][j] = Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+            }
+            if(layerThree[0]!=-2)
+            {
+                _layerThree[i][j] = Tile(layerThree[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+            }
+            if(layerSix[0]!=-2)
+            {
+                _layerSix[i][j] = Tile(layerSix[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+            }
+            if(canopy[0]!=-2)
+            {
+                _canopy[i][j] = Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+            }
 			vertexFill(i, j);
         }
     }
@@ -246,15 +305,15 @@ void TileMap::vertexFill(int y, int x)
     }
 }
 
-void TileMap::updateMap(sf::Time deltaTime)
+void TileMap::updateMap(sf::Time deltaTime, const sf::Vector2f& pposition)
 {
     for(int i = 0; i < _height; i++)
     {
         for(int j = 0; j < _width; j++)
         {
-            _ground[i][j].updateAnimStep(deltaTime);
-            _layerTwo[i][j].updateAnimStep(deltaTime);
-            _layerTwo[i][j].updateAnimStep(deltaTime);
+            _ground[i][j].update(deltaTime, pposition);
+            _layerTwo[i][j].update(deltaTime, pposition);
+            _layerTwo[i][j].update(deltaTime, pposition);
             vertexFill(i, j);
         }
     }

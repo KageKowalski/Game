@@ -17,9 +17,9 @@ public:
 	MapBank(const sf::Vector2f& scale);
 	~MapBank();
 
-	bool loadMap(int mapID);
+	bool loadMap(int mapID, const float& volume);
 
-	void update(sf::Time deltaTime);
+	void update(sf::Time deltaTime, const sf::Vector2f& pposition);
 
 	void setCurrMapID(int mapID);
 

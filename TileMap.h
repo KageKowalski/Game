@@ -5,8 +5,11 @@
 #include <stdio.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <stdio.h>
 #include "AutoAnimation.h"
 #include "TileSet.h"
+#include "Sound.h"
+#include <math.h>
 
 class TileMap
 {
@@ -25,8 +28,28 @@ class TileMap
         //position of tile on the map
         sf::Vector2f _position;
         
+        //center position of the tile
+        sf::Vector2f _centerPosition;
+        
         //function gets the correct tile animation for each tile
         AutoAnimation getTileAnimation(int ID);
+        
+        Sound* _tileSound;
+        
+        float _volume;
+        
+        //contains all tile properties in bits
+        //  bit 7 is unused
+        //  bit 6 is unused
+        //  bit 5 is unused
+        //  bit 4 is unused
+        //  bit 3 is unused
+        //  bit 2 is set if a tile radiates sound
+        //  bit 1 is whether a tile has movement sound
+        //  bit 0 is if you can't walk on a tile
+        char _properties;
+        
+        std::string _soundFilename;
     
     public:
         Tile();
@@ -34,12 +57,14 @@ class TileMap
         //constructs a tile with its correct id starts animation
         //starts the animation on step one if you want to start on another step call setAnimStep after initialization
         //sets the position on map
-        Tile(int ID, const sf::Vector2f& position);
+        Tile(int ID, const sf::Vector2f& position, const float &volume, char properties = 0, std::string soundFilename = "");
+        
+        ~Tile();
         
         //updates the animation of the tile if the current delta time is greater
         //than the set animation time
         //if the tile only has one step the function exits before accessing the vertexarray
-        void updateAnimStep(sf::Time);
+        void update(sf::Time,const sf::Vector2f&);
         
         //sets animation step to a desired animation step regardless of time
         //goes from [1 _animate.getTotalAnimSteps()]
@@ -55,7 +80,13 @@ class TileMap
         int getAnimStep();
         
         //returns the position of the tile
-        const sf::Vector2f& getPosition() const;
+        const sf::Vector2f& getPosition()       const;
+        
+        //returns center position
+        const sf::Vector2f& getCenterPosition() const;
+        
+        //return properties
+        const char getProperties() const;
 
     };
     
@@ -101,10 +132,10 @@ public:
     //builds the map and returns true on a successful build
     //send maps with a -1 value for invalid textures
     //if a map has a -2 value in the 0 position the map will be thrown out
-    bool build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName);
+    bool build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, const float &volume, std::string Music, std::string tilesetFileName);
     
     //updates all animated tiles in the map
-    void updateMap(sf::Time);
+    void updateMap(sf::Time,const sf::Vector2f&);
     
     //returns the vertexarrays from the corresponding layer
     const sf::VertexArray& getGroundVertices()     const;
@@ -122,7 +153,7 @@ public:
     
     //returns the map id
     int getMapID();
-    
+
     virtual ~TileMap();
 
 private:

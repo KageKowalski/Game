@@ -20,7 +20,7 @@ MapBank::~MapBank() {
 	}
 }
 
-bool MapBank::loadMap(int mapID) {
+bool MapBank::loadMap(int mapID, const float &volume) {
 	if (mapID == 0) {
 		TileMap* testMap = new TileMap("Bodybuilder Hamlet");
 		SpriteMap* spriteMap = new SpriteMap();
@@ -38,11 +38,11 @@ bool MapBank::loadMap(int mapID) {
 			13,7,6,6,6,6,6,6,5,13,
 			13,13,13,13,13,13,13,13,13,13
 		};
-		if (!testMap->build(mapOne, blank, blank, blank, blank, 10, 10, "Game_Test.wav", "TestTileSet.png"))
+		if (!testMap->build(mapOne, blank, blank, blank, blank, 10, 10, volume, "Game_Test.wav", "TestTileSet.png"))
 			return false;
 		
 		std::vector<Character*> characters;
-		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 16, 32, "Josh smells like my grandmother's penis"));
+		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 16, 32, "Klayton smells like my grandmother's penis"));
 		if (!spriteMap->build("testplayer.png", "testplayer.png", characters))
 			return false;
 
@@ -56,11 +56,11 @@ bool MapBank::loadMap(int mapID) {
 	return false;
 }
 
-void MapBank::update(sf::Time deltaTime) {
+void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition) {
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
 
-	currTileMap->updateMap(deltaTime);
+	currTileMap->updateMap(deltaTime, pposition);
 	currSpriteMap->update(deltaTime);
 
 	m_CurrMapVerticies.clear();

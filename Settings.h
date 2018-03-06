@@ -20,8 +20,8 @@ public:
 	const sf::VideoMode& getCurrVideoMode() const;
 	const std::vector<sf::VideoMode>& getFullscreenVideoModes() const;
 	bool isFullscreen() const;
-	float getMusicVolume() const;
-	float getEffectsVolume() const;
+	const float getMusicVolume() const;
+	const float getEffectsVolume() const;
 
 private:
 
