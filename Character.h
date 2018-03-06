@@ -7,6 +7,35 @@
 #include "Entity.h"
 #include "Animation.h"
 
+// THIS CLASS ASSUMES THE FOLLOWING ANIMATION STEP VALUES:
+// 0 == Look down
+// 1 == Look up
+// 2 == Look left
+// 3 == Look right
+// 4 == Walk down left foot forward
+// 5 == Walk down right foot forward
+// 6 == Walk up left foot forward
+// 7 == Walk up right foot forward
+// 8 == Walk left left foot forward
+// 9 == Walk left right food forward
+// 10 == Walk right left foot forward
+// 11 == Walk right left food forward
+// 12 == Look down (athletic stance)
+// 13 == Look up (athletic stance)
+// 14 == Look left (athletic stance)
+// 15 == Look right (athletic stance)
+// 16 == Run down left foot forward
+// 17 == Run down right foot forward
+// 18 == Run up left foot forward
+// 19 == Run up right foot forward
+// 20 == Run left left foot forward
+// 21 == Run left right food forward
+// 22 == Run right left foot forward
+// 23 == Run right left food forward
+
+// All possible directions in which a character can be moving.
+// Used internally to decide on velocity.
+// Used by other classes to tell Character which direction to move.
 enum class Direction {
 	DOWN,
 	UP,
@@ -14,34 +43,63 @@ enum class Direction {
 	RIGHT
 };
 
+// All characters share the following functionalities.
+// Characters aren't supposed to be instantiated without dynamically pointing to one of its
+// subclass. Using this class as a polymorphic base is recommended when batching a bunch
+// of different types of characters into the same vector or list of characters, like in SpriteMap.
 class Character : public Entity, public Animation {
 
 public:
 
+	// Constructor takes Entity and Animation information.
 	Character(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
 		unsigned int frameHeight);
 	~Character();
 
+	// Walk in some cardinal direction. May be called more than once per frame for diagonal motion.
+	// Only prepares character's velocity; actual position updates happen in update().
 	void walk(Direction direction);
+
+	// Run in some cardinal direction. May be called more than once per frame for diagonal motion.
+	// Only prepares character's velocity; actual position updates happen in update().
 	void run(Direction direction);
 
+	// Updates the character's position, animation, etc every frame.
+	// Extract deltaTime using Clock.
 	void update(sf::Time deltaTime);
 
+	// Retrieves the character's velocity.
 	const sf::Vector2f& getVelocity() const;
+	
+	// Does this character's sprite stem from the universal sprite sheet?
 	bool isUniversal() const;
+
+	// Did the player receive a position update this frame?
 	bool isMoving() const;
+
+	// Retrieves the character's ID.
 	int getCharacterID() const;
 
 protected:
 
+	// Velocity in the cardinal directions. Used in position updates.
 	sf::Vector2f m_Velocity;
 
+	// Determines whether the character's sprite stems from the universal sprite sheet.
+	// Will be automatically set depending on which subclass is instantiated.
 	bool m_Universal;
 
+	// Each character has its own unique character ID value.
+	// Will be automatically set depending on which subclass is instantiated.
+	// Character ID of -1 indicates a faulty instantiation (perhaps no subclass was specified).
 	int m_CharacterID;
 
+	// Time elpased since last animation step update.
+	// Used internally to control a character's unique animation sequence.
 	sf::Time m_ElapsedTime;
 
+	// Specifies the animation frame to display based on whether we're walking or running,
+	// and depending on which direction we're moving.
 	static const unsigned int m_WALK_DOWN_SEQUENCE[4];
 	static const unsigned int m_WALK_UP_SEQUENCE[4];
 	static const unsigned int m_WALK_LEFT_SEQUENCE[4];
@@ -51,13 +109,18 @@ protected:
 	static const unsigned int m_RUN_LEFT_SEQUENCE[4];
 	static const unsigned int m_RUN_RIGHT_SEQUENCE[4];
 
+	// Specifies the fixed walking and running velocities.
 	static const float m_WALK_VELOCITY;
 	static const float m_RUN_VELOCITY;
 
+	// Indicates which step of the animation sequence is currently being displayed.
+	// Used internally to progress through a character's unique animation sequence.
 	size_t m_SequenceStep;
 
+	// Indicates which cardinal direction the character is facing.
 	Direction m_DirectionFacing;
 
+	// Indicates whether the character is moving.
 	bool m_Moving;
 
 };
