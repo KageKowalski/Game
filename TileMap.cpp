@@ -14,6 +14,7 @@ TileMap::Tile::Tile(int ID, const sf::Vector2f& postition, const float &volume, 
     _centerPosition.y = _position.y + 8;
     if(properties&0x02) _tileSound = new Sound(soundFilename, sf::seconds(0.0f));
     else if(properties&0x04) _tileSound = new Sound(soundFilename, sf::seconds(0.0f));
+	else _tileSound = nullptr;
 }
 TileMap::Tile::~Tile()
 {}
