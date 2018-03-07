@@ -34,8 +34,6 @@ class TileMap
         //function gets the correct tile animation for each tile
         AutoAnimation getTileAnimation(int ID);
         
-        Sound* _tileSound;
-        
         float _volume;
         
         //contains all tile properties in bits
@@ -100,7 +98,6 @@ private:
     Tile** _layerSix;
     Tile** _canopy;
     TileSet _tileset;
-    std::string name;
     
     //width and height of the current tilemap
     int _width;

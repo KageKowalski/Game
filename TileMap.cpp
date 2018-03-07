@@ -12,8 +12,6 @@ TileMap::Tile::Tile(int ID, const sf::Vector2f& postition, const float &volume, 
     _volume = volume;
     _centerPosition.x = _position.x + 8;
     _centerPosition.y = _position.y + 8;
-    if(properties&0x02) _tileSound = new Sound(soundFilename, sf::seconds(0.0f));
-    else if(properties&0x04) _tileSound = new Sound(soundFilename, sf::seconds(0.0f));
 }
 TileMap::Tile::~Tile()
 {}
@@ -21,7 +19,7 @@ TileMap::Tile::~Tile()
 //Moves the animation step forward one if the the time exceeds that last and deals with the sound
 void TileMap::Tile::update(sf::Time deltaTime, const sf::Vector2f& pposition)
 {
-    if((_animate.getTotalAnimSteps() > 1) && (256 - sqrt(pow(_centerPosition.x-pposition.x,2)+pow(_centerPosition.y-pposition.y,2)) > 0))
+    if((_animate.getTotalAnimSteps() > 1))
     {
         _animate.update(deltaTime);
         _step = _animate.getCurrAnimStep();
@@ -32,8 +30,6 @@ void TileMap::Tile::update(sf::Time deltaTime, const sf::Vector2f& pposition)
     }
     if(_properties&0x04)
     {
-        _tileSound->setVolume(_volume - .5*sqrt(pow(_centerPosition.x-pposition.x,2)+pow(_centerPosition.y-pposition.y,2)));
-        _tileSound->playSound(deltaTime);
     }
 }
 void TileMap::Tile::setAnimStep(unsigned int step)
