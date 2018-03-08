@@ -4,13 +4,17 @@
 
 MapBank::MapBank(const sf::Vector2f& scale) {
 	setScale(scale);
-
 	m_TileSetFileNames.push_back("TestTileSet.png");
 	m_UniversalSpriteSheetFileName = "lar.png";
 	m_LocalSpriteSheetFileNames.push_back("lar.png");
 	m_BackgroundMusicFileNames.push_back("Game_Test.wav");
 
 	m_CurrMap = 0;
+}
+
+void MapBank::soundInit(const float& volume)
+{
+    m_soundHandler.setVolume(volume);
 }
 
 MapBank::~MapBank() {
@@ -57,7 +61,7 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 	return false;
 }
 
-void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition) {
+void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, const sf::FloatRect &cameraView) {
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
 
@@ -77,6 +81,8 @@ void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition) {
 	m_CurrMapTextures.push_back(currTileMap->getTileSet());
 	m_CurrMapTextures.push_back(currSpriteMap->getUniversalSpriteSheet());
 	m_CurrMapTextures.push_back(currSpriteMap->getLocalSpriteSheet());
+    
+    m_soundHandler.attachTileSounds(deltaTime, cameraView, m_Maps[m_CurrMap].second->getPlayer()->getCenterPosition(), *currTileMap);
 }
 
 void MapBank::setCurrMapID(int mapID) {

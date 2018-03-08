@@ -44,10 +44,10 @@ public:
 	bool isFullscreen() const;
 
 	// Retrieves the music volume.
-	float getMusicVolume() const;
+	const float& getMusicVolume() const;
 
 	// Retrieves the sound effects volume.
-	float getEffectsVolume() const;
+	const float& getEffectsVolume() const;
 
 private:
 

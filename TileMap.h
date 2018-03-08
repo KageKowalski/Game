@@ -9,10 +9,10 @@
 #include "AutoAnimation.h"
 #include "TileSet.h"
 #include "Sound.h"
-#include <math.h>
 
 class TileMap
 {
+public:
     class Tile
     {
     private:
@@ -85,6 +85,8 @@ class TileMap
         
         //return properties
         const char getProperties() const;
+        
+        const std::string& getSoundFilename() const;
 
     };
     
@@ -141,6 +143,15 @@ public:
     const sf::VertexArray& getLayerSixVertices()   const;
     const sf::VertexArray& getCanopyVertices()     const;
     const sf::Texture&     getTileSet()            const;
+    
+    const TileMap::Tile* const * const getGroundTiles()     const;
+    const TileMap::Tile* const * const getLayerTwoTiles()   const;
+    const TileMap::Tile* const * const getLayerThreeTiles() const;
+    const TileMap::Tile* const * const getLayerSixTiles()   const;
+    const TileMap::Tile* const * const getCanopyTiles()     const;
+    
+    int getWidth()  const;
+    int getHeight() const;
     
     //returns the maps music
     std::string getMusic();

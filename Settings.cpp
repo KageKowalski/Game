@@ -46,10 +46,10 @@ bool Settings::isFullscreen() const {
 	return m_Fullscreen;
 }
 
-float Settings::getMusicVolume() const {
+const float& Settings::getMusicVolume() const {
 	return m_MusicVolume;
 }
 
-float Settings::getEffectsVolume() const {
+const float& Settings::getEffectsVolume() const {
 	return m_EffectsVolume;
 }

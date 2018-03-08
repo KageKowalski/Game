@@ -70,7 +70,7 @@ int Application::run() {
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		m_Maps.update(deltaTime, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition());
+		m_Maps.update(deltaTime, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(),m_Camera->getBounds());
         
         //background.startMusic();
 		m_Renderer.updateTransform(m_Maps.getTransform(), 1);
@@ -101,7 +101,7 @@ bool Application::init() {
 	m_Settings = new Settings();
     m_Settings->setMusicVolume(50.0f);
     m_Settings->setEffectsVolume(50.0f);
-
+    m_Maps.soundInit(m_Settings->getEffectsVolume());
 	// Cache startup video mode
 	sf::VideoMode initMode = m_Settings->getCurrVideoMode();
 

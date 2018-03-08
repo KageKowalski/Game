@@ -55,6 +55,10 @@ const char TileMap::Tile::getProperties() const
 {
     return _properties;
 }
+const std::string& TileMap::Tile::getSoundFilename() const
+{
+    return _soundFilename;
+}
 
 
 /********************************
@@ -106,21 +110,20 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             {
                 switch(ground[i*_width+j])
                 {
+                    case 0:
                     case 1:
                     case 3:
                     case 5:
                     case 7:
-                        _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x05, "waves.wav");
-                        break;
-                    case 0:
                     case 2:
                     case 4:
                     case 6:
                     case 8:
-                        _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x01);
+                        _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x05, "waves.wav");
                         break;
                     default:
                         _ground[i][j] = Tile(ground[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+                        break;
                 }
             }
             if(layerTwo[0]!=-2)
@@ -339,6 +342,37 @@ const sf::VertexArray& TileMap::getCanopyVertices() const
 const sf::Texture& TileMap::getTileSet() const
 {
     return _tileset.getTexture();
+}
+
+
+const TileMap::Tile* const * const TileMap::getGroundTiles()     const
+{
+    return _ground;
+}
+const TileMap::Tile* const * const TileMap::getLayerTwoTiles()   const
+{
+    return _layerTwo;
+}
+const TileMap::Tile* const * const TileMap::getLayerThreeTiles() const
+{
+    return _layerThree;
+}
+const TileMap::Tile* const * const TileMap::getLayerSixTiles()   const
+{
+    return _layerSix;
+}
+const TileMap::Tile* const * const TileMap::getCanopyTiles()     const
+{
+    return _canopy;
+}
+
+int TileMap::getWidth()  const
+{
+    return _width;
+}
+int TileMap::getHeight() const
+{
+    return _height;
 }
 
 std::string TileMap::getMusic()

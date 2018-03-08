@@ -2,24 +2,27 @@
 #include "Sound.h"
 
 Sound::Sound()
-{
-    _sound.~Sound();
-}
-
-Sound::Sound(std::string filename, sf::Time soundDelay) : _filename(filename)
-{
-    _buffer.loadFromFile(filename);
-    _sound.setBuffer(_buffer);
-    _soundDelay = soundDelay + _buffer.getDuration();
-}
+{}
 void Sound::playSound(sf::Time deltaTime)
 {
     _elapsedTime += deltaTime;
     if(_elapsedTime > _soundDelay)
     {
+        _sound.setBuffer(_buffer);
         _sound.play();
         _elapsedTime = sf::Time::Zero;
     }
+}
+bool Sound::setBuffer(std::string filename)
+{
+    _filename = filename;
+    if(!_buffer.loadFromFile(filename)) return false;
+    _soundDelay = _buffer.getDuration();
+    return true;
+}
+const std::string& Sound::getFilename() const
+{
+    return _filename;
 }
 void Sound::setVolume(float volume)
 {
@@ -36,4 +39,24 @@ void  Sound::incrementVolume()
 void Sound::decrementVolume()
 {
     _sound.setVolume(_sound.getVolume()-1.0f);
+}
+bool Sound::isPlaying()
+{
+    return _sound.getStatus() == _sound.Playing;
+}
+float Sound::getRadiusFromPlayer() const
+{
+    return _radiusFromPlayer;
+}
+void Sound::setRadiusFromPlayer(float radius)
+{
+    _radiusFromPlayer = radius;
+}
+float Sound::getLastRadiusFromPlayer() const
+{
+    return _lastIterationRadius;
+}
+void Sound::setLastRadiusFromPlayer()
+{
+    _lastIterationRadius = _radiusFromPlayer;
 }
