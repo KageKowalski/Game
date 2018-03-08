@@ -51,7 +51,7 @@ void Camera::detach() {
 }
 
 const sf::FloatRect& Camera::getBounds() const {
-	return sf::FloatRect(m_View.getCenter() - m_View.getSize() / 2.0f, m_View.getSize());
+	return sf::FloatRect(m_View.getCenter(), m_View.getSize() / 2.0f);
 }
 
 const sf::View& Camera::getView() const {

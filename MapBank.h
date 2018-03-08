@@ -9,6 +9,7 @@
 #include "TileMap.h"
 #include "SpriteMap.h"
 #include "Player.h"
+#include "NPC.h"
 
 class MapBank : public sf::Transformable {
 

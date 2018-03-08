@@ -15,11 +15,12 @@ const float Character::m_WALK_VELOCITY = 25.0f;
 const float Character::m_RUN_VELOCITY = 60.0f;
 
 Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
-	unsigned int frameHeight)
+	unsigned int frameHeight, const sf::String& name)
 	: Entity(position), Animation(initAnimStep, totalAnimSteps, frameWidth, frameHeight)
 {
 	m_CenterPosition = sf::Vector2f(position.x + (static_cast<float>(frameWidth) / 2.0f),
 		position.y + static_cast<float>(frameHeight - 8.0f));
+	m_Name = name;
 	m_Universal = true;
 	m_Moving = false;
 	m_CharacterID = -1;
@@ -107,6 +108,14 @@ void Character::update(sf::Time deltaTime) {
 		m_CurrAnimStep = useWalkSequence ? m_WALK_RIGHT_SEQUENCE[m_SequenceStep] : m_RUN_RIGHT_SEQUENCE[m_SequenceStep];
 		break;
 	}
+}
+
+void Character::setName(const sf::String& name) {
+	m_Name = name;
+}
+
+const sf::String& Character::getName() const {
+	return m_Name;
 }
 
 const sf::Vector2f& Character::getVelocity() const {

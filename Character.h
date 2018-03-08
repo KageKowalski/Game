@@ -53,7 +53,7 @@ public:
 
 	// Constructor takes Entity and Animation information.
 	Character(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
-		unsigned int frameHeight);
+		unsigned int frameHeight, const sf::String& name = "DEFAULT NAME");
 	~Character();
 
 	// Walk in some cardinal direction. May be called more than once per frame for diagonal motion.
@@ -68,6 +68,13 @@ public:
 	// Extract deltaTime using Clock.
 	void update(sf::Time deltaTime);
 
+	// Sets the character's name.
+	// Probably not a good idea to be changing names throughout the game, but good for game startup.
+	void setName(const sf::String& name);
+
+	// Retrieves the character's name.
+	const sf::String& getName() const;
+
 	// Retrieves the character's velocity.
 	const sf::Vector2f& getVelocity() const;
 	
@@ -81,6 +88,9 @@ public:
 	int getCharacterID() const;
 
 protected:
+
+	// Character's name.
+	sf::String m_Name;
 
 	// Velocity in the cardinal directions. Used in position updates.
 	sf::Vector2f m_Velocity;
