@@ -63,7 +63,7 @@ public:
 	// Calculates and retrieves the position bounds of the viewport, in pixel units.
 	// The position bounds are useful for determining whether a particular vertex
 	// is visible on the screen or lies outside of the camera's view.
-	const sf::FloatRect& getBounds() const;
+	sf::FloatRect getBounds() const;
 
 	// Retrieves the viewport.
 	const sf::View& getView() const;

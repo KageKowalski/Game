@@ -11,7 +11,7 @@ public:
 
 	Player(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
 		unsigned int frameHeight, const sf::String& name = "DEFAULT NAME");
-	~Player();
+	virtual ~Player();
 
 };
 

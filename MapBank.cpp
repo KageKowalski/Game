@@ -43,7 +43,7 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 		
 		std::vector<Character*> characters;
 		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 16, 32, "Actual Player"));
-		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 3, 4, 16, 32, "Actually an NPC"));
+		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 3, 4, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Actually an NPC"));
 		if (!spriteMap->build("testplayer.png", "testplayer.png", characters))
 			return false;
 

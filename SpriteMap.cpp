@@ -38,7 +38,9 @@ bool SpriteMap::build(const std::string& universalSpriteSheetFileName, const std
 }
 
 void SpriteMap::update(sf::Time deltaTime) {
-	m_Characters.at(0)->update(deltaTime);
+	for (Character* const character : m_Characters)
+		character->update(deltaTime);
+
 	vertexFill(m_Characters.at(0), 0);
 }
 
