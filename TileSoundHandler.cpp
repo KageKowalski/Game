@@ -25,7 +25,7 @@ bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect camera
                             _soundsPosition[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())].x = tilemap.getGroundTiles()[i][j].getCenterPosition().x;
                             _soundsPosition[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())].y = tilemap.getGroundTiles()[i][j].getCenterPosition().y;
                         }
-                        if(radius > _sounds[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())].getRadiusFromPlayer() && _soundsPosition[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())] == tilemap.getGroundTiles()[i][j].getCenterPosition())
+                        else if(radius != _sounds[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())].getRadiusFromPlayer() && _soundsPosition[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())] == tilemap.getGroundTiles()[i][j].getCenterPosition())
                         {
                             _sounds[findSound(tilemap.getGroundTiles()[i][j].getSoundFilename())].setRadiusFromPlayer(radius);
                         }
