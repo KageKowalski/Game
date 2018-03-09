@@ -10,6 +10,7 @@
 #include "SpriteMap.h"
 #include "Player.h"
 #include "NPC.h"
+#include "TileSoundHandler.h"
 
 class MapBank : public sf::Transformable {
 
@@ -20,7 +21,7 @@ public:
 
 	bool loadMap(int mapID, const float& volume);
 
-	void update(sf::Time deltaTime, const sf::Vector2f& pposition);
+	void update(sf::Time deltaTime, const sf::Vector2f& pposition, sf::FloatRect cameraView);
 
 	void setCurrMapID(int mapID);
 
@@ -30,6 +31,7 @@ public:
 	const std::vector<sf::Texture>& getTextures() const;
 
 	int getCurrMapID() const;
+    void soundInit(const float& volume);
 
 private:
 
@@ -41,6 +43,8 @@ private:
 	std::vector<std::string> m_BackgroundMusicFileNames;
 
 	int m_CurrMap;
+    
+    TileSoundHandler m_SoundHandler;
 
 	std::vector<sf::VertexArray> m_CurrMapVerticies;
 	std::vector<sf::Texture> m_CurrMapTextures;

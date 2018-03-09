@@ -14,7 +14,7 @@ MapBank::MapBank(const sf::Vector2f& scale) {
 
 void MapBank::soundInit(const float& volume)
 {
-    m_soundHandler.setVolume(volume);
+    m_SoundHandler.setVolume(volume);
 }
 
 MapBank::~MapBank() {
@@ -61,13 +61,16 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 	return false;
 }
 
-void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, const sf::FloatRect &cameraView) {
+void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, sf::FloatRect cameraView) {
+    
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
 
+    m_SoundHandler.attachTileSounds(deltaTime, cameraView, m_Maps[m_CurrMap].second->getPlayer()->getCenterPosition(), *currTileMap);
 	currTileMap->updateMap(deltaTime, pposition);
 	currSpriteMap->update(deltaTime);
 
+    
 	m_CurrMapVerticies.clear();
 	m_CurrMapTextures.clear();
 
@@ -82,7 +85,7 @@ void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, const sf:
 	m_CurrMapTextures.push_back(currSpriteMap->getUniversalSpriteSheet());
 	m_CurrMapTextures.push_back(currSpriteMap->getLocalSpriteSheet());
     
-    m_soundHandler.attachTileSounds(deltaTime, cameraView, m_Maps[m_CurrMap].second->getPlayer()->getCenterPosition(), *currTileMap);
+    
 }
 
 void MapBank::setCurrMapID(int mapID) {
