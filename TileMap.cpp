@@ -10,8 +10,8 @@ TileMap::Tile::Tile() : _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf
 TileMap::Tile::Tile(int ID, const sf::Vector2f& postition, const float &volume, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _properties(properties), _soundFilename(soundFilename)
 {
     _volume = volume;
-    _centerPosition.x = _position.x + 8;
-    _centerPosition.y = _position.y + 8;
+    _centerPosition.x = _position.x * 16 + 8;
+    _centerPosition.y = _position.y * 16 + 8;
 }
 TileMap::Tile::~Tile()
 {}
@@ -112,13 +112,17 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
                 {
                     case 0:
                     case 1:
-                    case 3:
-                    case 5:
-                    case 7:
                     case 2:
+                    case 3:
                     case 4:
+                    case 5:
                     case 6:
+                    case 7:
                     case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
                         _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x05, "waves.wav");
                         break;
                     default:

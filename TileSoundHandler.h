@@ -14,7 +14,7 @@ public:
     ~TileSoundHandler();
     bool attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, const sf::Vector2f& pposition, const TileMap& tilemap );
 private:
-    void playSounds(sf::Time deltaTime);
+    void playSounds(sf::Time deltaTime, sf::FloatRect);
     char _tileProperties[32];
     sf::Vector2f _soundsPosition[32];
 };
