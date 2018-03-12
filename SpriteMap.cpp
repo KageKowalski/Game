@@ -60,8 +60,30 @@ const sf::VertexArray& SpriteMap::getLocalSpriteVerticies() const {
 	return m_LocalSpriteVerticies;
 }
 
-Character* SpriteMap::getPlayer() {
-	return m_Characters.at(0);
+const std::vector<Character*>& SpriteMap::getCharacters() const {
+	return m_Characters;
+}
+
+Character* const SpriteMap::getPlayer() const {
+	for (Character* const character : m_Characters)
+		if (character->getCharacterID() == 0)
+			return character;
+
+	return nullptr;
+}
+
+const std::vector<const Character const *> SpriteMap::getReachableCharacters() const {
+	std::vector<const Character const *> reachables;
+
+	const Character* const player = getPlayer();
+	if (player == nullptr) return reachables;
+
+	for (const Character const * character : m_Characters)
+		if (sqrt(pow(character->getCenterPosition().x - player->getCenterPosition().x, 2)
+			+ pow(character->getCenterPosition().y - player->getCenterPosition().y, 2)) <= 24.0f)
+			reachables.push_back(character);
+
+	return reachables;
 }
 
 void SpriteMap::vertexFill(const Character* const character, size_t offset) {

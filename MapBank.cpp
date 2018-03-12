@@ -46,9 +46,9 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 			return false;
 		
 		std::vector<Character*> characters;
-		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 24, 16, 32, "Literally a Player"));
-		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 0, 24, 16, 32, Behavior::WALK_AROUND, "Literally an NPC"));
-		characters.push_back(new NPC(sf::Vector2f(100.0f, 20.0f), 0, 24, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Looker NPC"));
+		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 24, 16, 32, "You're not near anybody..."));
+		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 0, 24, 16, 32, Behavior::WALK_AROUND, "Near a walking NPC"));
+		characters.push_back(new NPC(sf::Vector2f(100.0f, 20.0f), 0, 24, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Near a looking NPC"));
 		if (!spriteMap->build("testplayer.png", "testplayer.png", characters))
 			return false;
 

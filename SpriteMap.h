@@ -22,12 +22,11 @@ public:
 
 	const sf::Texture& getUniversalSpriteSheet() const;
 	const sf::Texture& getLocalSpriteSheet() const;
-
 	const sf::VertexArray& getUniversalSpriteVerticies() const;
 	const sf::VertexArray& getLocalSpriteVerticies() const;
-
-	Character* getPlayer();
-
+	const std::vector<Character*>& getCharacters() const;
+	Character* const getPlayer() const;
+	const std::vector<const Character const *> getReachableCharacters() const;
 
 private:
 

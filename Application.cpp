@@ -30,8 +30,6 @@ int Application::run() {
 		// Cache change in time since last frame
 		sf::Time deltaTime = m_Clock.getDeltaTime();
 
-		m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())));
-
 		// Process any events that have occurred
 		while (m_Window->m_RenderWindow.pollEvent(e)) {
 			switch (e.type) {
@@ -67,6 +65,9 @@ int Application::run() {
 
 		// Update components
 		update();
+
+		std::vector<const Character const *> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
+		m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())) + ' ' + reachables.at(reachables.size()-1)->getName());
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
