@@ -6,6 +6,7 @@
 #include <cmath>
 #include "Entity.h"
 #include "Animation.h"
+#include "Random.h"
 
 // THIS CLASS ASSUMES THE FOLLOWING ANIMATION STEP VALUES:
 // 0 == Look down
@@ -56,6 +57,12 @@ public:
 		unsigned int frameHeight, const sf::String& name = "DEFAULT NAME");
 	virtual ~Character();
 
+	// Changes the direction in which the character is facing.
+	void turn(Direction direction);
+
+	// Turns the character clockwise (true) or counterclockwise (false).
+	void turn(bool clockwise);
+
 	// Walk in some cardinal direction. May be called more than once per frame for diagonal motion.
 	// Only prepares character's velocity; actual position updates happen in update().
 	void walk(Direction direction);
@@ -81,11 +88,20 @@ public:
 	// Does this character's sprite stem from the universal sprite sheet?
 	bool isUniversal() const;
 
+	// Retrieves the direction in which the character is facing.
+	Direction getDirection() const;
+
 	// Did the player receive a position update this frame?
 	bool isMoving() const;
 
 	// Retrieves the character's ID.
 	int getCharacterID() const;
+
+protected:
+
+	// Can be used to generate a random direction with no bias.
+	// Typically used in passive NPC movement.
+	Direction getRandomDirection() const;
 
 protected:
 
@@ -132,6 +148,10 @@ protected:
 
 	// Indicates whether the character is moving.
 	bool m_Moving;
+
+	// Random number generator.
+	// Needed for randomization tasks, especially in NPC movement.
+	Random m_Generator;
 
 };
 

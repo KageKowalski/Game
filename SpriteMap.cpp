@@ -38,10 +38,10 @@ bool SpriteMap::build(const std::string& universalSpriteSheetFileName, const std
 }
 
 void SpriteMap::update(sf::Time deltaTime) {
-	for (Character* const character : m_Characters)
-		character->update(deltaTime);
-
-	vertexFill(m_Characters.at(0), 0);
+	for (size_t i = 0; i < m_Characters.size(); i++) {
+		m_Characters.at(i)->update(deltaTime);
+		vertexFill(m_Characters.at(i), i * 4);
+	}
 }
 
 const sf::Texture& SpriteMap::getUniversalSpriteSheet() const {

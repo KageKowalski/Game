@@ -30,6 +30,27 @@ Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int
 
 Character::~Character() {}
 
+void Character::turn(Direction direction) {
+	m_DirectionFacing = direction;
+}
+
+void Character::turn(bool clockwise) {
+	switch (m_DirectionFacing) {
+	case Direction::DOWN:
+		m_DirectionFacing = clockwise ? Direction::LEFT : Direction::RIGHT;
+		break;
+	case Direction::UP:
+		m_DirectionFacing = clockwise ? Direction::RIGHT : Direction::LEFT;
+		break;
+	case Direction::LEFT:
+		m_DirectionFacing = clockwise ? Direction::UP : Direction::DOWN;
+		break;
+	case Direction::RIGHT:
+		m_DirectionFacing = clockwise ? Direction::DOWN : Direction::UP;
+		break;
+	}
+}
+
 void Character::walk(Direction direction) {
 	m_DirectionFacing = direction;
 
@@ -126,10 +147,29 @@ bool Character::isUniversal() const {
 	return m_Universal;
 }
 
+Direction Character::getDirection() const {
+	return m_DirectionFacing;
+}
+
 bool Character::isMoving() const {
 	return m_Moving;
 }
 
 int Character::getCharacterID() const {
 	return m_CharacterID;
+}
+
+Direction Character::getRandomDirection() const {
+	int random = m_Generator.nextInt(0, 3);
+
+	switch (random) {
+	case 0:
+		return Direction::DOWN;
+	case 1:
+		return Direction::UP;
+	case 2:
+		return Direction::LEFT;
+	case 3:
+		return Direction::RIGHT;
+	}
 }

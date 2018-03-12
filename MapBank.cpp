@@ -26,7 +26,7 @@ MapBank::~MapBank() {
 
 bool MapBank::loadMap(int mapID, const float &volume) {
 	if (mapID == 0) {
-		TileMap* testMap = new TileMap("Bodybuilder Hamlet");
+		TileMap* testMap = new TileMap("Piglet Hamlet");
 		SpriteMap* spriteMap = new SpriteMap();
 		int blank[1] = { -2 };
 		int mapOne[100] =
@@ -46,8 +46,9 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 			return false;
 		
 		std::vector<Character*> characters;
-		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 4, 16, 32, "Actual Player"));
-		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 3, 4, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Actually an NPC"));
+		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 24, 16, 32, "Literally a Player"));
+		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 0, 24, 16, 32, Behavior::WALK_AROUND, "Literally an NPC"));
+		characters.push_back(new NPC(sf::Vector2f(100.0f, 20.0f), 0, 24, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Looker NPC"));
 		if (!spriteMap->build("testplayer.png", "testplayer.png", characters))
 			return false;
 
@@ -62,7 +63,6 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 }
 
 void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, sf::FloatRect cameraView) {
-    
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
 
@@ -84,8 +84,6 @@ void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, sf::Float
 	m_CurrMapTextures.push_back(currTileMap->getTileSet());
 	m_CurrMapTextures.push_back(currSpriteMap->getUniversalSpriteSheet());
 	m_CurrMapTextures.push_back(currSpriteMap->getLocalSpriteSheet());
-    
-    
 }
 
 void MapBank::setCurrMapID(int mapID) {

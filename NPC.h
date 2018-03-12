@@ -12,7 +12,8 @@ enum class Behavior {
 	LOOK_RIGHT,
 	LOOK_AROUND_CLOCKWISE,
 	LOOK_AROUND_COUNTERCLOCKWISE,
-	LOOK_AROUND_RANDOMLY
+	LOOK_AROUND_RANDOMLY,
+	WALK_AROUND
 };
 
 class NPC : public Character {
@@ -27,9 +28,17 @@ public:
 
 	void update(sf::Time deltaTime);
 
+private:
+
+	void resetTargets();
+
 protected:
 
 	Behavior m_Behavior;
+
+	sf::Time m_ElapsedTimeToTarget;
+	sf::Time m_WaitTarget;
+	sf::Time m_ActiveTarget;
 
 };
 
