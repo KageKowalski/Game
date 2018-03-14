@@ -25,8 +25,9 @@ public:
 	const sf::VertexArray& getUniversalSpriteVerticies() const;
 	const sf::VertexArray& getLocalSpriteVerticies() const;
 	const std::vector<Character*>& getCharacters() const;
-	Character* const getPlayer() const;
-	const std::vector<const Character const *> getReachableCharacters() const;
+
+	Character* getPlayer() const;
+	std::vector<Character*> getReachableCharacters() const;
 
 private:
 

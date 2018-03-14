@@ -55,6 +55,7 @@ bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect camera
     }
     playSounds(deltaTime, cameraView);
     setLastRadius();
+	return true;
 }
 
 void TileSoundHandler::playSounds(sf::Time deltaTime, sf::FloatRect cameraView)

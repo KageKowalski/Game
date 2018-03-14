@@ -4,9 +4,9 @@
 
 MapBank::MapBank(const sf::Vector2f& scale) {
 	setScale(scale);
-	m_TileSetFileNames.push_back("TestTileSet.png");
-	m_UniversalSpriteSheetFileName = "lar.png";
-	m_LocalSpriteSheetFileNames.push_back("lar.png");
+	m_TileSetFileNames.push_back("Tileset_1.png");
+	m_UniversalSpriteSheetFileName = "UniversalSpriteSheet.png";
+	m_LocalSpriteSheetFileNames.push_back("UniversalSpriteSheet.png");
 	m_BackgroundMusicFileNames.push_back("Game_Test.wav");
 
 	m_CurrMap = 0;
@@ -29,27 +29,53 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 		TileMap* testMap = new TileMap("Piglet Hamlet");
 		SpriteMap* spriteMap = new SpriteMap();
 		int blank[1] = { -2 };
-		int mapOne[100] =
+		int layerOne[100] =
 		{
 			13,13,13,13,13,13,13,13,13,13,
-			13,1,2,2,2,2,2,2,3,13,
-			13,8,0,0,0,0,0,0,4,13,
-			13,8,0,0,0,0,0,0,4,13,
-			13,8,0,0,0,0,0,0,4,13,
-			13,8,0,0,0,0,0,0,4,13,
-			13,8,0,0,0,0,0,0,4,13,
-			13,8,0,0,0,0,0,0,4,13,
-			13,7,6,6,6,6,6,6,5,13,
+			13,13,13,13,13,13,13,13,13,13,
+			13,13,13,13,13,13,13,13,13,13,
+			13,13,13,1,2,2,3,13,13,13,
+			13,13,13,8,0,0,4,13,13,13,
+			13,13,13,8,0,0,4,13,13,13,
+			13,13,13,7,6,6,5,13,13,13,
+			13,13,13,13,13,13,13,13,13,13,
+			13,13,13,13,13,13,13,13,13,13,
 			13,13,13,13,13,13,13,13,13,13
 		};
-		if (!testMap->build(mapOne, blank, blank, blank, blank, 10, 10, volume, "Game_Test.wav", "TestTileSet.png"))
+		int layerTwo[100] =
+		{
+			27,27,27,27,27,27,27,27,27,27,
+			27,28,28,28,28,28,28,28,28,27,
+			27,28,28,28,28,28,28,28,28,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,28,28,28,28,28,28,28,28,27,
+		};
+		int canopy[100] =
+		{
+			29,30,30,30,30,30,30,30,30,31,
+			29,30,30,30,30,30,30,30,30,31,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			27,27,27,27,27,27,27,27,27,27,
+			29,30,30,30,30,30,30,30,30,31,
+			27,27,27,27,27,27,27,27,27,27
+		};
+		if (!testMap->build(layerOne, layerTwo, blank, blank, canopy, 10, 10, volume, "Game_Test.wav", "Tileset_1.png"))
 			return false;
 		
 		std::vector<Character*> characters;
-		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 24, 16, 32, "You're not near anybody..."));
+		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 24, 16, 32, "Player"));
 		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 0, 24, 16, 32, Behavior::WALK_AROUND, "Near a walking NPC"));
 		characters.push_back(new NPC(sf::Vector2f(100.0f, 20.0f), 0, 24, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Near a looking NPC"));
-		if (!spriteMap->build("testplayer.png", "testplayer.png", characters))
+		if (!spriteMap->build("UniversalSpriteSheet.png", "UniversalSpriteSheet.png", characters))
 			return false;
 
 		std::pair<TileMap*, SpriteMap*> pair;

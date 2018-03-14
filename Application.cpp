@@ -66,8 +66,10 @@ int Application::run() {
 		// Update components
 		update();
 
-		std::vector<const Character const *> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
-		m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())) + ' ' + reachables.at(reachables.size()-1)->getName());
+		std::vector<Character*> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
+		if(reachables.size() > 0)
+			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())) + " | " + reachables.at(reachables.size()-1)->getName());
+		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())) + " | " + m_Maps.getCurrMap().first->getName());
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
@@ -86,6 +88,7 @@ int Application::run() {
 		m_Renderer.updateVerticies(verticies.at(3), 4);
 		m_Renderer.updateVerticies(verticies.at(4), 5);
 		m_Renderer.updateVerticies(verticies.at(5), 6);
+		m_Renderer.updateVerticies(verticies.at(6), 7);
         background.setVolume(100.0f);
         m_Settings->setEffectsVolume(100.0f);
 
