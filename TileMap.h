@@ -6,6 +6,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
+#include <stdint.h>
 #include "AutoAnimation.h"
 #include "TileSet.h"
 #include "Sound.h"
@@ -43,9 +44,9 @@ public:
         //  bit 4 is unused
         //  bit 3 is unused
         //  bit 2 is set if a tile radiates sound
-        //  bit 1 is whether a tile has movement sound
-        //  bit 0 is if you can't walk on a tile
-        char _properties;
+        //  bit 1 is set when a tile has movement sound
+        //  bit 0 is set if you can't walk on a tile
+        uint8_t _properties;
         
         std::string _soundFilename;
     
@@ -84,7 +85,7 @@ public:
         const sf::Vector2f& getCenterPosition() const;
         
         //return properties
-        const char getProperties() const;
+        uint8_t getProperties() const;
         
         const std::string& getSoundFilename() const;
 
@@ -94,12 +95,13 @@ private:
     //layer 1 with the background being considered layer 0
     //layer 4 and 5 are sprite sheets
     //these layers are loaded from top to bottom meaning that canopy will be displayed above ground
-    Tile** _ground;
-    Tile** _layerTwo;
-    Tile** _layerThree;
-    Tile** _layerSix;
-    Tile** _canopy;
+    Tile**  _ground;
+    Tile**  _layerTwo;
+    Tile**  _layerThree;
+    Tile**  _layerSix;
+    Tile**  _canopy;
     TileSet _tileset;
+    int**   _movementMap;
     
     //width and height of the current tilemap
     int _width;
@@ -135,6 +137,8 @@ public:
     
     //updates all animated tiles in the map
     void updateMap(sf::Time,const sf::Vector2f&);
+    
+    int** getMovementMap() const;
     
     //returns the vertexarrays from the corresponding layer
     const sf::VertexArray& getGroundVertices()     const;

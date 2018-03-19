@@ -51,7 +51,7 @@ const sf::Vector2f& TileMap::Tile::getCenterPosition() const
 {
     return _centerPosition;
 }
-const char TileMap::Tile::getProperties() const
+uint8_t TileMap::Tile::getProperties() const
 {
     return _properties;
 }
@@ -89,18 +89,20 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
     _layerSixVerticies.resize(_width * _height * 4  );
     _canopyVerticies.resize(_width * _height * 4    );
 
-    _ground     = new Tile*[_height];
-    _layerTwo   = new Tile*[_height];
-    _layerThree = new Tile*[_height];
-    _layerSix   = new Tile*[_height];
-    _canopy     = new Tile*[_height];
+    _ground      = new Tile*[_height];
+    _layerTwo    = new Tile*[_height];
+    _layerThree  = new Tile*[_height];
+    _layerSix    = new Tile*[_height];
+    _canopy      = new Tile*[_height];
+    _movementMap = new int* [_height];
     for(int i = 0; i<_height;i++)
     {
-        _ground[i]     = new Tile[_width];
-        _layerTwo[i]   = new Tile[_width];
-        _layerThree[i] = new Tile[_width];
-        _layerSix[i]   = new Tile[_width];
-        _canopy[i]     = new Tile[_width];
+        _ground[i]      = new Tile[_width];
+        _layerTwo[i]    = new Tile[_width];
+        _layerThree[i]  = new Tile[_width];
+        _layerSix[i]    = new Tile[_width];
+        _canopy[i]      = new Tile[_width];
+        _movementMap[i] = new int [_width];
     }
     for(int i = 0; i < _height; i++)
     {
@@ -125,6 +127,21 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
                     case 12:
                         _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x05, "waves.wav");
                         break;
+                    case 13:
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                    case 20:
+                    case 21:
+                    case 22:
+                    case 23:
+                    case 24:
+                    case 25:
+                        _ground[i][j] = Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), volume, 0x02, "grass_foot.wav");
+                        break;
                     default:
                         _ground[i][j] = Tile(ground[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
                         break;
@@ -132,7 +149,14 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             }
             if(layerTwo[0]!=-2)
             {
-                _layerTwo[i][j] = Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+                switch(layerTwo[i*_width+j])
+                {
+                    case 28:
+                        _layerTwo[i][j] = Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume, 0x01);
+                        break;
+                    default:
+                        _layerTwo[i][j] = Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+                }
             }
             if(layerThree[0]!=-2)
             {
@@ -145,6 +169,14 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             if(canopy[0]!=-2)
             {
                 _canopy[i][j] = Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
+            }
+            if(_ground[i][j].getProperties() & 0x01 || _layerTwo[i][j].getProperties() & 0x01 || _layerThree[i][j].getProperties() & 0x01 || _layerSix[i][j].getProperties() & 0x01 || _canopy[i][j].getProperties() & 0x01)
+            {
+                _movementMap[i][j] = 1;
+            }
+            else
+            {
+                _movementMap[i][j] = 0;
             }
 			vertexFill(i, j);
         }
@@ -322,6 +354,10 @@ void TileMap::updateMap(sf::Time deltaTime, const sf::Vector2f& pposition)
     }
 }
 
+int** TileMap::getMovementMap() const
+{
+    return _movementMap;
+}
 const sf::VertexArray& TileMap::getGroundVertices()   const
 {
     return _groundVerticies;
