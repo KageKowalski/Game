@@ -1,4 +1,14 @@
 #include "Events.h"
+CreateThreadEvent::CreateThreadEvent()
+{
+    _type = EV_CREATETHREADS;
+}
+CreateThreadEvent::~CreateThreadEvent(){}
+
+Event::EventType CreateThreadEvent::getType() const
+{
+    return _type;
+}
 
 SoundEvent::SoundEvent()
 {

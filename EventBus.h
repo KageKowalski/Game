@@ -12,6 +12,7 @@ class Event
 public:
     enum EventType
     {
+        EV_CREATETHREADS,
         EV_SOUND
     };
     virtual ~Event() {};

@@ -18,6 +18,10 @@ int SoundHandler::findSound(std::string filename)
     }
     return location;
 }
+const Sound* SoundHandler::getSounds()
+{
+    return _sounds;
+}
 void SoundHandler::setVolume(const float& volume)
 {
     _volume = &volume;

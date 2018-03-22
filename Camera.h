@@ -63,7 +63,7 @@ public:
 	// Calculates and retrieves the position bounds of the viewport, in pixel units.
 	// The position bounds are useful for determining whether a particular vertex
 	// is visible on the screen or lies outside of the camera's view.
-	sf::FloatRect getBounds() const;
+	const sf::FloatRect& getBounds() const;
 
 	// Retrieves the viewport.
 	const sf::View& getView() const;
@@ -72,6 +72,8 @@ private:
 
 	// The actual camera itself. Dictates the viewport.
 	sf::View m_View;
+    
+    sf::FloatRect m_Bounds;
 
 	// Position of object that the camera is currently attached to.
 	// Nullptr if camera is not attached to any object.

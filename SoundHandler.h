@@ -18,6 +18,7 @@ public:
     int findSound(std::string filename);
     void setVolume(const float& volume);
     void setLastRadius();
+    const Sound* getSounds();
     virtual void handleEvent(Event* const e) = 0;
     
 };

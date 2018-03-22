@@ -4,6 +4,7 @@
 
 MapBank::MapBank(const sf::Vector2f& scale) {
 	setScale(scale);
+    m_SoundHandler = &TileSoundHandler::get();
 	m_TileSetFileNames.push_back("Tileset_1.png");
 	m_UniversalSpriteSheetFileName = "UniversalSpriteSheet.png";
 	m_LocalSpriteSheetFileNames.push_back("UniversalSpriteSheet.png");
@@ -14,7 +15,7 @@ MapBank::MapBank(const sf::Vector2f& scale) {
 
 void MapBank::soundInit(const float& volume)
 {
-    m_SoundHandler.setVolume(volume);
+    m_SoundHandler->setVolume(volume);
 }
 
 MapBank::~MapBank() {
@@ -91,10 +92,6 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, sf::FloatRect cameraView) {
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
-    
-    EventBus::get().postEvent(*(new std::unique_ptr<Event>(new SoundEvent())));
-    if(m_SoundHandler.checkSemaphore())
-        m_SoundHandler.attachTileSounds(deltaTime, cameraView, *currTileMap);
     
 	currTileMap->updateMap(deltaTime, pposition);
 	currSpriteMap->update(deltaTime);

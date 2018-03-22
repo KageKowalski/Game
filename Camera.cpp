@@ -34,6 +34,7 @@ void Camera::resetOrientation() {
 void Camera::update() {
 	if (m_TargetPosition == nullptr) return;
 	setPosition(sf::Vector2f(m_TargetPosition->x * m_TargetScale->x, m_TargetPosition->y * m_TargetScale->y));
+    m_Bounds = sf::FloatRect(m_View.getCenter(), m_View.getSize());
 }
 
 void Camera::setPosition(const sf::Vector2f& position) {
@@ -50,8 +51,8 @@ void Camera::detach() {
 	m_TargetScale = nullptr;
 }
 
-sf::FloatRect Camera::getBounds() const {
-	return sf::FloatRect(m_View.getCenter(), m_View.getSize());
+const sf::FloatRect& Camera::getBounds() const {
+    return m_Bounds;
 }
 
 const sf::View& Camera::getView() const {

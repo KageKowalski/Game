@@ -11,7 +11,6 @@
 #include "Music.h"
 #include "MapBank.h"
 #include "EventBus.h"
-#include <thread>
 
 class Application {
 
@@ -22,7 +21,7 @@ public:
 
 	// Runs the game loop
 	int run();
-
+    
 private:
 
 	// Init application
@@ -36,6 +35,23 @@ private:
 
 	// Toggle fullscreen mode
 	void toggleFullscreen();
+    
+    void renderGraphics();
+    
+public:
+    struct DrawThreadInfo
+    {
+        Window*     window;
+        Renderer* renderer;
+        MapBank*   mapBank;
+    };
+    struct SoundThreadInfo
+    {
+        TileSoundHandler*    thisHandler;
+        sf::Time*              deltaTime;
+        const sf::FloatRect*  cameraView;
+        TileMap*                 tilemap;
+    };
 
 private:
 

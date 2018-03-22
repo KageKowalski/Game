@@ -49,7 +49,7 @@ private:
 
 	int m_CurrMap;
     
-    TileSoundHandler m_SoundHandler;
+    TileSoundHandler* m_SoundHandler;
 
 	std::vector<sf::VertexArray> m_CurrMapVerticies;
 	std::vector<sf::Texture> m_CurrMapTextures;

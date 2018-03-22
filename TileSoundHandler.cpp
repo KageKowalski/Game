@@ -3,10 +3,10 @@
 
 TileSoundHandler::TileSoundHandler()
 {
-    EventBus::get().registerListener(Event::EV_SOUND, this);
+    EventBus::get().registerListener(Event::EV_CREATETHREADS, this);
 }
 TileSoundHandler::~TileSoundHandler(){}
-bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, const TileMap& tilemap )
+bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, TileMap& tilemap )
 {
     for(int i = 0; i < tilemap.getHeight(); i++)
     {
@@ -110,18 +110,20 @@ void TileSoundHandler::playSounds(sf::Time deltaTime, sf::FloatRect cameraView)
     _prevPposition = Player::get().getCenterPosition();
 }
 
-bool TileSoundHandler::checkSemaphore()
+bool TileSoundHandler::checkThreadSemaphore()
 {
-    if(_semaphore)
+    if(_threadSemaphore)
     {
-        _semaphore = false;
+        _threadSemaphore = false;
         return true;
     }
     return false;
 }
 void TileSoundHandler::handleEvent(Event* const e)
 {
-    _semaphore = true;
+    if(e->getType() == Event::EventType::EV_CREATETHREADS)
+        
+        _threadSemaphore = true;
 }
 
 
