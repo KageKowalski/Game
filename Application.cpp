@@ -26,6 +26,7 @@ int Application::run() {
 	while (m_Window->m_RenderWindow.isOpen()) {
 		// Progress clock forward once per frame
 		m_Clock.tick();
+        EventBus::get().update();
 
 		// Cache change in time since last frame
 		sf::Time deltaTime = m_Clock.getDeltaTime();

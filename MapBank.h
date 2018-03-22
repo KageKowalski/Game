@@ -11,6 +11,11 @@
 #include "Player.h"
 #include "NPC.h"
 #include "TileSoundHandler.h"
+#include <thread>
+#include "EventBus.h"
+#include "Events.h"
+#include <memory>
+#include <thread>
 
 class MapBank : public sf::Transformable {
 

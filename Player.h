@@ -6,11 +6,17 @@
 #include "Character.h"
 
 class Player : public Character {
-
+private:
+    Player();
 public:
-
-	Player(const sf::Vector2f position, int initAnimStep, unsigned int totalAnimSteps, unsigned int frameWidth,
-		unsigned int frameHeight, const sf::String& name = "DEFAULT NAME");
+    Player(Player const&)        = delete;
+    void operator=(Player const&)  = delete;
+    
+    static Player& get()
+    {
+        static Player instance;
+        return        instance;
+    }
 	virtual ~Player();
 
 };

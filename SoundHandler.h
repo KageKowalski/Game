@@ -4,8 +4,9 @@
 
 #include "Sound.h"
 #include <SFML/Graphics.hpp>
+#include "EventBus.h"
 
-class SoundHandler
+class SoundHandler : public EventListener
 {
 protected:
     Sound   _sounds[32];
@@ -17,6 +18,7 @@ public:
     int findSound(std::string filename);
     void setVolume(const float& volume);
     void setLastRadius();
+    virtual void handleEvent(Event* const e) = 0;
     
 };
 

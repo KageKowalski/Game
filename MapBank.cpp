@@ -33,12 +33,12 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 		{
 			13,13,13,13,13,13,13,13,13,13,
 			13,13,13,13,13,13,13,13,13,13,
-			13,13,13,13,13,13,13,13,13,13,
-			13,13,13,1,2,2,3,13,13,13,
-			13,13,13,8,0,0,4,13,13,13,
-			13,13,13,8,0,0,4,13,13,13,
-			13,13,13,7,6,6,5,13,13,13,
-			13,13,13,13,13,13,13,13,13,13,
+			13,13,24,19,19,19,19,25,13,13,
+			13,13,17,1,2,2,3,21,13,13,
+			13,13,17,8,26,26,4,21,13,13,
+			13,13,17,8,26,26,4,21,13,13,
+			13,13,17,7,6,6,5,21,13,13,
+			13,13,23,15,15,15,15,22,13,13,
 			13,13,13,13,13,13,13,13,13,13,
 			13,13,13,13,13,13,13,13,13,13
 		};
@@ -51,7 +51,7 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+			-1,38,-1,-1,-1,-1,-1,-1,-1,-1,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 			-1,28,28,28,28,28,28,28,28,-1,
 		};
@@ -61,9 +61,9 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 			29,30,30,30,30,30,30,30,30,31,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+			43,44,45,-1,-1,-1,-1,-1,-1,-1,
+			40,41,42,-1,-1,-1,-1,-1,-1,-1,
+			-1,39,-1,-1,-1,-1,-1,-1,-1,-1,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 			29,30,30,30,30,30,30,30,30,31,
 			-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
@@ -72,7 +72,7 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 			return false;
 		
 		std::vector<Character*> characters;
-		characters.push_back(new Player(sf::Vector2f(0.0f, 0.0f), 0, 24, 16, 32, "Player"));
+        characters.push_back(&Player::get());
 		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 0, 24, 16, 32, Behavior::WALK_AROUND, "Near a walking NPC"));
 		characters.push_back(new NPC(sf::Vector2f(100.0f, 20.0f), 0, 24, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Near a looking NPC"));
 		if (!spriteMap->build("UniversalSpriteSheet.png", "UniversalSpriteSheet.png", characters))
@@ -91,8 +91,11 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, sf::FloatRect cameraView) {
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
-
-    m_SoundHandler.attachTileSounds(deltaTime, cameraView, m_Maps[m_CurrMap].second->getPlayer()->getCenterPosition(), *currTileMap);
+    
+    EventBus::get().postEvent(*(new std::unique_ptr<Event>(new SoundEvent())));
+    if(m_SoundHandler.checkSemaphore())
+        m_SoundHandler.attachTileSounds(deltaTime, cameraView, *currTileMap);
+    
 	currTileMap->updateMap(deltaTime, pposition);
 	currSpriteMap->update(deltaTime);
 
