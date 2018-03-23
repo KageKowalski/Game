@@ -229,38 +229,189 @@ void TileMap::vertexFill(int y, int x)
         // Define top-left corner
         quadGro->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep()) * 16.0f);
-        quadGro->color.a = 255;
-        quadGro->color.r = 255;
-        quadGro->color.g = 255;
-        quadGro->color.b = 255;
+        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
+        }
+        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 100;
+            quadGro->color.g = 100;
+            quadGro->color.b = 100;
+        }
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 131;
+            quadGro->color.g = 131;
+            quadGro->color.b = 131;
+        }
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 162;
+            quadGro->color.g = 162;
+            quadGro->color.b = 162;
+        }
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 193;
+            quadGro->color.g = 193;
+            quadGro->color.b = 193;
+        }
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 224;
+            quadGro->color.g = 224;
+            quadGro->color.b = 224;
+        }
 
         // Define top-right corner
         quadGro++;
         quadGro->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
         quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep())* 16.0f);
-        quadGro->color.a = 255;
-        quadGro->color.r = 255;
-        quadGro->color.g = 255;
-        quadGro->color.b = 255;
+        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
+        }
+        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 100;
+            quadGro->color.g = 100;
+            quadGro->color.b = 100;
+        }
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 131;
+            quadGro->color.g = 131;
+            quadGro->color.b = 131;
+        }
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 162;
+            quadGro->color.g = 162;
+            quadGro->color.b = 162;
+        }
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 193;
+            quadGro->color.g = 193;
+            quadGro->color.b = 193;
+        }
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 224;
+            quadGro->color.g = 224;
+            quadGro->color.b = 224;
+        }
 
         // Define bottom-right corner
         quadGro++;
         quadGro->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
         quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
-        quadGro->color.a = 255;
-        quadGro->color.r = 255;
-        quadGro->color.g = 255;
-        quadGro->color.b = 255;
+        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
+        }
+        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 100;
+            quadGro->color.g = 100;
+            quadGro->color.b = 100;
+        }
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 131;
+            quadGro->color.g = 131;
+            quadGro->color.b = 131;
+        }
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 162;
+            quadGro->color.g = 162;
+            quadGro->color.b = 162;
+        }
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 193;
+            quadGro->color.g = 193;
+            quadGro->color.b = 193;
+        }
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 224;
+            quadGro->color.g = 224;
+            quadGro->color.b = 224;
+        }
 
         // Define bottom-left corner
         quadGro++;
         quadGro->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
         quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
-        quadGro->color.a = 255;
-        quadGro->color.r = 255;
-        quadGro->color.g = 255;
-        quadGro->color.b = 255;
-        
+        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
+        }
+        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 100;
+            quadGro->color.g = 100;
+            quadGro->color.b = 100;
+        }
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 131;
+            quadGro->color.g = 131;
+            quadGro->color.b = 131;
+        }
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 162;
+            quadGro->color.g = 162;
+            quadGro->color.b = 162;
+        }
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 193;
+            quadGro->color.g = 193;
+            quadGro->color.b = 193;
+        }
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 224;
+            quadGro->color.g = 224;
+            quadGro->color.b = 224;
+        }
     }
     if(layerTwoTileID != -1)
     {
@@ -269,37 +420,21 @@ void TileMap::vertexFill(int y, int x)
 
         quadTwo->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep()) * 16.0f);
-        quadTwo->color.a = 255;
-        quadTwo->color.r = 255;
-        quadTwo->color.g = 255;
-        quadTwo->color.b = 255;
         
         // Define top-right corner
         quadTwo++;
         quadTwo->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
         quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep())* 16.0f);
-        quadTwo->color.a = 255;
-        quadTwo->color.r = 255;
-        quadTwo->color.g = 255;
-        quadTwo->color.b = 255;
         
         // Define bottom-right corner
         quadTwo++;
         quadTwo->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
         quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
-        quadTwo->color.a = 255;
-        quadTwo->color.r = 255;
-        quadTwo->color.g = 255;
-        quadTwo->color.b = 255;
         
         // Define bottom-left corner
         quadTwo++;
         quadTwo->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
         quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
-        quadTwo->color.a = 255;
-        quadTwo->color.r = 255;
-        quadTwo->color.g = 255;
-        quadTwo->color.b = 255;
     }
     if(layerThreeTileID != -1)
     {

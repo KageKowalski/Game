@@ -10,6 +10,7 @@
 #include "AutoAnimation.h"
 #include "TileSet.h"
 #include "Sound.h"
+#include "Sun.h"
 
 class TileMap
 {
