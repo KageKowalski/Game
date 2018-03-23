@@ -229,21 +229,37 @@ void TileMap::vertexFill(int y, int x)
         // Define top-left corner
         quadGro->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep()) * 16.0f);
+        quadGro->color.a = 255;
+        quadGro->color.r = 255;
+        quadGro->color.g = 255;
+        quadGro->color.b = 255;
 
         // Define top-right corner
         quadGro++;
         quadGro->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
         quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep())* 16.0f);
+        quadGro->color.a = 255;
+        quadGro->color.r = 255;
+        quadGro->color.g = 255;
+        quadGro->color.b = 255;
 
         // Define bottom-right corner
         quadGro++;
         quadGro->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
         quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
+        quadGro->color.a = 255;
+        quadGro->color.r = 255;
+        quadGro->color.g = 255;
+        quadGro->color.b = 255;
 
         // Define bottom-left corner
         quadGro++;
         quadGro->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
         quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
+        quadGro->color.a = 255;
+        quadGro->color.r = 255;
+        quadGro->color.g = 255;
+        quadGro->color.b = 255;
         
     }
     if(layerTwoTileID != -1)
@@ -253,21 +269,37 @@ void TileMap::vertexFill(int y, int x)
 
         quadTwo->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep()) * 16.0f);
+        quadTwo->color.a = 255;
+        quadTwo->color.r = 255;
+        quadTwo->color.g = 255;
+        quadTwo->color.b = 255;
         
         // Define top-right corner
         quadTwo++;
         quadTwo->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
         quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep())* 16.0f);
+        quadTwo->color.a = 255;
+        quadTwo->color.r = 255;
+        quadTwo->color.g = 255;
+        quadTwo->color.b = 255;
         
         // Define bottom-right corner
         quadTwo++;
         quadTwo->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
         quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
+        quadTwo->color.a = 255;
+        quadTwo->color.r = 255;
+        quadTwo->color.g = 255;
+        quadTwo->color.b = 255;
         
         // Define bottom-left corner
         quadTwo++;
         quadTwo->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
         quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + 1 + _layerTwo[y][x].getAnimStep()) * 16.0f);
+        quadTwo->color.a = 255;
+        quadTwo->color.r = 255;
+        quadTwo->color.g = 255;
+        quadTwo->color.b = 255;
     }
     if(layerThreeTileID != -1)
     {
