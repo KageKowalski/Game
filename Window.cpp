@@ -21,7 +21,7 @@ void Window::construct(const sf::VideoMode& initMode, const sf::View& view, bool
 	else m_RenderWindow.create(initMode, "Default Title", sf::Style::Default);
 
     m_RenderWindow.setVerticalSyncEnabled(true);
-	m_RenderWindow.setFramerateLimit(60);
+	m_RenderWindow.setFramerateLimit(62);
 
 	resize(view);
 }

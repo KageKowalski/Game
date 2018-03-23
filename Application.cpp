@@ -1,14 +1,10 @@
 #include "Application.h"
 
-void soundThreadCall(Application::SoundThreadInfo* h)
-{
-    h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap);
-}
-
 Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;
+    m_Clock = &Chrono::get();
 }
 
 Application::~Application() {
@@ -26,10 +22,10 @@ int Application::run() {
 	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Maps.getScale());
 
 	while (m_Window->m_RenderWindow.isOpen()) {
-		m_Clock.tick();
+        m_Clock->tick();
         EventBus::get().update();
 
-		sf::Time deltaTime = m_Clock.getDeltaTime();
+        sf::Time deltaTime = m_Clock->getDeltaTime();
 
 		while (m_Window->m_RenderWindow.pollEvent(e)) {
 			switch (e.type) {
@@ -92,7 +88,7 @@ int Application::run() {
         m_Renderer.updateVerticies(verticies.at(5), 6);
         m_Renderer.updateVerticies(verticies.at(6), 7);
 
-		TileSoundHandler::get().attachTileSounds(deltaTime, m_Camera->getBounds(), *m_Maps.getCurrMap().first);
+        TileSoundHandler::get().attachTileSounds(deltaTime, m_Camera->getBounds(), *m_Maps.getCurrMap().first, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition() );
         
         draw();
 	}

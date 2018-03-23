@@ -61,7 +61,7 @@ private:
 	Renderer m_Renderer;
 
 	// High-performance clock
-	Chrono m_Clock;
+	Chrono* m_Clock;
 
 	// All maps
 	MapBank m_Maps;

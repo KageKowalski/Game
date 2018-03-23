@@ -21,13 +21,13 @@ public:
         static TileSoundHandler instance;
         return        instance;
     }
-    bool attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, TileMap& tilemap );
+    bool attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, TileMap& tilemap, sf::Vector2f pposition );
     bool checkThreadSemaphore();
 private:
     TileSoundHandler();
     ~TileSoundHandler();
 
-    void playSounds(sf::Time deltaTime, sf::FloatRect);
+    void playSounds(sf::Time deltaTime, sf::FloatRect, sf::Vector2f);
     
     virtual void handleEvent(Event* const e);
     uint8_t      _tileProperties[32];

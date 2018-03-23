@@ -20,6 +20,10 @@ bool Sound::setBuffer(std::string filename)
     _soundDelay = _buffer.getDuration();
     return true;
 }
+void Sound::resetBuffer()
+{
+    _buffer = sf::SoundBuffer();
+}
 const std::string& Sound::getFilename() const
 {
     return _filename;

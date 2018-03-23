@@ -6,8 +6,17 @@
 class Sun
 {
 public:
+    enum TimeOfDay
+    {
+        DAYLIGHT,
+        DUSK,
+        DAWN,
+        NIGHT
+    };
     void update(sf::Time deltaTime);
     int getHour() const;
+    TimeOfDay getTimeOfDay() const;
+    std::string getTimeOfDayString() const;
 private:
     Sun();
 public:
@@ -23,6 +32,7 @@ private:
     int                _hour;
     sf::Time    _elapsedTime;
     sf::Time _hourChangeTime;
+    TimeOfDay       _currPos;
     
 };
 

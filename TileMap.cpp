@@ -2,66 +2,6 @@
 #include "TileMap.h"
 
 /********************************
-    Tile Functions/Constructors
- ********************************/
-
-TileMap::Tile::Tile() : _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
-{}
-TileMap::Tile::Tile(int ID, const sf::Vector2f& postition, const float &volume, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _properties(properties), _soundFilename(soundFilename)
-{
-    _volume = volume;
-    _centerPosition.x = _position.x * 16 + 8;
-    _centerPosition.y = _position.y * 16 + 8;
-}
-TileMap::Tile::~Tile()
-{}
-
-//Moves the animation step forward one if the the time exceeds that last and deals with the sound
-void TileMap::Tile::update(sf::Time deltaTime, const sf::Vector2f& pposition)
-{
-    if((_animate.getTotalAnimSteps() > 1))
-    {
-        _animate.update(deltaTime);
-        _step = _animate.getCurrAnimStep();
-    }
-    if(_properties&0x02)
-    {
-        
-    }
-    if(_properties&0x04)
-    {
-    }
-}
-void TileMap::Tile::setAnimStep(unsigned int step)
-{
-    if(step <= _animate.getTotalAnimSteps())
-    {
-        _animate.setCurrAnimStep(step);
-        _step = step;
-    }
-}
-int  TileMap::Tile::getID()        { return _tileID; }
-void TileMap::Tile::setID(int ID)  { _tileID = ID;   }
-int  TileMap::Tile::getAnimStep()  { return _step;   }
-const sf::Vector2f& TileMap::Tile::getPosition()       const
-{
-    return _position;
-}
-const sf::Vector2f& TileMap::Tile::getCenterPosition() const
-{
-    return _centerPosition;
-}
-uint8_t TileMap::Tile::getProperties() const
-{
-    return _properties;
-}
-const std::string& TileMap::Tile::getSoundFilename() const
-{
-    return _soundFilename;
-}
-
-
-/********************************
   TileMap Functions/Constructors
  ********************************/
 
@@ -229,188 +169,356 @@ void TileMap::vertexFill(int y, int x)
         // Define top-left corner
         quadGro->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep()) * 16.0f);
-        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        if(Sun::get().getHour() >= 10  && Sun::get().getHour() <= 35)
         {
             quadGro->color.a = 255;
             quadGro->color.r = 255;
             quadGro->color.g = 255;
             quadGro->color.b = 255;
         }
-        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        else if(Sun::get().getHour() >= 46 && Sun::get().getHour() <= 60)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 100;
-            quadGro->color.g = 100;
-            quadGro->color.b = 100;
+            quadGro->color.r = 155;
+            quadGro->color.g = 155;
+            quadGro->color.b = 155;
         }
-        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 45)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 131;
-            quadGro->color.g = 131;
-            quadGro->color.b = 131;
+            quadGro->color.r = 165;
+            quadGro->color.g = 165;
+            quadGro->color.b = 165;
         }
-        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 44)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 162;
-            quadGro->color.g = 162;
-            quadGro->color.b = 162;
+            quadGro->color.r = 175;
+            quadGro->color.g = 175;
+            quadGro->color.b = 175;
         }
-        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 43)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 193;
-            quadGro->color.g = 193;
-            quadGro->color.b = 193;
+            quadGro->color.r = 185;
+            quadGro->color.g = 185;
+            quadGro->color.b = 185;
         }
-        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 42)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 224;
-            quadGro->color.g = 224;
-            quadGro->color.b = 224;
+            quadGro->color.r = 195;
+            quadGro->color.g = 195;
+            quadGro->color.b = 195;
+        }
+        else if(Sun::get().getHour() == 4 || Sun::get().getHour() == 41)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 205;
+            quadGro->color.g = 205;
+            quadGro->color.b = 205;
+        }
+        else if(Sun::get().getHour() == 5 || Sun::get().getHour() == 40)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 215;
+            quadGro->color.g = 215;
+            quadGro->color.b = 215;
+        }
+        else if(Sun::get().getHour() == 6 || Sun::get().getHour() == 39)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 225;
+            quadGro->color.g = 225;
+            quadGro->color.b = 225;
+        }
+        else if(Sun::get().getHour() == 7 || Sun::get().getHour() == 38)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 235;
+            quadGro->color.g = 235;
+            quadGro->color.b = 235;
+        }
+        else if(Sun::get().getHour() == 8 || Sun::get().getHour() == 37)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 245;
+            quadGro->color.g = 245;
+            quadGro->color.b = 245;
+        }
+        else if(Sun::get().getHour() == 9 || Sun::get().getHour() == 36)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
         }
 
         // Define top-right corner
         quadGro++;
         quadGro->position = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
         quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _ground[y][x].getAnimStep())* 16.0f);
-        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        if(Sun::get().getHour() >= 10  && Sun::get().getHour() <= 35)
         {
             quadGro->color.a = 255;
             quadGro->color.r = 255;
             quadGro->color.g = 255;
             quadGro->color.b = 255;
         }
-        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        else if(Sun::get().getHour() >= 46 && Sun::get().getHour() <= 60)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 100;
-            quadGro->color.g = 100;
-            quadGro->color.b = 100;
+            quadGro->color.r = 155;
+            quadGro->color.g = 155;
+            quadGro->color.b = 155;
         }
-        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 45)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 131;
-            quadGro->color.g = 131;
-            quadGro->color.b = 131;
+            quadGro->color.r = 165;
+            quadGro->color.g = 165;
+            quadGro->color.b = 165;
         }
-        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 44)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 162;
-            quadGro->color.g = 162;
-            quadGro->color.b = 162;
+            quadGro->color.r = 175;
+            quadGro->color.g = 175;
+            quadGro->color.b = 175;
         }
-        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 43)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 193;
-            quadGro->color.g = 193;
-            quadGro->color.b = 193;
+            quadGro->color.r = 185;
+            quadGro->color.g = 185;
+            quadGro->color.b = 185;
         }
-        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 42)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 224;
-            quadGro->color.g = 224;
-            quadGro->color.b = 224;
+            quadGro->color.r = 195;
+            quadGro->color.g = 195;
+            quadGro->color.b = 195;
+        }
+        else if(Sun::get().getHour() == 4 || Sun::get().getHour() == 41)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 205;
+            quadGro->color.g = 205;
+            quadGro->color.b = 205;
+        }
+        else if(Sun::get().getHour() == 5 || Sun::get().getHour() == 40)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 215;
+            quadGro->color.g = 215;
+            quadGro->color.b = 215;
+        }
+        else if(Sun::get().getHour() == 6 || Sun::get().getHour() == 39)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 225;
+            quadGro->color.g = 225;
+            quadGro->color.b = 225;
+        }
+        else if(Sun::get().getHour() == 7 || Sun::get().getHour() == 38)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 235;
+            quadGro->color.g = 235;
+            quadGro->color.b = 235;
+        }
+        else if(Sun::get().getHour() == 8 || Sun::get().getHour() == 37)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 245;
+            quadGro->color.g = 245;
+            quadGro->color.b = 245;
+        }
+        else if(Sun::get().getHour() == 9 || Sun::get().getHour() == 36)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
         }
 
         // Define bottom-right corner
         quadGro++;
         quadGro->position = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
         quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
-        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        if(Sun::get().getHour() >= 10  && Sun::get().getHour() <= 35)
         {
             quadGro->color.a = 255;
             quadGro->color.r = 255;
             quadGro->color.g = 255;
             quadGro->color.b = 255;
         }
-        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        else if(Sun::get().getHour() >= 46 && Sun::get().getHour() <= 60)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 100;
-            quadGro->color.g = 100;
-            quadGro->color.b = 100;
+            quadGro->color.r = 155;
+            quadGro->color.g = 155;
+            quadGro->color.b = 155;
         }
-        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 45)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 131;
-            quadGro->color.g = 131;
-            quadGro->color.b = 131;
+            quadGro->color.r = 165;
+            quadGro->color.g = 165;
+            quadGro->color.b = 165;
         }
-        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 44)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 162;
-            quadGro->color.g = 162;
-            quadGro->color.b = 162;
+            quadGro->color.r = 175;
+            quadGro->color.g = 175;
+            quadGro->color.b = 175;
         }
-        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 43)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 193;
-            quadGro->color.g = 193;
-            quadGro->color.b = 193;
+            quadGro->color.r = 185;
+            quadGro->color.g = 185;
+            quadGro->color.b = 185;
         }
-        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 42)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 224;
-            quadGro->color.g = 224;
-            quadGro->color.b = 224;
+            quadGro->color.r = 195;
+            quadGro->color.g = 195;
+            quadGro->color.b = 195;
+        }
+        else if(Sun::get().getHour() == 4 || Sun::get().getHour() == 41)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 205;
+            quadGro->color.g = 205;
+            quadGro->color.b = 205;
+        }
+        else if(Sun::get().getHour() == 5 || Sun::get().getHour() == 40)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 215;
+            quadGro->color.g = 215;
+            quadGro->color.b = 215;
+        }
+        else if(Sun::get().getHour() == 6 || Sun::get().getHour() == 39)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 225;
+            quadGro->color.g = 225;
+            quadGro->color.b = 225;
+        }
+        else if(Sun::get().getHour() == 7 || Sun::get().getHour() == 38)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 235;
+            quadGro->color.g = 235;
+            quadGro->color.b = 235;
+        }
+        else if(Sun::get().getHour() == 8 || Sun::get().getHour() == 37)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 245;
+            quadGro->color.g = 245;
+            quadGro->color.b = 245;
+        }
+        else if(Sun::get().getHour() == 9 || Sun::get().getHour() == 36)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
         }
 
         // Define bottom-left corner
         quadGro++;
         quadGro->position = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
         quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _ground[y][x].getAnimStep()) * 16.0f);
-        if(Sun::get().getHour() > 3 && Sun::get().getHour() <= 14)
+        if(Sun::get().getHour() >= 10  && Sun::get().getHour() <= 35)
         {
             quadGro->color.a = 255;
             quadGro->color.r = 255;
             quadGro->color.g = 255;
             quadGro->color.b = 255;
         }
-        else if(Sun::get().getHour() >= 19 && Sun::get().getHour() <= 23)
+        else if(Sun::get().getHour() >= 46 && Sun::get().getHour() <= 60)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 100;
-            quadGro->color.g = 100;
-            quadGro->color.b = 100;
+            quadGro->color.r = 155;
+            quadGro->color.g = 155;
+            quadGro->color.b = 155;
         }
-        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 18)
+        else if(Sun::get().getHour() == 0 || Sun::get().getHour() == 45)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 131;
-            quadGro->color.g = 131;
-            quadGro->color.b = 131;
+            quadGro->color.r = 165;
+            quadGro->color.g = 165;
+            quadGro->color.b = 165;
         }
-        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 17)
+        else if(Sun::get().getHour() == 1 || Sun::get().getHour() == 44)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 162;
-            quadGro->color.g = 162;
-            quadGro->color.b = 162;
+            quadGro->color.r = 175;
+            quadGro->color.g = 175;
+            quadGro->color.b = 175;
         }
-        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 16)
+        else if(Sun::get().getHour() == 2 || Sun::get().getHour() == 43)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 193;
-            quadGro->color.g = 193;
-            quadGro->color.b = 193;
+            quadGro->color.r = 185;
+            quadGro->color.g = 185;
+            quadGro->color.b = 185;
         }
-        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 15)
+        else if(Sun::get().getHour() == 3 || Sun::get().getHour() == 42)
         {
             quadGro->color.a = 255;
-            quadGro->color.r = 224;
-            quadGro->color.g = 224;
-            quadGro->color.b = 224;
+            quadGro->color.r = 195;
+            quadGro->color.g = 195;
+            quadGro->color.b = 195;
+        }
+        else if(Sun::get().getHour() == 4 || Sun::get().getHour() == 41)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 205;
+            quadGro->color.g = 205;
+            quadGro->color.b = 205;
+        }
+        else if(Sun::get().getHour() == 5 || Sun::get().getHour() == 40)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 215;
+            quadGro->color.g = 215;
+            quadGro->color.b = 215;
+        }
+        else if(Sun::get().getHour() == 6 || Sun::get().getHour() == 39)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 225;
+            quadGro->color.g = 225;
+            quadGro->color.b = 225;
+        }
+        else if(Sun::get().getHour() == 7 || Sun::get().getHour() == 38)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 235;
+            quadGro->color.g = 235;
+            quadGro->color.b = 235;
+        }
+        else if(Sun::get().getHour() == 8 || Sun::get().getHour() == 37)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 245;
+            quadGro->color.g = 245;
+            quadGro->color.b = 245;
+        }
+        else if(Sun::get().getHour() == 9 || Sun::get().getHour() == 36)
+        {
+            quadGro->color.a = 255;
+            quadGro->color.r = 255;
+            quadGro->color.g = 255;
+            quadGro->color.b = 255;
         }
     }
     if(layerTwoTileID != -1)
@@ -515,7 +623,9 @@ void TileMap::updateMap(sf::Time deltaTime, const sf::Vector2f& pposition)
         {
             _ground[i][j].update(deltaTime, pposition);
             _layerTwo[i][j].update(deltaTime, pposition);
-            _layerTwo[i][j].update(deltaTime, pposition);
+            _layerThree[i][j].update(deltaTime, pposition);
+            _layerSix[i][j].update(deltaTime, pposition);
+            _canopy[i][j].update(deltaTime, pposition);
             vertexFill(i, j);
         }
     }
@@ -552,23 +662,23 @@ const sf::Texture& TileMap::getTileSet() const
 }
 
 
-const TileMap::Tile* const * const TileMap::getGroundTiles()     const
+const Tile* const * const TileMap::getGroundTiles()     const
 {
     return _ground;
 }
-const TileMap::Tile* const * const TileMap::getLayerTwoTiles()   const
+const Tile* const * const TileMap::getLayerTwoTiles()   const
 {
     return _layerTwo;
 }
-const TileMap::Tile* const * const TileMap::getLayerThreeTiles() const
+const Tile* const * const TileMap::getLayerThreeTiles() const
 {
     return _layerThree;
 }
-const TileMap::Tile* const * const TileMap::getLayerSixTiles()   const
+const Tile* const * const TileMap::getLayerSixTiles()   const
 {
     return _layerSix;
 }
-const TileMap::Tile* const * const TileMap::getCanopyTiles()     const
+const Tile* const * const TileMap::getCanopyTiles()     const
 {
     return _canopy;
 }
@@ -597,33 +707,4 @@ int TileMap::getMapID()
     return _mapIdentifier;
 }
 
-/************************
-  Tile Animation Handler
- ************************/
 
-AutoAnimation TileMap::Tile::getTileAnimation(int ID)
-{
-    switch(ID)
-    {
-        case  0:
-        case  1:
-        case  2:
-        case  3:
-        case  4:
-        case  5:
-        case  6:
-        case  7:
-        case  8:
-            return AutoAnimation(0,8,16,16,sf::seconds(.4f));
-            break;
-        case 13:
-            return AutoAnimation(0,5,16,16,sf::seconds(1.0f));
-            break;
-        //case  :
-          //  return AutoAnimation(0,3,16,16,sf::seconds(1.0f));
-            //break;
-        default:
-            return AutoAnimation(0,1,16,16,sf::seconds(1.0f));
-            break;
-    }
-}

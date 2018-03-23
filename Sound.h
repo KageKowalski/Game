@@ -18,6 +18,7 @@ protected:
 public:
     Sound();
     
+    void  resetBuffer();
     void  playSound(sf::Time deltaTime);
     bool  setBuffer(std::string filename);
     void  setVolume(float volume);
