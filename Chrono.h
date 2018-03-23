@@ -10,18 +10,15 @@
 class Chrono {
 
 public:
+
     Chrono(Chrono const&)        = delete;
     void operator=(Chrono const&)  = delete;
     
-    static Chrono& get()
-    {
-        static Chrono instance;
-        return        instance;
-    }
-
-	// Constructor takes nothing. As soon as a clock is constructed, it immeditately
-	// begins ticking.
-
+	static Chrono& get()
+	{
+		static Chrono instance;
+		return        instance;
+	}
 
 	// Progresses the clock forward by the amount of time between the previous frame
 	// and the current frame.
@@ -34,6 +31,9 @@ public:
 	sf::Time getDeltaTime() const;
 
 private:
+
+	// Constructor takes nothing. As soon as a clock is constructed, it immeditately
+	// begins ticking.
     Chrono();
     ~Chrono();
     

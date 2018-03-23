@@ -28,6 +28,7 @@ public:
 
 	Character* getPlayer() const;
 	std::vector<Character*> getReachableCharacters() const;
+	bool isTouching(Character const * const curr, Direction facing) const;
 
 private:
 

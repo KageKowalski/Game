@@ -60,11 +60,12 @@ int Application::run() {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::RIGHT);
 
 		update();
-
 		std::vector<Character*> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
+		bool touching = m_Maps.getCurrMap().second->isTouching(m_Maps.getCurrMap().second->getPlayer(),
+			m_Maps.getCurrMap().second->getPlayer()->getDirection());
 		if(reachables.size() > 0)
-			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())) + " | " + reachables.at(reachables.size()-1)->getName());
-		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock.getFPS())) + " | " + m_Maps.getCurrMap().first->getName());
+			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock->getFPS())) + " | " + reachables.at(reachables.size()-1)->getName() + " | Touching (1) Yes (2) No: " + std::to_string(touching));
+		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock->getFPS())) + " | " + m_Maps.getCurrMap().first->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
@@ -72,7 +73,6 @@ int Application::run() {
         Sun::get().update(deltaTime);
         background.startMusic();
         background.setVolume(100.0f);
-        m_Settings->setEffectsVolume(100.0f);
 
         m_Renderer.updateTransform(m_Maps.getTransform(), 1);
         std::vector<sf::Texture> textures = m_Maps.getTextures();
@@ -88,7 +88,7 @@ int Application::run() {
         m_Renderer.updateVerticies(verticies.at(5), 6);
         m_Renderer.updateVerticies(verticies.at(6), 7);
 
-        TileSoundHandler::get().attachTileSounds(deltaTime, m_Camera->getBounds(), *m_Maps.getCurrMap().first, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition() );
+        //TileSoundHandler::get().attachTileSounds(deltaTime, m_Camera->getBounds(), *m_Maps.getCurrMap().first, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition() );
         
         draw();
 	}

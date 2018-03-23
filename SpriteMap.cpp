@@ -87,6 +87,16 @@ std::vector<Character*> SpriteMap::getReachableCharacters() const {
 	return reachables;
 }
 
+bool SpriteMap::isTouching(Character const * const curr, Direction facing) const {
+	for (Character* character : m_Characters)
+		if (sqrt(pow(curr->getCenterPosition().x - character->getCenterPosition().x, 2)
+			+ pow(curr->getCenterPosition().y - character->getCenterPosition().y, 2)) <= 16.0f
+			&& curr != character)
+			return true;
+
+	return false;
+}
+
 void SpriteMap::vertexFill(const Character* const character, size_t offset) {
 	float i = character->getPosition().y;
 	float j = character->getPosition().x;
