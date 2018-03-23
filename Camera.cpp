@@ -33,7 +33,9 @@ void Camera::resetOrientation() {
 
 void Camera::update() {
 	if (m_TargetPosition == nullptr) return;
+
 	setPosition(sf::Vector2f(m_TargetPosition->x * m_TargetScale->x, m_TargetPosition->y * m_TargetScale->y));
+
     m_Bounds = sf::FloatRect(m_View.getCenter(), m_View.getSize());
 }
 

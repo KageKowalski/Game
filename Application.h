@@ -36,15 +36,8 @@ private:
 	// Toggle fullscreen mode
 	void toggleFullscreen();
     
-    void renderGraphics();
-    
 public:
-    struct DrawThreadInfo
-    {
-        Window*     window;
-        Renderer* renderer;
-        MapBank*   mapBank;
-    };
+
     struct SoundThreadInfo
     {
         TileSoundHandler*    thisHandler;

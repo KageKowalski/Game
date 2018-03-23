@@ -4,14 +4,7 @@ void soundThreadCall(Application::SoundThreadInfo* h)
 {
     h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap);
 }
-/*void inputThreadCall(TileSoundHandler::ThreadInfo* h)
-{
-    h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap);
-}*/
-/*void drawThreadCall(Application::DrawThreadInfo* h)
-{
 
-}*/
 Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
@@ -25,25 +18,19 @@ Application::~Application() {
 }
 
 int Application::run() {
-	// Check if application initialized properly
 	if (!init()) return EXIT_FAILURE;
 
-	// Stores event triggers
 	sf::Event e;
     
     Music background("Game_Test.wav");
 	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Maps.getScale());
 
-	// Game loop
 	while (m_Window->m_RenderWindow.isOpen()) {
-		// Progress clock forward once per frame
 		m_Clock.tick();
         EventBus::get().update();
 
-		// Cache change in time since last frame
 		sf::Time deltaTime = m_Clock.getDeltaTime();
 
-		// Process any events that have occurred
 		while (m_Window->m_RenderWindow.pollEvent(e)) {
 			switch (e.type) {
 			case sf::Event::EventType::Closed:
@@ -58,8 +45,6 @@ int Application::run() {
 			}
 		}
         
-        
-		// Process input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F11)) toggleFullscreen();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f), deltaTime);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f), deltaTime);
@@ -78,7 +63,6 @@ int Application::run() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::RIGHT);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::RIGHT);
 
-		// Update components
 		update();
 
 		std::vector<Character*> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
@@ -90,11 +74,10 @@ int Application::run() {
 
 		m_Maps.update(deltaTime, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(),m_Camera->getBounds());
         Sun::get().update(deltaTime);
-        //background.startMusic();
+        background.startMusic();
         background.setVolume(100.0f);
         m_Settings->setEffectsVolume(100.0f);
 
-		// Draw graphics
         m_Renderer.updateTransform(m_Maps.getTransform(), 1);
         std::vector<sf::Texture> textures = m_Maps.getTextures();
         m_Renderer.updateTexture(textures.at(0), 1);
@@ -108,32 +91,22 @@ int Application::run() {
         m_Renderer.updateVerticies(verticies.at(4), 5);
         m_Renderer.updateVerticies(verticies.at(5), 6);
         m_Renderer.updateVerticies(verticies.at(6), 7);
-        
-        SoundThreadInfo* s = new SoundThreadInfo;
-        s->thisHandler = &TileSoundHandler::get();
-        s->deltaTime   = &deltaTime;
-        s->cameraView  = &m_Camera->getBounds();
-        s->tilemap     = m_Maps.getCurrMap().first;
-        sf::Thread soundThread(soundThreadCall, s);
-        soundThread.launch();
+
+		TileSoundHandler::get().attachTileSounds(deltaTime, m_Camera->getBounds(), *m_Maps.getCurrMap().first);
         
         draw();
-        soundThread.wait();
 	}
 
 	return EXIT_SUCCESS;
 }
 
 bool Application::init() {
-	m_Settings = new Settings();
-    m_Settings->setMusicVolume(50.0f);
-    m_Settings->setEffectsVolume(50.0f);
+	m_Settings = new Settings;
+
     m_Maps.soundInit(m_Settings->getEffectsVolume());
-	// Cache startup video mode
+
 	sf::VideoMode initMode = m_Settings->getCurrVideoMode();
-
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
-
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
 
 	if (!m_Maps.loadMap(0, m_Settings->getEffectsVolume())) return false;
@@ -154,10 +127,7 @@ void Application::draw() {
 void Application::toggleFullscreen() {
 	m_Settings->toggleFullscreen();
 
-	// Cache current video mode
 	sf::VideoMode mode = m_Settings->getCurrVideoMode();
-
 	m_Camera->resize(sf::Vector2f(static_cast<float>(mode.width), static_cast<float>(mode.height)));
-
 	m_Window->toggleFullscreen(m_Settings->getCurrVideoMode(),m_Camera->getView(),m_Settings->isFullscreen());
 }
