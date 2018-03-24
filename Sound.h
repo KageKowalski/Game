@@ -3,6 +3,7 @@
 #define Sound_hpp
 
 #include <SFML/Audio.hpp>
+#include "Chrono.h"
 
 class Sound
 {

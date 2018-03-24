@@ -4,7 +4,7 @@ Settings::Settings(const sf::VideoMode& initMode) {
 	m_CurrVideoMode = initMode;
 	m_FullscreenVideoModes = sf::VideoMode::getFullscreenModes();
 	m_Fullscreen = false;
-	m_MusicVolume = 50.0f;
+	m_MusicVolume = 100.0f;
 	m_EffectsVolume = 50.0f;
 }
 

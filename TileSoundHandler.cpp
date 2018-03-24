@@ -7,6 +7,7 @@ TileSoundHandler::TileSoundHandler()
 TileSoundHandler::~TileSoundHandler(){}
 bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, TileMap& tilemap, sf::Vector2f pposition )
 {
+    _elapsedTime += deltaTime;
     for(int i = 0; i < tilemap.getHeight(); i++)
     {
         for(int j = 0; j < tilemap.getWidth(); j++)
@@ -37,14 +38,11 @@ bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect camera
                             int count = 0;
                             while(_sounds[count].isPlaying()) count++;
                             float radius = sqrt(pow(pposition.x-tilemap.getGroundTiles()[i][j].getCenterPosition().x,2)+pow(pposition.y-tilemap.getGroundTiles()[i][j].getCenterPosition().y,2));
-                            if(radius < 128)
-                            {
-                                _tileProperties[count] = tilemap.getGroundTiles()[i][j].getProperties();
-                                _sounds[count].setRadiusFromPlayer(radius);
-                                _soundsPosition[count].x = tilemap.getGroundTiles()[i][j].getCenterPosition().x;
-                                _soundsPosition[count].y = tilemap.getGroundTiles()[i][j].getCenterPosition().y;
-                                _sounds[count].setBuffer(tilemap.getGroundTiles()[i][j].getSoundFilename());
-                            }
+                            _tileProperties[count] = tilemap.getGroundTiles()[i][j].getProperties();
+                            _sounds[count].setRadiusFromPlayer(radius);
+                            _soundsPosition[count].x = tilemap.getGroundTiles()[i][j].getCenterPosition().x;
+                            _soundsPosition[count].y = tilemap.getGroundTiles()[i][j].getCenterPosition().y;
+                            _sounds[count].setBuffer(tilemap.getGroundTiles()[i][j].getSoundFilename());
                         }
                     }
                     if(tilemap.getGroundTiles()[i][j].getProperties() & 0x02)
@@ -87,18 +85,17 @@ bool TileSoundHandler::attachTileSounds(sf::Time deltaTime, sf::FloatRect camera
 
 void TileSoundHandler::playSounds(sf::Time deltaTime, sf::FloatRect cameraView, sf::Vector2f pposition)
 {
-    _elapsedTime += deltaTime;
     for(int i = 0; i < 32; i++)
     {
-        if(!(_sounds[i].isPlaying()) && _elapsedTime.asSeconds() > 5.0f && _sounds[i].getFilename().length() > 1)
-        {
-            _sounds[i] = Sound();
-            _soundsPosition[i].x = 0;
-            _soundsPosition[i].y = 0;
-            _tileProperties[i]   = 0;
-            _elapsedTime = sf::Time::Zero;
-        }
-        if(_tileProperties[i] & 0x04 && *_volume - 1.5f*_sounds[i].getRadiusFromPlayer() > -80.0f)
+//        if(!(_sounds[i].isPlaying()) && _elapsedTime.asSeconds() > 5.0f && _sounds[i].getFilename().length() > 1)
+//        {
+//            _sounds[i].resetBuffer();
+//            _soundsPosition[i].x = 0;
+//            _soundsPosition[i].y = 0;
+//            _tileProperties[i]   = 0;
+//            _elapsedTime = sf::Time::Zero;
+//        }
+        if(_tileProperties[i] & 0x04 && *_volume - 1.2f*_sounds[i].getRadiusFromPlayer() > -80.0f)
         {
             _sounds[i].setVolume(*_volume - 1.5f*_sounds[i].getRadiusFromPlayer());
             _sounds[i].playSound(deltaTime);

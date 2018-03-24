@@ -11,6 +11,7 @@
 #include "Music.h"
 #include "MapBank.h"
 #include "EventBus.h"
+#include <thread>
 
 class Application {
 
@@ -44,6 +45,12 @@ public:
         sf::Time*              deltaTime;
         const sf::FloatRect*  cameraView;
         TileMap*                 tilemap;
+    };
+    struct DrawThreadInfo
+    {
+        Window*     window;
+        Renderer* renderer;
+        MapBank*   mapBank;
     };
 
 private:

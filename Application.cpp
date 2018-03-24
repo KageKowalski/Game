@@ -1,4 +1,27 @@
 #include "Application.h"
+void soundThreadCall(Application::SoundThreadInfo* h)
+{
+    h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap, Player::get().getCenterPosition());
+}
+void drawThreadCall(Application::DrawThreadInfo* h)
+{
+    h->renderer->updateTransform(h->mapBank->getTransform(), 1);
+    std::vector<sf::Texture> textures = h->mapBank->getTextures();
+    h->renderer->updateTexture(textures.at(0), 1);
+    h->renderer->updateTexture(textures.at(1), 4);
+    h->renderer->updateTexture(textures.at(2), 5);
+    std::vector<sf::VertexArray> verticies = h->mapBank->getVerticies();
+    h->renderer->updateVerticies(verticies.at(0), 1);
+    h->renderer->updateVerticies(verticies.at(1), 2);
+    h->renderer->updateVerticies(verticies.at(2), 3);
+    h->renderer->updateVerticies(verticies.at(3), 4);
+    h->renderer->updateVerticies(verticies.at(4), 5);
+    h->renderer->updateVerticies(verticies.at(5), 6);
+    h->renderer->updateVerticies(verticies.at(6), 7);
+    h->window->m_RenderWindow.clear(sf::Color(255, 0, 255));
+    h->window->m_RenderWindow.draw(*h->renderer);
+    h->window->m_RenderWindow.display();
+}
 
 Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Window = nullptr;
@@ -71,26 +94,26 @@ int Application::run() {
 
 		m_Maps.update(deltaTime, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(),m_Camera->getBounds());
         Sun::get().update(deltaTime);
-        background.startMusic();
-        background.setVolume(100.0f);
+        //background.startMusic();
+        //background.setVolume(m_Settings->getMusicVolume());
 
-        m_Renderer.updateTransform(m_Maps.getTransform(), 1);
-        std::vector<sf::Texture> textures = m_Maps.getTextures();
-        m_Renderer.updateTexture(textures.at(0), 1);
-        m_Renderer.updateTexture(textures.at(1), 4);
-        m_Renderer.updateTexture(textures.at(2), 5);
-        std::vector<sf::VertexArray> verticies = m_Maps.getVerticies();
-        m_Renderer.updateVerticies(verticies.at(0), 1);
-        m_Renderer.updateVerticies(verticies.at(1), 2);
-        m_Renderer.updateVerticies(verticies.at(2), 3);
-        m_Renderer.updateVerticies(verticies.at(3), 4);
-        m_Renderer.updateVerticies(verticies.at(4), 5);
-        m_Renderer.updateVerticies(verticies.at(5), 6);
-        m_Renderer.updateVerticies(verticies.at(6), 7);
+        DrawThreadInfo* d = new DrawThreadInfo;
+        d->mapBank  = &m_Maps;
+        d->renderer = &m_Renderer;
+        d->window   = m_Window;
+        std::thread drawThread(drawThreadCall, d);
+        drawThread.join();
 
-        //TileSoundHandler::get().attachTileSounds(deltaTime, m_Camera->getBounds(), *m_Maps.getCurrMap().first, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition() );
         
-        draw();
+        SoundThreadInfo* s = new SoundThreadInfo;
+        s->thisHandler = &TileSoundHandler::get();
+        s->deltaTime   = &deltaTime;
+        s->cameraView  = &m_Camera->getBounds();
+        s->tilemap     = m_Maps.getCurrMap().first;
+        std::thread soundThread(soundThreadCall, s);
+        soundThread.join();
+        
+        while(soundThread.joinable() || drawThread.joinable()){}
 	}
 
 	return EXIT_SUCCESS;
