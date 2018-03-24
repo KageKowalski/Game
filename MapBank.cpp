@@ -106,7 +106,7 @@ bool MapBank::loadMap(int mapID, const float &volume) {
             -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
         };
 
-		if (!testMap->build(layerOne, layerTwo, blank, blank, layerFive, 22, 22, volume, "Game_Test.wav", "Tileset_1.png"))
+		if (!testMap->build(layerOne, layerTwo, blank, blank, layerFive, 22, 22, volume, "Game_Test.wav", "Tileset_1_updated.png"))
 			return false;
 		
 		std::vector<Character*> characters;

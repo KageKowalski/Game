@@ -1,33 +1,15 @@
 #include "Application.h"
+
 void soundThreadCall(Application::SoundThreadInfo* h)
 {
-    h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap, Player::get().getCenterPosition());
-}
-void drawThreadCall(Application::DrawThreadInfo* h)
-{
-    h->renderer->updateTransform(h->mapBank->getTransform(), 1);
-    std::vector<sf::Texture> textures = h->mapBank->getTextures();
-    h->renderer->updateTexture(textures.at(0), 1);
-    h->renderer->updateTexture(textures.at(1), 4);
-    h->renderer->updateTexture(textures.at(2), 5);
-    std::vector<sf::VertexArray> verticies = h->mapBank->getVerticies();
-    h->renderer->updateVerticies(verticies.at(0), 1);
-    h->renderer->updateVerticies(verticies.at(1), 2);
-    h->renderer->updateVerticies(verticies.at(2), 3);
-    h->renderer->updateVerticies(verticies.at(3), 4);
-    h->renderer->updateVerticies(verticies.at(4), 5);
-    h->renderer->updateVerticies(verticies.at(5), 6);
-    h->renderer->updateVerticies(verticies.at(6), 7);
-    h->window->m_RenderWindow.clear(sf::Color(255, 0, 255));
-    h->window->m_RenderWindow.draw(*h->renderer);
-    h->window->m_RenderWindow.display();
+	h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap, Player::get().getCenterPosition());
 }
 
 Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;
-    m_Clock = &Chrono::get();
+	m_State = GameState::FREEROAM;
 }
 
 Application::~Application() {
@@ -40,15 +22,13 @@ int Application::run() {
 	if (!init()) return EXIT_FAILURE;
 
 	sf::Event e;
-    
-    Music background("Game_Test.wav");
+
+	Music background("Game_Test.wav");
 	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Maps.getScale());
 
 	while (m_Window->m_RenderWindow.isOpen()) {
-        m_Clock->tick();
-        EventBus::get().update();
-
-        sf::Time deltaTime = m_Clock->getDeltaTime();
+		Chrono::get().tick();
+		EventBus::get().update();
 
 		while (m_Window->m_RenderWindow.pollEvent(e)) {
 			switch (e.type) {
@@ -63,12 +43,12 @@ int Application::run() {
 				break;
 			}
 		}
-        
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F11)) toggleFullscreen();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f), deltaTime);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f), deltaTime);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) m_Camera->pan(sf::Vector2f(500.0f, 0.0f), deltaTime);
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) m_Camera->pan(sf::Vector2f(0.0f, -500.0f), deltaTime);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) m_Camera->pan(sf::Vector2f(500.0f, 0.0f));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) m_Camera->pan(sf::Vector2f(0.0f, -500.0f));
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::DOWN);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::DOWN);
@@ -86,34 +66,43 @@ int Application::run() {
 		std::vector<Character*> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
 		bool touching = m_Maps.getCurrMap().second->isTouching(m_Maps.getCurrMap().second->getPlayer(),
 			m_Maps.getCurrMap().second->getPlayer()->getDirection());
-		if(reachables.size() > 0)
-			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock->getFPS())) + " | " + reachables.at(reachables.size()-1)->getName() + " | Touching (1) Yes (2) No: " + std::to_string(touching));
-		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(m_Clock->getFPS())) + " | " + m_Maps.getCurrMap().first->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
+		if (reachables.size() > 0)
+			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + reachables.at(reachables.size() - 1)->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
+		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + m_Maps.getCurrMap().first->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		m_Maps.update(deltaTime, m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(),m_Camera->getBounds());
-        Sun::get().update(deltaTime);
-        //background.startMusic();
-        //background.setVolume(m_Settings->getMusicVolume());
+		m_Maps.update(Chrono::get().getDeltaTime(), m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Camera->getBounds());
+		Sun::get().update();
+		background.startMusic();
+		background.setVolume(m_Settings->getMusicVolume());
 
-        DrawThreadInfo* d = new DrawThreadInfo;
-        d->mapBank  = &m_Maps;
-        d->renderer = &m_Renderer;
-        d->window   = m_Window;
-        std::thread drawThread(drawThreadCall, d);
-        drawThread.join();
+		SoundThreadInfo* s = new SoundThreadInfo;
+		s->thisHandler = &TileSoundHandler::get();
+		s->deltaTime = &Chrono::get().getDeltaTime();
+		s->cameraView = &m_Camera->getBounds();
+		s->tilemap = m_Maps.getCurrMap().first;
+		std::thread soundThread(soundThreadCall, s);
+		soundThread.join();
 
-        
-        SoundThreadInfo* s = new SoundThreadInfo;
-        s->thisHandler = &TileSoundHandler::get();
-        s->deltaTime   = &deltaTime;
-        s->cameraView  = &m_Camera->getBounds();
-        s->tilemap     = m_Maps.getCurrMap().first;
-        std::thread soundThread(soundThreadCall, s);
-        soundThread.join();
-        
-        while(soundThread.joinable() || drawThread.joinable()){}
+		m_Renderer.updateTransform(m_Maps.getTransform(), 1);
+		std::vector<sf::Texture> textures = m_Maps.getTextures();
+		m_Renderer.updateTexture(textures.at(0), 1);
+		m_Renderer.updateTexture(textures.at(1), 4);
+		m_Renderer.updateTexture(textures.at(2), 5);
+		std::vector<sf::VertexArray> verticies = m_Maps.getVerticies();
+		m_Renderer.updateVerticies(verticies.at(0), 1);
+		m_Renderer.updateVerticies(verticies.at(1), 2);
+		m_Renderer.updateVerticies(verticies.at(2), 3);
+		m_Renderer.updateVerticies(verticies.at(3), 4);
+		m_Renderer.updateVerticies(verticies.at(4), 5);
+		m_Renderer.updateVerticies(verticies.at(5), 6);
+		m_Renderer.updateVerticies(verticies.at(6), 7);
+		m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
+		m_Window->m_RenderWindow.draw(m_Renderer);
+		m_Window->m_RenderWindow.display();
+
+		while (soundThread.joinable()) {}
 	}
 
 	return EXIT_SUCCESS;
@@ -122,7 +111,7 @@ int Application::run() {
 bool Application::init() {
 	m_Settings = new Settings;
 
-    m_Maps.soundInit(m_Settings->getEffectsVolume());
+	m_Maps.soundInit(m_Settings->getEffectsVolume());
 
 	sf::VideoMode initMode = m_Settings->getCurrVideoMode();
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
@@ -138,9 +127,9 @@ void Application::update() {
 }
 
 void Application::draw() {
-    m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
-    m_Window->m_RenderWindow.draw(m_Renderer);
-    m_Window->m_RenderWindow.display();
+	m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
+	m_Window->m_RenderWindow.draw(m_Renderer);
+	m_Window->m_RenderWindow.display();
 }
 
 void Application::toggleFullscreen() {
@@ -148,5 +137,5 @@ void Application::toggleFullscreen() {
 
 	sf::VideoMode mode = m_Settings->getCurrVideoMode();
 	m_Camera->resize(sf::Vector2f(static_cast<float>(mode.width), static_cast<float>(mode.height)));
-	m_Window->toggleFullscreen(m_Settings->getCurrVideoMode(),m_Camera->getView(),m_Settings->isFullscreen());
+	m_Window->toggleFullscreen(m_Settings->getCurrVideoMode(), m_Camera->getView(), m_Settings->isFullscreen());
 }

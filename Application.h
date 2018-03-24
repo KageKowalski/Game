@@ -13,6 +13,10 @@
 #include "EventBus.h"
 #include <thread>
 
+enum class GameState {
+	FREEROAM
+};
+
 class Application {
 
 public:
@@ -72,6 +76,9 @@ private:
 
 	// All maps
 	MapBank m_Maps;
+
+	// Current state of the game
+	GameState m_State;
     
 };
 

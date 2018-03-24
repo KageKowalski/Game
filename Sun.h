@@ -2,18 +2,19 @@
 #define Sun_hpp
 
 #include <SFML/System.hpp>
+#include "Chrono.h"
 
 class Sun
 {
 public:
-    enum TimeOfDay
+    enum class TimeOfDay
     {
         DAYLIGHT,
         DUSK,
         DAWN,
         NIGHT
     };
-    void update(sf::Time deltaTime);
+    void update();
     int getHour() const;
     TimeOfDay getTimeOfDay() const;
     std::string getTimeOfDayString() const;

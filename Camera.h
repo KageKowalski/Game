@@ -4,6 +4,7 @@
 #define CAMERA_H
 
 #include <SFML/Graphics.hpp>
+#include "Chrono.h"
 
 // Wrapper class for a camera. The render window is actively using its own camera,
 // and this camera is separate from that. The relationship between the render window's
@@ -28,17 +29,17 @@ public:
 	// Dialates or magnifies the viewport, effectively zooming.
 	// This function works relative to the current viewport size.
 	// Extract deltaTime from Clock.
-	void zoom(float factor, sf::Time deltaTime);
+	void zoom(float factor);
 
 	// Rotates the viewport by the specified angle, measured in degrees.
 	// WARNING: A wonky orientation can lead to confusing or unintuitive controls.
 	// This function works relative to the current viewport orientation.
 	// Extract deltaTime from Clock.
-	void rotate(float angle, sf::Time deltaTime);
+	void rotate(float angle);
 
 	// Pans the camera in the cardinal directions.
 	// Extract deltaTime from Clock.
-	void pan(const sf::Vector2f& velocity, sf::Time deltaTime);
+	void pan(const sf::Vector2f& velocity);
 
 	// Instantly resets the viewport orientation to zero degrees.
 	void resetOrientation();
