@@ -13,7 +13,16 @@ public:
     enum EventType
     {
         EV_CREATETHREADS,
-        EV_SOUND
+        EV_SOUND,
+		EV_FULLSCREEN,
+		EV_RUNDOWN,
+		EV_RUNUP,
+		EV_RUNLEFT,
+		EV_RUNRIGHT,
+		EV_WALKDOWN,
+		EV_WALKUP,
+		EV_WALKLEFT,
+		EV_WALKRIGHT
     };
     virtual ~Event() {};
     virtual EventType getType() const = 0;

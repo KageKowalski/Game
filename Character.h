@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "Animation.h"
 #include "Random.h"
+#include "Events.h"
 
 // THIS CLASS ASSUMES THE FOLLOWING ANIMATION STEP VALUES:
 // 0 == Look down
@@ -48,7 +49,7 @@ enum class Direction {
 // Characters aren't supposed to be instantiated without dynamically pointing to one of its
 // subclass. Using this class as a polymorphic base is recommended when batching a bunch
 // of different types of characters into the same vector or list of characters, like in SpriteMap.
-class Character : public Entity, public Animation {
+class Character : public Entity, public Animation, public EventListener {
 
 public:
 
@@ -96,6 +97,9 @@ public:
 
 	// Retrieves the character's ID.
 	int getCharacterID() const;
+
+	// Handles all events that pertain to character actions.
+	void handleEvent(Event* const e) override;
 
 protected:
 

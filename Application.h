@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <SFML/System.hpp>
+#include <thread>
 
 #include "Window.h"
 #include "Settings.h"
@@ -11,21 +12,21 @@
 #include "Music.h"
 #include "MapBank.h"
 #include "EventBus.h"
-#include <thread>
+#include "GameState.h"
+#include "Input.h"
 
-enum class GameState {
-	FREEROAM
-};
-
-class Application {
+class Application : public EventListener {
 
 public:
 
 	Application();
-	~Application();
+	virtual ~Application();
 
 	// Runs the game loop
 	int run();
+
+	// Handles events pertaining to macro operation in Application
+	void handleEvent(Event* const e) override;
     
 private:
 
@@ -79,6 +80,9 @@ private:
 
 	// Current state of the game
 	GameState m_State;
+
+	// Input module
+	Input m_Input;
     
 };
 

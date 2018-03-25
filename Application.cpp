@@ -10,6 +10,8 @@ Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Settings = nullptr;
 	m_Camera = nullptr;
 	m_State = GameState::FREEROAM;
+
+	EventBus::get().registerListener(Event::EventType::EV_FULLSCREEN, this);
 }
 
 Application::~Application() {
@@ -44,23 +46,7 @@ int Application::run() {
 			}
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F11)) toggleFullscreen();
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) m_Camera->pan(sf::Vector2f(-500.0f, 0.0f));
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) m_Camera->pan(sf::Vector2f(0.0f, 500.0f));
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) m_Camera->pan(sf::Vector2f(500.0f, 0.0f));
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) m_Camera->pan(sf::Vector2f(0.0f, -500.0f));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::DOWN);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::DOWN);
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::UP);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::UP);
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::LEFT);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::LEFT);
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->run(Direction::RIGHT);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) m_Maps.getCurrMap().second->getPlayer()->walk(Direction::RIGHT);
+		m_Input.analyze(m_State);
 
 		update();
 		std::vector<Character*> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
@@ -138,4 +124,12 @@ void Application::toggleFullscreen() {
 	sf::VideoMode mode = m_Settings->getCurrVideoMode();
 	m_Camera->resize(sf::Vector2f(static_cast<float>(mode.width), static_cast<float>(mode.height)));
 	m_Window->toggleFullscreen(m_Settings->getCurrVideoMode(), m_Camera->getView(), m_Settings->isFullscreen());
+}
+
+void Application::handleEvent(Event* const e) {
+	switch (e->getType()) {
+	case Event::EventType::EV_FULLSCREEN:
+		toggleFullscreen();
+		break;
+	}
 }
