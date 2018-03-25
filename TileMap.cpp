@@ -154,8 +154,13 @@ void TileMap::vertexFill(int y, int x)
 
 	// Calculate position of tile graphic in tileset in tile units
 	int groundTilePosX = groundTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int groundTilePosY = (groundTileID / _tileset.getWidth()) * 16;
-	_groundVerticies[(size_t)((i * _width + j) * 4 )];
+    int groundTilePosY = (groundTileID / (_tileset.getWidth()) / 16);
+    int layThreeTilePosX = layerThreeTileID % static_cast<int>(_tileset.getWidth() / 16);
+    int layThreeTilePosY = (layerThreeTileID / (_tileset.getWidth()) / 16);
+    int laySixTilePosX = layerSixTileID % static_cast<int>(_tileset.getWidth() / 16);
+    int laySixTilePosY = (layerSixTileID / (_tileset.getWidth()) / 16);
+    int canopyTilePosX = canopyTileID % static_cast<int>(_tileset.getWidth() / 16);
+    int canopyTilePosY = (canopyTileID / (_tileset.getWidth()) / 16);
 
 	// Get a pointer to tile's top-left corner in vertex array
 	sf::Vertex* quadGro = &_groundVerticies[(size_t)  ((i * _width + j) * 4 )];
@@ -546,9 +551,6 @@ void TileMap::vertexFill(int y, int x)
     }
     if(layerThreeTileID != -1)
     {
-        int layThreeTilePosX = layerThreeTileID % static_cast<int>(_tileset.getWidth() / 16);
-        int layThreeTilePosY = (layerThreeTileID / _tileset.getWidth()) * 16;
-        
         quadThree->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadThree->texCoords = sf::Vector2f(layThreeTilePosX * 16.0f, (layThreeTilePosY + _layerThree[y][x].getAnimStep()) * 16.0f);
         
@@ -569,9 +571,6 @@ void TileMap::vertexFill(int y, int x)
     }
     if(layerSixTileID != -1)
     {
-        int laySixTilePosX = layerSixTileID % static_cast<int>(_tileset.getWidth() / 16);
-        int laySixTilePosY = (layerSixTileID / _tileset.getWidth()) * 16;
-        
         quadSix->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadSix->texCoords = sf::Vector2f(laySixTilePosX * 16.0f, (laySixTilePosY + _layerSix[y][x].getAnimStep()) * 16.0f);
         
@@ -592,9 +591,6 @@ void TileMap::vertexFill(int y, int x)
     }
     if(canopyTileID != -1)
     {
-        int canopyTilePosX = canopyTileID % static_cast<int>(_tileset.getWidth() / 16);
-        int canopyTilePosY = (canopyTileID / _tileset.getWidth()) * 16;
-        
         quadCanopy->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadCanopy->texCoords = sf::Vector2f(canopyTilePosX * 16.0f, (canopyTilePosY + _canopy[y][x].getAnimStep()) * 16.0f);
         

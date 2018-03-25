@@ -27,6 +27,6 @@ unsigned int Chrono::getFPS() const {
 	return m_FPS;
 }
 
-sf::Time Chrono::getDeltaTime() const {
+const sf::Time& Chrono::getDeltaTime() const {
 	return m_LastTime;
 }

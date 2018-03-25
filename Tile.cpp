@@ -79,9 +79,6 @@ AutoAnimation Tile::getTileAnimation(int ID)
         case  12:
             return AutoAnimation(0,8,16,16,sf::seconds(.3f));
             break;
-        case 13:
-            return AutoAnimation(0,5,16,16,sf::seconds(1.0f));
-            break;
             //case  :
             //  return AutoAnimation(0,3,16,16,sf::seconds(1.0f));
             //break;

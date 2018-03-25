@@ -28,7 +28,7 @@ public:
 	unsigned int getFPS() const;
 
 	// Retrieves the change in time since last frame.
-	sf::Time getDeltaTime() const;
+	const sf::Time& getDeltaTime() const;
 
 private:
 
