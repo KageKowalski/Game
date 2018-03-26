@@ -3,6 +3,7 @@
 #define TileMap_h
 
 #include "Tile.h"
+#include "EventBus.h"
 
 class TileMap
 {

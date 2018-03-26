@@ -40,8 +40,8 @@ private:
     //  bit 7 is unused
     //  bit 6 is unused
     //  bit 5 is unused
-    //  bit 4 is unused
-    //  bit 3 is unused
+    //  bit 4 is a interactable connector
+    //  bit 3 is if the tile is interactable
     //  bit 2 is set if a tile radiates sound
     //  bit 1 is set when a tile has movement sound
     //  bit 0 is set if you can't walk on a tile

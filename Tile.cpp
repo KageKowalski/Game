@@ -82,8 +82,9 @@ AutoAnimation Tile::getTileAnimation(int ID)
             //case  :
             //  return AutoAnimation(0,3,16,16,sf::seconds(1.0f));
             //break;
+        //case :
         default:
-            return AutoAnimation(0,1,16,16,sf::seconds(1.0f));
+            return AutoAnimation(0,1,16,16,sf::seconds(0.0f));
             break;
     }
 }

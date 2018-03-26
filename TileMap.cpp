@@ -28,6 +28,9 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
     _layerThreeVerticies.resize(_width * _height * 4);
     _layerSixVerticies.resize(_width * _height * 4  );
     _canopyVerticies.resize(_width * _height * 4    );
+    
+    int countOne = 0;
+    int countZero = 0;
 
     _ground      = new Tile*[_height];
     _layerTwo    = new Tile*[_height];
@@ -110,13 +113,15 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             {
                 _canopy[i][j] = Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), volume);
             }
-            if(_ground[i][j].getProperties() & 0x01 || _layerTwo[i][j].getProperties() & 0x01 || _layerThree[i][j].getProperties() & 0x01 || _layerSix[i][j].getProperties() & 0x01 || _canopy[i][j].getProperties() & 0x01)
+            if((_ground[i][j].getProperties() & 0x01) || (_layerTwo[i][j].getProperties() & 0x01) || (_layerThree[i][j].getProperties() & 0x01) || (_layerSix[i][j].getProperties() & 0x01) || (_canopy[i][j].getProperties() & 0x01))
             {
                 _movementMap[i][j] = 1;
+                countOne++;
             }
             else
             {
                 _movementMap[i][j] = 0;
+                countZero++;
             }
 			vertexFill(i, j);
         }
@@ -154,13 +159,15 @@ void TileMap::vertexFill(int y, int x)
 
 	// Calculate position of tile graphic in tileset in tile units
 	int groundTilePosX = groundTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int groundTilePosY = (groundTileID / (_tileset.getWidth()) / 16);
+    int groundTilePosY = (groundTileID / (_tileset.getWidth() / 16));
+    int layTwoTilePosX = layerTwoTileID % static_cast<int>(_tileset.getWidth() / 16);
+    int layTwoTilePosY = (layerTwoTileID / (_tileset.getWidth() / 16));
     int layThreeTilePosX = layerThreeTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int layThreeTilePosY = (layerThreeTileID / (_tileset.getWidth()) / 16);
+    int layThreeTilePosY = (layerThreeTileID / (_tileset.getWidth() / 16));
     int laySixTilePosX = layerSixTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int laySixTilePosY = (layerSixTileID / (_tileset.getWidth()) / 16);
+    int laySixTilePosY = (layerSixTileID / (_tileset.getWidth() / 16));
     int canopyTilePosX = canopyTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int canopyTilePosY = (canopyTileID / (_tileset.getWidth()) / 16);
+    int canopyTilePosY = (canopyTileID / (_tileset.getWidth() / 16));
 
 	// Get a pointer to tile's top-left corner in vertex array
 	sf::Vertex* quadGro = &_groundVerticies[(size_t)  ((i * _width + j) * 4 )];
@@ -528,9 +535,6 @@ void TileMap::vertexFill(int y, int x)
     }
     if(layerTwoTileID != -1)
     {
-        int layTwoTilePosX = layerTwoTileID % static_cast<int>(_tileset.getWidth() / 16);
-        int layTwoTilePosY = (layerTwoTileID / _tileset.getWidth()) * 16;
-
         quadTwo->position = sf::Vector2f(j * 16.0f, i * 16.0f);
         quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _layerTwo[y][x].getAnimStep()) * 16.0f);
         

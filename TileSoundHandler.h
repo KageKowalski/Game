@@ -29,7 +29,6 @@ private:
 
     void playSounds(sf::Time deltaTime, sf::FloatRect, sf::Vector2f);
     
-    virtual void handleEvent(Event* const e);
     uint8_t      _tileProperties[32];
     sf::Vector2f _soundsPosition[32];
     sf::Vector2f      _prevPposition;

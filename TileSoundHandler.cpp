@@ -97,7 +97,7 @@ void TileSoundHandler::playSounds(sf::Time deltaTime, sf::FloatRect cameraView, 
 //        }
         if(_tileProperties[i] & 0x04 && *_volume - 1.2f*_sounds[i].getRadiusFromPlayer() > -80.0f)
         {
-            _sounds[i].setVolume(*_volume - 1.5f*_sounds[i].getRadiusFromPlayer());
+            _sounds[i].setVolume(*_volume - *_volume * .015 *_sounds[i].getRadiusFromPlayer());
             _sounds[i].playSound(deltaTime);
         }
         if(_tileProperties[i] & 0x02 && pposition != _prevPposition && abs(pposition.x-_soundsPosition[i].x) <= 8 && abs(pposition.y+8.0f-_soundsPosition[i].y) <= 8)
@@ -107,22 +107,6 @@ void TileSoundHandler::playSounds(sf::Time deltaTime, sf::FloatRect cameraView, 
         }
     }
     _prevPposition = pposition;
-}
-
-bool TileSoundHandler::checkThreadSemaphore()
-{
-    if(_threadSemaphore)
-    {
-        _threadSemaphore = false;
-        return true;
-    }
-    return false;
-}
-void TileSoundHandler::handleEvent(Event* const e)
-{
-    if(e->getType() == Event::EventType::EV_CREATETHREADS)
-        
-        _threadSemaphore = true;
 }
 
 
