@@ -28,9 +28,6 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
     _layerThreeVerticies.resize(_width * _height * 4);
     _layerSixVerticies.resize(_width * _height * 4  );
     _canopyVerticies.resize(_width * _height * 4    );
-    
-    int countOne = 0;
-    int countZero = 0;
 
     _ground      = new Tile*[_height];
     _layerTwo    = new Tile*[_height];
@@ -116,12 +113,10 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             if((_ground[i][j].getProperties() & 0x01) || (_layerTwo[i][j].getProperties() & 0x01) || (_layerThree[i][j].getProperties() & 0x01) || (_layerSix[i][j].getProperties() & 0x01) || (_canopy[i][j].getProperties() & 0x01))
             {
                 _movementMap[i][j] = 1;
-                countOne++;
             }
             else
             {
                 _movementMap[i][j] = 0;
-                countZero++;
             }
 			vertexFill(i, j);
         }
