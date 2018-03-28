@@ -1,25 +1,4 @@
 #include "Events.h"
-CreateThreadEvent::CreateThreadEvent()
-{
-    _type = EV_CREATETHREADS;
-}
-CreateThreadEvent::~CreateThreadEvent(){}
-
-Event::EventType CreateThreadEvent::getType() const
-{
-    return _type;
-}
-
-SoundEvent::SoundEvent()
-{
-    _type = EV_SOUND;
-}
-SoundEvent::~SoundEvent(){}
-
-Event::EventType SoundEvent::getType() const
-{
-    return _type;
-}
 
 FullscreenEvent::FullscreenEvent() {
 	_type = EV_FULLSCREEN;
@@ -100,4 +79,22 @@ WalkRightEvent::~WalkRightEvent() {}
 
 Event::EventType WalkRightEvent::getType() const {
 	return _type;
+}
+
+InteractEvent::InteractEvent() {
+    _type = EV_INTERACT;
+}
+InteractEvent::~InteractEvent() {}
+
+Event::EventType InteractEvent::getType() const {
+    return _type;
+}
+
+RadialSoundEvent::RadialSoundEvent() {
+    _type = EV_RADIALSOUND;
+}
+RadialSoundEvent::~RadialSoundEvent() {}
+
+Event::EventType RadialSoundEvent::getType() const {
+    return _type;
 }

@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include "GameState.h"
 #include "Events.h"
+#include <memory>
 
 class Input {
 

@@ -2,13 +2,22 @@
 #ifndef TileMap_h
 #define TileMap_h
 
+#include <map>
 #include "Tile.h"
 #include "EventBus.h"
+
 
 class TileMap
 {
 public:
-    
+    struct LayeredTile
+    {
+        Tile*  ground;
+        Tile*  layerTwo;
+        Tile*  layerThree;
+        Tile*  layerSix;
+        Tile*  canopy;
+    };
 private:
     //layer 1 with the background being considered layer 0
     //layer 4 and 5 are sprite sheets
@@ -20,6 +29,8 @@ private:
     Tile**  _canopy;
     TileSet _tileset;
     int**   _movementMap;
+    
+    std::map<int, LayeredTile*> _map;
     
     //width and height of the current tilemap
     int _width;
@@ -51,10 +62,10 @@ public:
     //builds the map and returns true on a successful build
     //send maps with a -1 value for invalid textures
     //if a map has a -2 value in the 0 position the map will be thrown out
-    bool build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, const float &volume, std::string Music, std::string tilesetFileName);
+    bool build(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName);
     
     //updates all animated tiles in the map
-    void updateMap(sf::Time,const sf::Vector2f&);
+    void updateMap();
     
     int** getMovementMap() const;
     
@@ -65,12 +76,8 @@ public:
     const sf::VertexArray& getLayerSixVertices()   const;
     const sf::VertexArray& getCanopyVertices()     const;
     const sf::Texture&     getTileSet()            const;
-    
-    const Tile* const * const getGroundTiles()     const;
-    const Tile* const * const getLayerTwoTiles()   const;
-    const Tile* const * const getLayerThreeTiles() const;
-    const Tile* const * const getLayerSixTiles()   const;
-    const Tile* const * const getCanopyTiles()     const;
+
+    const std::map<int, LayeredTile*>&        getLayeredMaps()        const;
     
     int getWidth()  const;
     int getHeight() const;
@@ -88,7 +95,7 @@ public:
 
 private:
     //fills vertex arrays with tiles that correlate to the from the build phase
-	void vertexFill(int y, int x);
+	void vertexFill(std::map<int, LayeredTile*>::iterator it);
     
 };
 

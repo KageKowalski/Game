@@ -6,7 +6,7 @@ Sound::Sound()
 void Sound::playSound(sf::Time deltaTime)
 {
     _elapsedTime += deltaTime;
-    if(_elapsedTime > _soundDelay)
+    if(_elapsedTime > _soundDelay && _sound.getStatus() != sf::Sound::Playing)
     {
         _sound.setBuffer(_buffer);
         _sound.play();

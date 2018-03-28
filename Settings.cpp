@@ -1,7 +1,7 @@
 #include "Settings.h"
 
-Settings::Settings(const sf::VideoMode& initMode) {
-	m_CurrVideoMode = initMode;
+Settings::Settings() {
+	m_CurrVideoMode = sf::VideoMode(800, 600);
 	m_FullscreenVideoModes = sf::VideoMode::getFullscreenModes();
 	m_Fullscreen = false;
 	m_MusicVolume = 100.0f;

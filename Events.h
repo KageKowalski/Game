@@ -3,29 +3,6 @@
 
 #include "EventBus.h"
 
-class CreateThreadEvent : public Event
-{
-public:
-    CreateThreadEvent();
-    ~CreateThreadEvent();
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-};
-
-class SoundEvent : public Event
-{
-public:
-    SoundEvent();
-    ~SoundEvent();
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-};
-
 class FullscreenEvent : public Event {
 public:
 	FullscreenEvent();
@@ -114,6 +91,26 @@ public:
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+};
+
+class InteractEvent : public Event {
+public:
+    InteractEvent();
+    ~InteractEvent();
+    
+private:
+    Event::EventType _type;
+    virtual Event::EventType getType() const;
+};
+
+class RadialSoundEvent : public Event {
+public:
+    RadialSoundEvent();
+    ~RadialSoundEvent();
+    
+private:
+    Event::EventType _type;
+    virtual Event::EventType getType() const;
 };
 
 #endif

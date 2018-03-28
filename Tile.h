@@ -12,8 +12,10 @@
 #include "EventBus.h"
 #include "Player.h"
 #include "Chrono.h"
+#include "Settings.h"
+#include "TileSoundHandler.h"
 
-class Tile
+class Tile : public EventListener
 {
 private:
     //handles animation for tiles
@@ -55,7 +57,7 @@ public:
     //constructs a tile with its correct id starts animation
     //starts the animation on step one if you want to start on another step call setAnimStep after initialization
     //sets the position on map
-    Tile(int ID, const sf::Vector2f& position, const float &volume, char properties = 0, std::string soundFilename = "");
+    Tile(int ID, const sf::Vector2f& position, char properties = 0, std::string soundFilename = "");
     
     ~Tile();
     
@@ -88,7 +90,7 @@ public:
     
     const std::string& getSoundFilename() const;
     
-    
+    virtual void handleEvent(Event* const e) override;
     
 };
 

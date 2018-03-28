@@ -24,7 +24,7 @@ public:
 	MapBank(const sf::Vector2f& scale);
 	~MapBank();
 
-	bool loadMap(int mapID, const float& volume);
+	bool loadMap(int mapID);
 
 	void update(sf::Time deltaTime, const sf::Vector2f& pposition, sf::FloatRect cameraView);
 

@@ -1,10 +1,5 @@
 #include "Application.h"
 
-void soundThreadCall(Application::SoundThreadInfo* h)
-{
-	h->thisHandler->attachTileSounds(*h->deltaTime, *h->cameraView, *h->tilemap, Player::get().getCenterPosition());
-}
-
 Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
 	m_Window = nullptr;
 	m_Settings = nullptr;
@@ -63,14 +58,6 @@ int Application::run() {
 		background.startMusic();
 		background.setVolume(m_Settings->getMusicVolume());
 
-		SoundThreadInfo* s = new SoundThreadInfo;
-		s->thisHandler = &TileSoundHandler::get();
-		s->deltaTime = &Chrono::get().getDeltaTime();
-		s->cameraView = &m_Camera->getBounds();
-		s->tilemap = m_Maps.getCurrMap().first;
-		std::thread soundThread(soundThreadCall, s);
-		soundThread.join();
-
 		m_Renderer.updateTransform(m_Maps.getTransform(), 1);
 		std::vector<sf::Texture> textures = m_Maps.getTextures();
 		m_Renderer.updateTexture(textures.at(0), 1);
@@ -87,15 +74,13 @@ int Application::run() {
 		m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
 		m_Window->m_RenderWindow.draw(m_Renderer);
 		m_Window->m_RenderWindow.display();
-
-		while (soundThread.joinable()) {}
 	}
 
 	return EXIT_SUCCESS;
 }
 
 bool Application::init() {
-	m_Settings = new Settings;
+    m_Settings = &Settings::get();
 
 	m_Maps.soundInit(m_Settings->getEffectsVolume());
 
@@ -103,12 +88,14 @@ bool Application::init() {
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
 
-	if (!m_Maps.loadMap(0, m_Settings->getEffectsVolume())) return false;
+	if (!m_Maps.loadMap(0)) return false;
 
 	return true;
 }
 
 void Application::update() {
+    std::unique_ptr<Event> eventPtr = std::make_unique<RadialSoundEvent>();
+    EventBus::get().postEvent(eventPtr);
 	m_Camera->update();
 }
 

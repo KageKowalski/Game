@@ -25,7 +25,7 @@ MapBank::~MapBank() {
 	}
 }
 
-bool MapBank::loadMap(int mapID, const float &volume) {
+bool MapBank::loadMap(int mapID) {
 	if (mapID == 0) {
 		TileMap* testMap = new TileMap("Piglet Hamlet");
 		SpriteMap* spriteMap = new SpriteMap();
@@ -107,7 +107,7 @@ bool MapBank::loadMap(int mapID, const float &volume) {
 
         };
 
-		if (!testMap->build(layerOne, layerTwo, blank, blank, layerFive, 22, 22, volume, "Game_Test.wav", "Tileset_1.png"))
+		if (!testMap->build(layerOne, layerTwo, blank, blank, layerFive, 22, 22, "Game_Test.wav", "Tileset_1_updated.png"))
 			return false;
 		
 		std::vector<Character*> characters;
@@ -131,7 +131,7 @@ void MapBank::update(sf::Time deltaTime,const sf::Vector2f& pposition, sf::Float
 	TileMap* currTileMap = m_Maps.at(m_CurrMap).first;
 	SpriteMap* currSpriteMap = m_Maps.at(m_CurrMap).second;
     
-	currTileMap->updateMap(deltaTime, pposition);
+	currTileMap->updateMap();
 	currSpriteMap->update(deltaTime);
 
     

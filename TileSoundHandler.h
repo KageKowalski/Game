@@ -3,10 +3,8 @@
 #define TileSoundHandler_hpp
 
 #include "SoundHandler.h"
-#include "TileMap.h"
 #include <SFML/Graphics.hpp>
 #include <math.h>
-#include "TileSoundHandler.h"
 #include <thread>
 #include "Player.h"
 
@@ -21,13 +19,13 @@ public:
         static TileSoundHandler instance;
         return        instance;
     }
-    bool attachTileSounds(sf::Time deltaTime, sf::FloatRect cameraView, TileMap& tilemap, sf::Vector2f pposition );
+    bool attachTileSounds(sf::Vector2f tilePos, char properties, std::string name);
     bool checkThreadSemaphore();
 private:
     TileSoundHandler();
     ~TileSoundHandler();
 
-    void playSounds(sf::Time deltaTime, sf::FloatRect, sf::Vector2f);
+    void playSounds(sf::Vector2f tilePos, char properties, std::string name);
     
     uint8_t      _tileProperties[32];
     sf::Vector2f _soundsPosition[32];

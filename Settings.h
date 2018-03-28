@@ -17,7 +17,6 @@ public:
 
 	// Constructor takes an initial video mode to specify in which resolution the render
 	// window should boot.
-	Settings(const sf::VideoMode& initMode = sf::VideoMode(800, 600));
 	~Settings();
 
 	// Finds the most efficient fullscreen resolution for the user's particular hardware
@@ -65,7 +64,19 @@ private:
 
 	// Volume level of sound effects [0.0f, 100.0f]
 	float m_EffectsVolume;
-
+    
+public:
+    
+    Settings(Settings const&)        = delete;
+    void operator=(Settings const&)  = delete;
+    
+    static Settings& get()
+    {
+        static Settings instance;
+        return        instance;
+    }
+private:
+    Settings();
 };
 
 #endif

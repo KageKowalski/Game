@@ -11,9 +11,19 @@ void Input::analyze(GameState state) {
 		eventPtr = std::make_unique<FullscreenEvent>();
 		EventBus::get().postEvent(eventPtr);
 	}
-
-	bool run = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
-
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E))
+    {
+        eventPtr = std::make_unique<InteractEvent>();
+        EventBus::get().postEvent(eventPtr);
+    }
+	
+    bool run = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
+    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        run ? eventPtr = std::make_unique<RunDownEvent>() : eventPtr = std::make_unique<WalkDownEvent>();
+        EventBus::get().postEvent(eventPtr);
+    }
+    
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
 		run ? eventPtr = std::make_unique<RunUpEvent>() : eventPtr = std::make_unique<WalkUpEvent>();
 		EventBus::get().postEvent(eventPtr);
@@ -21,11 +31,6 @@ void Input::analyze(GameState state) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 		run ? eventPtr = std::make_unique<RunLeftEvent>() : eventPtr = std::make_unique<WalkLeftEvent>();
-		EventBus::get().postEvent(eventPtr);
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-		run ? eventPtr = std::make_unique<RunDownEvent>() : eventPtr = std::make_unique<WalkDownEvent>();
 		EventBus::get().postEvent(eventPtr);
 	}
 

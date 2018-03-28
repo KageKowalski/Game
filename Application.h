@@ -47,7 +47,7 @@ public:
     struct SoundThreadInfo
     {
         TileSoundHandler*    thisHandler;
-        sf::Time*              deltaTime;
+        const sf::Time*              deltaTime;
         const sf::FloatRect*  cameraView;
         TileMap*                 tilemap;
     };
