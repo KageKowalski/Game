@@ -64,7 +64,7 @@ public:
     //updates the animation of the tile if the current delta time is greater
     //than the set animation time
     //if the tile only has one step the function exits before accessing the vertexarray
-    void update(sf::Time,const sf::Vector2f&);
+    void update();
     
     //sets animation step to a desired animation step regardless of time
     //goes from [1 _animate.getTotalAnimSteps()]
@@ -88,6 +88,7 @@ public:
     //return properties
     uint8_t getProperties() const;
     
+    //returns the sound file that this tile plays
     const std::string& getSoundFilename() const;
     
     virtual void handleEvent(Event* const e) override;
