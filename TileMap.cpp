@@ -136,6 +136,14 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             tileCounter++;
         }
     }
+
+	std::vector<int> thing;
+	for (int i = 0; i < 22; i++) {
+		for (int j = 0; j < 22; j++) {
+			thing.push_back(_movementMap[j][i]);
+		}
+	}
+
     return true;
 }
 
@@ -629,7 +637,7 @@ void TileMap::updateMap()
     }
 }
 
-int** TileMap::getMovementMap() const
+int ** TileMap::getMovementMap() const
 {
     return _movementMap;
 }

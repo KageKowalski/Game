@@ -67,7 +67,7 @@ public:
     //updates all animated tiles in the map
     void updateMap();
     
-    int** getMovementMap() const;
+    int ** getMovementMap() const;
     
     //returns the vertexarrays from the corresponding layer
     const sf::VertexArray& getGroundVertices()     const;

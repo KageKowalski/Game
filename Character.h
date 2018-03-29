@@ -95,9 +95,6 @@ public:
 	// Did the player receive a position update this frame?
 	bool isMoving() const;
 
-	// Retrieves the character's ID.
-	int getCharacterID() const;
-
 	// Handles all events that pertain to character actions.
 	void handleEvent(Event* const e) override;
 
@@ -118,11 +115,6 @@ protected:
 	// Determines whether the character's sprite stems from the universal sprite sheet.
 	// Will be automatically set depending on which subclass is instantiated.
 	bool m_Universal;
-
-	// Each character has its own unique character ID value.
-	// Will be automatically set depending on which subclass is instantiated.
-	// Character ID of -1 indicates a faulty instantiation (perhaps no subclass was specified).
-	int m_CharacterID;
 
 	// Time elpased since last animation step update.
 	// Used internally to control a character's unique animation sequence.

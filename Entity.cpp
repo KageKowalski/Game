@@ -7,6 +7,9 @@ unsigned int Entity::m_TotalEntities = 0;
 Entity::Entity(const sf::Vector2f& position) {
 	m_TotalEntities++;
 
+	static unsigned int IDGenValue = 0;
+	m_ID = IDGenValue++;
+
 	m_Position = position;
 	m_CenterPosition = position;
 	m_TextureCoords = sf::Vector2f(-1.0f, -1.0f);
@@ -30,4 +33,8 @@ const sf::Vector2f& Entity::getCenterPosition() const {
 
 const sf::Vector2f& Entity::getTextureCoords() const {
 	return m_TextureCoords;
+}
+
+unsigned int Entity::getID() const {
+	return m_ID;
 }

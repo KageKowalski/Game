@@ -98,3 +98,53 @@ RadialSoundEvent::~RadialSoundEvent() {}
 Event::EventType RadialSoundEvent::getType() const {
     return _type;
 }
+
+TurnDownEvent::TurnDownEvent() {
+	_type = EV_TURNDOWN;
+}
+TurnDownEvent::~TurnDownEvent() {}
+
+Event::EventType TurnDownEvent::getType() const {
+	return _type;
+}
+
+TurnUpEvent::TurnUpEvent() {
+	_type = EV_TURNUP;
+}
+TurnUpEvent::~TurnUpEvent() {}
+
+Event::EventType TurnUpEvent::getType() const {
+	return _type;
+}
+
+TurnLeftEvent::TurnLeftEvent() {
+	_type = EV_TURNLEFT;
+}
+TurnLeftEvent::~TurnLeftEvent() {}
+
+Event::EventType TurnLeftEvent::getType() const {
+	return _type;
+}
+
+TurnRightEvent::TurnRightEvent() {
+	_type = EV_TURNRIGHT;
+}
+TurnRightEvent::~TurnRightEvent() {}
+
+Event::EventType TurnRightEvent::getType() const {
+	return _type;
+}
+
+LoadMapEvent::LoadMapEvent(int** movementMap) {
+	_type = EV_LOADMAP;
+	_movementMapRef = movementMap;
+}
+LoadMapEvent::~LoadMapEvent() {}
+
+Event::EventType LoadMapEvent::getType() const {
+	return _type;
+}
+
+int** LoadMapEvent::getMovementMap() const {
+	return _movementMapRef;
+}

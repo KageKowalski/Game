@@ -22,7 +22,12 @@ public:
 		EV_WALKLEFT,
 		EV_WALKRIGHT,
         EV_INTERACT,
-        EV_RADIALSOUND
+        EV_RADIALSOUND,
+		EV_TURNDOWN,
+		EV_TURNUP,
+		EV_TURNLEFT,
+		EV_TURNRIGHT,
+		EV_LOADMAP
     };
     virtual ~Event() {};
     virtual EventType getType() const = 0;
@@ -60,7 +65,5 @@ public:
         return          instance;
     }
 };
-
-
 
 #endif

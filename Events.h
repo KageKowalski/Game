@@ -105,12 +105,66 @@ private:
 
 class RadialSoundEvent : public Event {
 public:
-    RadialSoundEvent();
-    ~RadialSoundEvent();
-    
+	RadialSoundEvent();
+	~RadialSoundEvent();
+
 private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+};
+
+class TurnDownEvent : public Event {
+public:
+	TurnDownEvent();
+	~TurnDownEvent();
+
+private:
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+};
+
+class TurnUpEvent : public Event {
+public:
+	TurnUpEvent();
+	~TurnUpEvent();
+
+private:
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+};
+
+class TurnLeftEvent : public Event {
+public:
+	TurnLeftEvent();
+	~TurnLeftEvent();
+
+private:
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+};
+
+class TurnRightEvent : public Event {
+public:
+	TurnRightEvent();
+	~TurnRightEvent();
+
+private:
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+};
+
+class LoadMapEvent : public Event {
+public:
+	LoadMapEvent(int** movementMap);
+	~LoadMapEvent();
+
+	int** getMovementMap() const;
+
+private:
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+
+	int** _movementMapRef;
 };
 
 #endif

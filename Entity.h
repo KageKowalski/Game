@@ -28,6 +28,9 @@ public:
 	// Retrieves the top-left coordinate of the entity's location in its sprite sheet.
 	const sf::Vector2f& getTextureCoords() const;
 
+	// Retrieves this entity's unique ID value.
+	unsigned int getID() const;
+
 protected:
 
 	// Position in pixel units. Often will be used for converting sprite to verticies.
@@ -41,6 +44,10 @@ protected:
 	// Top-left coordinate of the entity's location in its sprite sheet.
 	// Used to assist in constructing verticies.
 	sf::Vector2f m_TextureCoords;
+
+	// Every entity has its own unique ID value, which is set depending on when the entity
+	// was created in relation to every other entity. This can be used to fetch a specific entity.
+	unsigned int m_ID;
 
 private:
 

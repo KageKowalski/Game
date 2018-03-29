@@ -5,19 +5,22 @@
 #include "GameState.h"
 #include "Events.h"
 #include <memory>
+#include "Player.h"
 
-class Input {
+class Input : EventListener {
 
 public:
 
 	Input();
-	~Input();
+	virtual ~Input();
 
 	void analyze(GameState state);
 
+	void handleEvent(Event* const e) override;
+
 private:
 
-	
+	int const * const * m_MovementMapRef;
 
 };
 

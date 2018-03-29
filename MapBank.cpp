@@ -5,10 +5,6 @@
 MapBank::MapBank(const sf::Vector2f& scale) {
 	setScale(scale);
     m_SoundHandler = &TileSoundHandler::get();
-	m_TileSetFileNames.push_back("Tileset_1.png");
-	m_UniversalSpriteSheetFileName = "UniversalSpriteSheet.png";
-	m_LocalSpriteSheetFileNames.push_back("UniversalSpriteSheet.png");
-	m_BackgroundMusicFileNames.push_back("Game_Test.wav");
 
 	m_CurrMap = 0;
 }
@@ -28,7 +24,7 @@ MapBank::~MapBank() {
 bool MapBank::loadMap(int mapID) {
 	if (mapID == 0) {
 		TileMap* testMap = new TileMap("Piglet Hamlet");
-		SpriteMap* spriteMap = new SpriteMap();
+		SpriteMap* spriteMap = new SpriteMap;
 		int blank[1] = { -2 };
 		int layerOne[484] =
 		{
@@ -121,6 +117,10 @@ bool MapBank::loadMap(int mapID) {
 		pair.first = testMap;
 		pair.second = spriteMap;
 		m_Maps.push_back(pair);
+
+		std::unique_ptr<Event> eventPtr = std::make_unique<LoadMapEvent>(testMap->getMovementMap());
+		EventBus::get().postEvent(eventPtr);
+
 		return true;
 	}
 

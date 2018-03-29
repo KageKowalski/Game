@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Character.h"
+#include "Player.h"
 
 class SpriteMap {
 

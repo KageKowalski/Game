@@ -66,7 +66,7 @@ const std::vector<Character*>& SpriteMap::getCharacters() const {
 
 Character* SpriteMap::getPlayer() const {
 	for (Character* const character : m_Characters)
-		if (character->getCharacterID() == 0)
+		if (character == &Player::get())
 			return character;
 
 	return nullptr;
@@ -81,7 +81,7 @@ std::vector<Character*> SpriteMap::getReachableCharacters() const {
 	for (Character* character : m_Characters)
 		if (sqrt(pow(character->getCenterPosition().x - player->getCenterPosition().x, 2)
 			+ pow(character->getCenterPosition().y - player->getCenterPosition().y, 2)) <= 24.0f
-			&& character->getCharacterID() != 0)
+			&& character != &Player::get())
 			reachables.push_back(character);
 
 	return reachables;

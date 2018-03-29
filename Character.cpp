@@ -23,10 +23,13 @@ Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int
 	m_Name = name;
 	m_Universal = true;
 	m_Moving = false;
-	m_CharacterID = -1;
 	m_SequenceStep = 0;
 	m_DirectionFacing = Direction::DOWN;
 
+	EventBus::get().registerListener(Event::EventType::EV_TURNDOWN, this);
+	EventBus::get().registerListener(Event::EventType::EV_TURNUP, this);
+	EventBus::get().registerListener(Event::EventType::EV_TURNLEFT, this);
+	EventBus::get().registerListener(Event::EventType::EV_TURNRIGHT, this);
 	EventBus::get().registerListener(Event::EventType::EV_WALKDOWN, this);
 	EventBus::get().registerListener(Event::EventType::EV_WALKUP, this);
 	EventBus::get().registerListener(Event::EventType::EV_WALKLEFT, this);
@@ -164,10 +167,6 @@ bool Character::isMoving() const {
 	return m_Moving;
 }
 
-int Character::getCharacterID() const {
-	return m_CharacterID;
-}
-
 Direction Character::getRandomDirection() const {
 	int random = m_Generator.nextInt(0, 3);
 
@@ -185,6 +184,18 @@ Direction Character::getRandomDirection() const {
 
 void Character::handleEvent(Event* const e) {
 	switch (e->getType()) {
+	case Event::EventType::EV_TURNDOWN:
+		turn(Direction::DOWN);
+		break;
+	case Event::EventType::EV_TURNUP:
+		turn(Direction::UP);
+		break;
+	case Event::EventType::EV_TURNLEFT:
+		turn(Direction::LEFT);
+		break;
+	case Event::EventType::EV_TURNRIGHT:
+		turn(Direction::RIGHT);
+		break;
 	case Event::EventType::EV_WALKDOWN:
 		walk(Direction::DOWN);
 		break;
