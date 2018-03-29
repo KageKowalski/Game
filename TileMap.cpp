@@ -91,6 +91,9 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
                     case 28:
                         h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), 0x01);
                         break;
+                    case 92:
+                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), 0x09);
+                        break;
                     default:
                         h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
                 }
@@ -628,11 +631,11 @@ void TileMap::updateMap()
 {
     for(std::map<int, LayeredTile*>::iterator it = _map.begin(); it != _map.end(); it++)
     {
-        it->second->ground->update(Chrono::get().getDeltaTime(), Player::get().getCenterPosition());
-        it->second->layerTwo->update(Chrono::get().getDeltaTime(), Player::get().getCenterPosition());
-        it->second->layerThree->update(Chrono::get().getDeltaTime(), Player::get().getCenterPosition());
-        it->second->layerSix->update(Chrono::get().getDeltaTime(), Player::get().getCenterPosition());
-        it->second->canopy->update(Chrono::get().getDeltaTime(), Player::get().getCenterPosition());
+        it->second->ground->update();
+        it->second->layerTwo->update();
+        it->second->layerThree->update();
+        it->second->layerSix->update();
+        it->second->canopy->update();
         vertexFill(it);
     }
 }

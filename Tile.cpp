@@ -1,10 +1,10 @@
 #include "Tile.h"
 
-Tile::Tile() : _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
+Tile::Tile() : _properties(0), _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
 Tile::Tile(int ID, const sf::Vector2f& postition, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _properties(properties), _soundFilename(soundFilename)
 {
-    if(properties & 0x08) EventBus::get().removeListener(Event::EventType::EV_INTERACT, this);
+    if(properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
     if(properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
     _volume = Settings::get().getEffectsVolume();
     //transposed position for correct tile position
@@ -19,21 +19,24 @@ Tile::~Tile()
 
 void Tile::handleEvent(Event* const e)
 {
-    switch (e->getType()) {
+    switch (e->getType())
+    {
         case Event::EV_RADIALSOUND:
             if(std::abs(Player::get().getCenterPosition().x - _centerPosition.x) < 512 && std::abs(Player::get().getCenterPosition().y - _centerPosition.y) < 512 )TileSoundHandler::get().attachTileSounds(_centerPosition, _properties, _soundFilename);
             break;
-        case Event::EV_INTERACT:
-            break;
+//        case Event::EV_INTERACT:
+//            if(((abs(Player::get().getCenterPosition().x - _centerPosition.x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::LEFT) || ((abs(_centerPosition.x - Player::get().getCenterPosition().x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::RIGHT))
+//                _tileID = -1;
+//            break;
     }
 }
 
 //Moves the animation step forward one if the the time exceeds that last and deals with the sound
-void Tile::update(sf::Time deltaTime, const sf::Vector2f& pposition)
+void Tile::update()
 {
     if((_animate.getTotalAnimSteps() > 1))
     {
-        _animate.update(deltaTime);
+        _animate.update(Chrono::get().getDeltaTime());
         _step = _animate.getCurrAnimStep();
     }
     if(_properties&0x02)
