@@ -128,11 +128,11 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             }
             if((h->ground->getProperties() & 0x01) || (h->layerTwo->getProperties() & 0x01) || (h->layerThree->getProperties() & 0x01) || (h->layerSix->getProperties() & 0x01) || (h->canopy->getProperties() & 0x01))
             {
-                _movementMap[i][j] = 1;
+                _movementMap[j][i] = 1;
             }
             else
             {
-                _movementMap[i][j] = 0;
+                _movementMap[j][i] = 0;
             }
             _map.insert(std::pair<int, LayeredTile*>(tileCounter, h));
 			vertexFill(_map.find(tileCounter));
