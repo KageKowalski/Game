@@ -90,6 +90,21 @@ Event::EventType InteractEvent::getType() const {
     return _type;
 }
 
+InteractableConnectorEvent::InteractableConnectorEvent(std::pair<int, int> workingTile) : _workingTile(workingTile)
+{
+    _type = EV_INTERACTABLECONNECTOR;
+}
+InteractableConnectorEvent::~InteractableConnectorEvent() {}
+
+const std::pair<int, int>& InteractableConnectorEvent::getWorkingTile() const
+{
+    return _workingTile;
+}
+
+Event::EventType InteractableConnectorEvent::getType() const {
+    return _type;
+}
+
 RadialSoundEvent::RadialSoundEvent() {
     _type = EV_RADIALSOUND;
 }

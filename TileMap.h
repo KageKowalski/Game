@@ -4,10 +4,9 @@
 
 #include <map>
 #include "Tile.h"
-#include "EventBus.h"
 
 
-class TileMap
+class TileMap : public EventListener
 {
 public:
     struct LayeredTile
@@ -22,11 +21,6 @@ private:
     //layer 1 with the background being considered layer 0
     //layer 4 and 5 are sprite sheets
     //these layers are loaded from top to bottom meaning that canopy will be displayed above ground
-    Tile**  _ground;
-    Tile**  _layerTwo;
-    Tile**  _layerThree;
-    Tile**  _layerSix;
-    Tile**  _canopy;
     TileSet _tileset;
     int**   _movementMap;
     
@@ -90,8 +84,10 @@ public:
     
     //returns the map id
     int getMapID();
+    
+    virtual void handleEvent(Event* const e);
 
-    virtual ~TileMap();
+    ~TileMap();
 
 private:
     //fills vertex arrays with tiles that correlate to the from the build phase

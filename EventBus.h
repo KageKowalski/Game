@@ -22,6 +22,7 @@ public:
 		EV_WALKLEFT,
 		EV_WALKRIGHT,
         EV_INTERACT,
+        EV_INTERACTABLECONNECTOR,
         EV_RADIALSOUND
     };
     virtual ~Event() {};

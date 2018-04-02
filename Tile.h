@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <stdint.h>
+
 #include "AutoAnimation.h"
 #include "TileSet.h"
 #include "Sound.h"
@@ -38,6 +39,8 @@ private:
     
     float _volume;
     
+    int _mapKeyID;
+    
     //contains all tile properties in bits
     //  bit 7 is unused
     //  bit 6 is unused
@@ -57,9 +60,9 @@ public:
     //constructs a tile with its correct id starts animation
     //starts the animation on step one if you want to start on another step call setAnimStep after initialization
     //sets the position on map
-    Tile(int ID, const sf::Vector2f& position, char properties = 0, std::string soundFilename = "");
+    Tile(int ID, const sf::Vector2f& position, int mapKeyID, char properties = 0, std::string soundFilename = "");
     
-    ~Tile();
+    virtual ~Tile();
     
     //updates the animation of the tile if the current delta time is greater
     //than the set animation time

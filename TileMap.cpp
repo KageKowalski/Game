@@ -7,6 +7,7 @@
 
 TileMap::TileMap(std::string name) : _name(name)
 {
+    EventBus::get().registerListener(Event::EV_INTERACTABLECONNECTOR, this);
     static int mapCounter = 0;
     _mapIdentifier = mapCounter;
     mapCounter++;
@@ -58,7 +59,7 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
                     case 10:
                     case 11:
                     case 12:
-                        h->ground = new Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), 0x05, "waves.wav");
+                        h->ground = new Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), tileCounter, 0x05, "waves.wav");
                         break;
                     case 13:
                     case 14:
@@ -73,10 +74,10 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
                     case 23:
                     case 24:
                     case 25:
-                        h->ground = new Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), 0x02, "grass_foot.wav");
+                        h->ground = new Tile(ground[i*_width+j],sf::Vector2f(static_cast<float>(i),static_cast<float>(j)), tileCounter, 0x02, "grass_foot.wav");
                         break;
                     default:
-                        h->ground = new Tile(ground[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+                        h->ground = new Tile(ground[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter);
                         break;
                 }
             }
@@ -89,13 +90,13 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
                 switch(layerTwo[i*_width+j])
                 {
                     case 28:
-                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), 0x01);
+                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter, 0x01);
                         break;
                     case 92:
-                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), 0x09);
+                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter, 0x09);
                         break;
                     default:
-                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+                        h->layerTwo = new Tile(layerTwo[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter);
                 }
             }
             else
@@ -104,7 +105,7 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             }
             if(layerThree[0]!=-2)
             {
-                h->layerThree = new Tile(layerThree[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+                h->layerThree = new Tile(layerThree[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter);
             }
             else
             {
@@ -112,7 +113,7 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             }
             if(layerSix[0]!=-2)
             {
-                h->layerSix = new Tile(layerSix[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+                h->layerSix = new Tile(layerSix[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter);
             }
             else
             {
@@ -120,7 +121,16 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             }
             if(canopy[0]!=-2)
             {
-                h->canopy = new Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)));
+                switch(canopy[i*_width+j])
+                {
+                    case 52:
+                    case 53:
+                    case 54:
+                        h->canopy = new Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter, 0x10);
+                        break;
+                    default:
+                        h->canopy = new Tile(canopy[i*_width+j], sf::Vector2f(static_cast<float>(i), static_cast<float>(j)), tileCounter);
+                }
             }
             else
             {
@@ -144,8 +154,14 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
 
 TileMap::~TileMap()
 {
+    EventBus::get().removeListener(Event::EV_INTERACTABLECONNECTOR, this);
     for(auto it = _map.begin(); it != _map.end(); it++)
     {
+        delete it->second->ground;
+        delete it->second->layerTwo;
+        delete it->second->layerThree;
+        delete it->second->layerSix;
+        delete it->second->canopy;
         _map.erase(it);
     }
 }
@@ -684,6 +700,22 @@ std::string TileMap::getName()
 int TileMap::getMapID()
 {
     return _mapIdentifier;
+}
+
+void TileMap::handleEvent(Event* const e)
+{
+    switch (e->getType()) {
+        case Event::EV_INTERACTABLECONNECTOR:
+            switch(dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().first)
+            {
+                case 92:
+                    _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width-1]->canopy->setID(-3);
+                    _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width]->canopy->setID(-3);
+                    _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width+1]->canopy->setID(-3);
+                    break;
+            }
+            break;
+    }
 }
 
 
