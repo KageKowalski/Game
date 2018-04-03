@@ -4,6 +4,7 @@
 
 #include "Sound.h"
 #include <SFML/Graphics.hpp>
+#include "EventBus.h"
 
 class SoundHandler
 {

@@ -97,8 +97,20 @@ class InteractEvent : public Event {
 public:
     InteractEvent();
     ~InteractEvent();
-    
 private:
+    Event::EventType _type;
+    virtual Event::EventType getType() const;
+};
+
+class InteractableConnectorEvent : public Event {
+public:
+    InteractableConnectorEvent(std::pair<int, int> workingTile);
+    ~InteractableConnectorEvent();
+    
+    const std::pair<int, int>& getWorkingTile() const;
+private:
+    //first is the tile id. second is map key
+    std::pair<int, int> _workingTile;
     Event::EventType _type;
     virtual Event::EventType getType() const;
 };

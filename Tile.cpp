@@ -2,19 +2,20 @@
 
 Tile::Tile() : _properties(0), _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
-Tile::Tile(int ID, const sf::Vector2f& postition, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _properties(properties), _soundFilename(soundFilename)
+Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _mapKeyID(mapKeyID), _properties(properties), _soundFilename(soundFilename)
 {
-    if(properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
-    if(properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
+    if(_properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
+    if(_properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
     _volume = Settings::get().getEffectsVolume();
     //transposed position for correct tile position
     //tile position is incorrect
-    _centerPosition.y = _position.y * 16 + 8;
-    _centerPosition.x = _position.x * 16 + 8;
+    _centerPosition.y = _position.x * 16 + 8;
+    _centerPosition.x = _position.y * 16 + 8;
 }
 Tile::~Tile()
 {
-    EventBus::get().removeListener(Event::EventType::EV_RADIALSOUND, this);
+    if(_properties & 0x04) EventBus::get().removeListener(Event::EventType::EV_RADIALSOUND, this);
+    if(_properties & 0x08) EventBus::get().removeListener(Event::EventType::EV_INTERACT, this);
 }
 
 void Tile::handleEvent(Event* const e)
@@ -24,10 +25,21 @@ void Tile::handleEvent(Event* const e)
         case Event::EV_RADIALSOUND:
             if(std::abs(Player::get().getCenterPosition().x - _centerPosition.x) < 512 && std::abs(Player::get().getCenterPosition().y - _centerPosition.y) < 512 )TileSoundHandler::get().attachTileSounds(_centerPosition, _properties, _soundFilename);
             break;
-//        case Event::EV_INTERACT:
-//            if(((abs(Player::get().getCenterPosition().x - _centerPosition.x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::LEFT) || ((abs(_centerPosition.x - Player::get().getCenterPosition().x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::RIGHT))
-//                _tileID = -1;
-//            break;
+        case Event::EV_INTERACT:
+            if(((abs(Player::get().getCenterPosition().x - _centerPosition.x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::LEFT) || ((abs(_centerPosition.x - Player::get().getCenterPosition().x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::RIGHT))
+            {
+                std::unique_ptr<Event> eventPtr;
+                switch(_tileID)
+                {
+                    case 92:
+                        std::pair<int, int> j(_tileID,_mapKeyID);
+                        eventPtr = std::make_unique<InteractableConnectorEvent>(j);
+                        EventBus::get().postEvent(eventPtr);
+                        break;
+                }
+                _tileID = -3;
+            }
+            break;
     }
 }
 
@@ -38,13 +50,6 @@ void Tile::update()
     {
         _animate.update(Chrono::get().getDeltaTime());
         _step = _animate.getCurrAnimStep();
-    }
-    if(_properties&0x02)
-    {
-        
-    }
-    if(_properties&0x04)
-    {
     }
 }
 void Tile::setAnimStep(unsigned int step)
