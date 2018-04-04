@@ -152,14 +152,9 @@ Event::EventType TurnRightEvent::getType() const {
 
 LoadMapEvent::LoadMapEvent(int** movementMap) {
 	_type = EV_LOADMAP;
-	_movementMapRef = movementMap;
 }
 LoadMapEvent::~LoadMapEvent() {}
 
 Event::EventType LoadMapEvent::getType() const {
 	return _type;
-}
-
-int** LoadMapEvent::getMovementMap() const {
-	return _movementMapRef;
 }

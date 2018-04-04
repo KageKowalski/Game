@@ -182,6 +182,28 @@ Direction Character::getRandomDirection() const {
 	}
 }
 
+bool Character::collision(const Collidable& obj) const {
+	sf::FloatRect thisBounds = getGlobalBounds();
+	sf::FloatRect otherBounds = obj.getGlobalBounds();
+
+	if (thisBounds.contains(otherBounds.left, otherBounds.top))
+		return true;
+
+	return false;
+}
+
+sf::FloatRect Character::getGlobalBounds() const {
+	sf::FloatRect globalBounds;
+
+	globalBounds.left = getPosition().x;
+	globalBounds.top = getPosition().y;
+
+	globalBounds.width = getFrameWidth();
+	globalBounds.height = getFrameHeight();
+
+	return globalBounds;
+}
+
 void Character::handleEvent(Event* const e) {
 	switch (e->getType()) {
 	case Event::EventType::EV_TURNDOWN:

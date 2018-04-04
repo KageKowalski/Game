@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Random.h"
 #include "Events.h"
+#include "Collidable.h"
 
 // THIS CLASS ASSUMES THE FOLLOWING ANIMATION STEP VALUES:
 // 0 == Look down
@@ -49,7 +50,7 @@ enum class Direction {
 // Characters aren't supposed to be instantiated without dynamically pointing to one of its
 // subclass. Using this class as a polymorphic base is recommended when batching a bunch
 // of different types of characters into the same vector or list of characters, like in SpriteMap.
-class Character : public Entity, public Animation, public EventListener {
+class Character : public Entity, public Animation, public Collidable, public EventListener {
 
 public:
 
@@ -94,6 +95,14 @@ public:
 
 	// Did the player receive a position update this frame?
 	bool isMoving() const;
+
+	// Determines if the current object is colliding with some other object.
+	// Pass in other object as the argument.
+	bool collision(const Collidable& obj) const override;
+
+	// Returns an sf::FloatRect specifying the current object's physical bounds on the map.
+	// The sf::FloatRect contains the pixel coordinates of the object's position.
+	sf::FloatRect getGlobalBounds() const override;
 
 	// Handles all events that pertain to character actions.
 	void handleEvent(Event* const e) override;

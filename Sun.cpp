@@ -3,7 +3,7 @@
 Sun::Sun()
 {
     //makes a 25 minute day
-    _hourChangeTime = sf::seconds(25.0f);
+    _hourChangeTime = sf::seconds(0.1f);
     _hour = 4;
     _currPos = TimeOfDay::DAWN;
 }

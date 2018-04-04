@@ -18,10 +18,6 @@ public:
 
 	void handleEvent(Event* const e) override;
 
-private:
-
-	int const * const * m_MovementMapRef;
-
 };
 
 #endif

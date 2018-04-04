@@ -36,7 +36,7 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
     {
         _movementMap[i] = new int [_width];
     }
-    int tileCounter;
+	int tileCounter = 0;
     for(int i = 0; i < _height; i++)
     {
         for(int j = 0; j < _width; j++)
@@ -149,13 +149,6 @@ bool TileMap::build(int* ground, int* layerTwo, int* layerThree, int* layerSix, 
             tileCounter++;
         }
     }
-
-	std::vector<int> thing;
-	for (int i = 0; i < 22; i++) {
-		for (int j = 0; j < 22; j++) {
-			thing.push_back(_movementMap[j][i]);
-		}
-	}
 
     return true;
 }
