@@ -21,7 +21,15 @@ class MapBank : public sf::Transformable {
 
 public:
 
-	MapBank(const sf::Vector2f& scale);
+	MapBank();
+    MapBank(MapBank const&)        = delete;
+    void operator=(MapBank const&)  = delete;
+    
+    static MapBank& get()
+    {
+        static MapBank instance;
+        return        instance;
+    }
 	~MapBank();
 
 	bool loadMap(int mapID);

@@ -1,6 +1,6 @@
 #include "Application.h"
 
-Application::Application() : m_Maps(sf::Vector2f(7.0f, 7.0f)) {
+Application::Application()  {
 	m_Window = nullptr;
 	m_Settings = nullptr;
 	m_Camera = nullptr;

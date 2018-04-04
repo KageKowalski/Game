@@ -2,8 +2,8 @@
 
 #include "MapBank.h"
 
-MapBank::MapBank(const sf::Vector2f& scale) {
-	setScale(scale);
+MapBank::MapBank() {
+	setScale(sf::Vector2f(5.5f, 5.5f));
     m_SoundHandler = &TileSoundHandler::get();
 
 	m_CurrMap = 0;
