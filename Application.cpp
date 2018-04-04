@@ -5,7 +5,6 @@ Application::Application()  {
 	m_Settings = nullptr;
 	m_Camera = nullptr;
 	m_State = GameState::FREEROAM;
-
 	EventBus::get().registerListener(Event::EventType::EV_FULLSCREEN, this);
 }
 
@@ -21,7 +20,7 @@ int Application::run() {
 	sf::Event e;
 
 	Music background("Game_Test.wav");
-	m_Camera->setTarget(m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Maps.getScale());
+    m_Camera->setTarget(MapBank::get().getCurrMap().second->getPlayer()->getCenterPosition(), MapBank::get().getScale());
 
 	while (m_Window->m_RenderWindow.isOpen()) {
 		Chrono::get().tick();
@@ -44,26 +43,26 @@ int Application::run() {
 		m_Input.analyze(m_State);
 
 		update();
-		std::vector<Character*> reachables = m_Maps.getCurrMap().second->getReachableCharacters();
-		bool touching = m_Maps.getCurrMap().second->isTouching(m_Maps.getCurrMap().second->getPlayer(),
-			m_Maps.getCurrMap().second->getPlayer()->getDirection());
+		std::vector<Character*> reachables = MapBank::get().getCurrMap().second->getReachableCharacters();
+		bool touching = MapBank::get().getCurrMap().second->isTouching(MapBank::get().getCurrMap().second->getPlayer(),
+			MapBank::get().getCurrMap().second->getPlayer()->getDirection());
 		if (reachables.size() > 0)
 			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + reachables.at(reachables.size() - 1)->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
-		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + m_Maps.getCurrMap().first->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
+		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + MapBank::get().getCurrMap().first->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		m_Maps.update(Chrono::get().getDeltaTime(), m_Maps.getCurrMap().second->getPlayer()->getCenterPosition(), m_Camera->getBounds());
+		MapBank::get().update(Chrono::get().getDeltaTime(), MapBank::get().getCurrMap().second->getPlayer()->getCenterPosition(), m_Camera->getBounds());
 		Sun::get().update();
 		background.startMusic();
 		background.setVolume(m_Settings->getMusicVolume());
 
-		m_Renderer.updateTransform(m_Maps.getTransform(), 1);
-		std::vector<sf::Texture> textures = m_Maps.getTextures();
+		m_Renderer.updateTransform(MapBank::get().getTransform(), 1);
+		std::vector<sf::Texture> textures = MapBank::get().getTextures();
 		m_Renderer.updateTexture(textures.at(0), 1);
 		m_Renderer.updateTexture(textures.at(1), 4);
 		m_Renderer.updateTexture(textures.at(2), 5);
-		std::vector<sf::VertexArray> verticies = m_Maps.getVerticies();
+		std::vector<sf::VertexArray> verticies = MapBank::get().getVerticies();
 		m_Renderer.updateVerticies(verticies.at(0), 1);
 		m_Renderer.updateVerticies(verticies.at(1), 2);
 		m_Renderer.updateVerticies(verticies.at(2), 3);
@@ -82,13 +81,13 @@ int Application::run() {
 bool Application::init() {
     m_Settings = &Settings::get();
 
-	m_Maps.soundInit(m_Settings->getEffectsVolume());
+	MapBank::get().soundInit(m_Settings->getEffectsVolume());
 
 	sf::VideoMode initMode = m_Settings->getCurrVideoMode();
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
 
-	if (!m_Maps.loadMap(0)) return false;
+	if (!MapBank::get().loadMap(0)) return false;
 
 	return true;
 }

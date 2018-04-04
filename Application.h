@@ -75,9 +75,6 @@ private:
 	// High-performance clock
 	Chrono* m_Clock;
 
-	// All maps
-	MapBank m_Maps;
-
 	// Current state of the game
 	GameState m_State;
 

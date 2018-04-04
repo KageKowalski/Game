@@ -20,8 +20,6 @@
 class MapBank : public sf::Transformable {
 
 public:
-
-	MapBank();
     MapBank(MapBank const&)        = delete;
     void operator=(MapBank const&)  = delete;
     
@@ -54,7 +52,8 @@ private:
 	std::string m_UniversalSpriteSheetFileName;
 	std::vector<std::string> m_LocalSpriteSheetFileNames;
 	std::vector<std::string> m_BackgroundMusicFileNames;
-
+    MapBank();
+    
 	int m_CurrMap;
     
     TileSoundHandler* m_SoundHandler;
