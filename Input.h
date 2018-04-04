@@ -5,7 +5,7 @@
 #include "GameState.h"
 #include "Events.h"
 #include <memory>
-#include "Player.h"
+#include "MapBank.h"
 
 class Input : EventListener {
 

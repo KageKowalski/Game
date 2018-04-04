@@ -15,82 +15,114 @@ private:
 
 class RunDownEvent : public Event {
 public:
-	RunDownEvent();
+	RunDownEvent(unsigned int targetID);
 	~RunDownEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class RunUpEvent : public Event {
 public:
-	RunUpEvent();
+	RunUpEvent(unsigned int targetID);
 	~RunUpEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class RunLeftEvent : public Event {
 public:
-	RunLeftEvent();
+	RunLeftEvent(unsigned int targetID);
 	~RunLeftEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class RunRightEvent : public Event {
 public:
-	RunRightEvent();
+	RunRightEvent(unsigned int targetID);
 	~RunRightEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class WalkDownEvent : public Event {
 public:
-	WalkDownEvent();
+	WalkDownEvent(unsigned int targetID);
 	~WalkDownEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class WalkUpEvent : public Event {
 public:
-	WalkUpEvent();
+	WalkUpEvent(unsigned int targetID);
 	~WalkUpEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class WalkLeftEvent : public Event {
 public:
-	WalkLeftEvent();
+	WalkLeftEvent(unsigned int targetID);
 	~WalkLeftEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class WalkRightEvent : public Event {
 public:
-	WalkRightEvent();
+	WalkRightEvent(unsigned int targetID);
 	~WalkRightEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class InteractEvent : public Event {
@@ -127,42 +159,58 @@ private:
 
 class TurnDownEvent : public Event {
 public:
-	TurnDownEvent();
+	TurnDownEvent(unsigned int targetID);
 	~TurnDownEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class TurnUpEvent : public Event {
 public:
-	TurnUpEvent();
+	TurnUpEvent(unsigned int targetID);
 	~TurnUpEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class TurnLeftEvent : public Event {
 public:
-	TurnLeftEvent();
+	TurnLeftEvent(unsigned int targetID);
 	~TurnLeftEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class TurnRightEvent : public Event {
 public:
-	TurnRightEvent();
+	TurnRightEvent(unsigned int targetID);
 	~TurnRightEvent();
+
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+
+	unsigned int _targetID;
 };
 
 class LoadMapEvent : public Event {
@@ -170,13 +218,11 @@ public:
 	LoadMapEvent(int** movementMap);
 	~LoadMapEvent();
 
-	int** getMovementMap() const;
+	unsigned int getTargetID() const;
 
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
-
-	int** _movementMapRef;
 };
 
 #endif

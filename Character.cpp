@@ -40,7 +40,20 @@ Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int
 	EventBus::get().registerListener(Event::EventType::EV_RUNRIGHT, this);
 }
 
-Character::~Character() {}
+Character::~Character() {
+	EventBus::get().removeListener(Event::EventType::EV_TURNDOWN, this);
+	EventBus::get().removeListener(Event::EventType::EV_TURNUP, this);
+	EventBus::get().removeListener(Event::EventType::EV_TURNLEFT, this);
+	EventBus::get().removeListener(Event::EventType::EV_TURNRIGHT, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKDOWN, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKUP, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKLEFT, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKRIGHT, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNDOWN, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNUP, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNLEFT, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNRIGHT, this);
+}
 
 void Character::turn(Direction direction) {
 	m_DirectionFacing = direction;
@@ -207,40 +220,52 @@ sf::FloatRect Character::getGlobalBounds() const {
 void Character::handleEvent(Event* const e) {
 	switch (e->getType()) {
 	case Event::EventType::EV_TURNDOWN:
-		turn(Direction::DOWN);
+		if (dynamic_cast<TurnDownEvent*>(e)->getTargetID() == m_ID)
+			turn(Direction::DOWN);
 		break;
 	case Event::EventType::EV_TURNUP:
-		turn(Direction::UP);
+		if (dynamic_cast<TurnUpEvent*>(e)->getTargetID() == m_ID)
+			turn(Direction::UP);
 		break;
 	case Event::EventType::EV_TURNLEFT:
-		turn(Direction::LEFT);
+		if (dynamic_cast<TurnLeftEvent*>(e)->getTargetID() == m_ID)
+			turn(Direction::LEFT);
 		break;
 	case Event::EventType::EV_TURNRIGHT:
-		turn(Direction::RIGHT);
+		if (dynamic_cast<TurnRightEvent*>(e)->getTargetID() == m_ID)
+			turn(Direction::RIGHT);
 		break;
 	case Event::EventType::EV_WALKDOWN:
-		walk(Direction::DOWN);
+		if (dynamic_cast<WalkDownEvent*>(e)->getTargetID() == m_ID)
+			walk(Direction::DOWN);
 		break;
 	case Event::EventType::EV_WALKUP:
-		walk(Direction::UP);
+		if (dynamic_cast<WalkUpEvent*>(e)->getTargetID() == m_ID)
+			walk(Direction::UP);
 		break;
 	case Event::EventType::EV_WALKLEFT:
-		walk(Direction::LEFT);
+		if (dynamic_cast<WalkLeftEvent*>(e)->getTargetID() == m_ID)
+			walk(Direction::LEFT);
 		break;
 	case Event::EventType::EV_WALKRIGHT:
-		walk(Direction::RIGHT);
+		if (dynamic_cast<WalkRightEvent*>(e)->getTargetID() == m_ID)
+			walk(Direction::RIGHT);
 		break;
 	case Event::EventType::EV_RUNDOWN:
-		run(Direction::DOWN);
+		if (dynamic_cast<RunDownEvent*>(e)->getTargetID() == m_ID)
+			run(Direction::DOWN);
 		break;
 	case Event::EventType::EV_RUNUP:
-		run(Direction::UP);
+		if (dynamic_cast<RunUpEvent*>(e)->getTargetID() == m_ID)
+			run(Direction::UP);
 		break;
 	case Event::EventType::EV_RUNLEFT:
-		run(Direction::LEFT);
+		if (dynamic_cast<RunLeftEvent*>(e)->getTargetID() == m_ID)
+			run(Direction::LEFT);
 		break;
 	case Event::EventType::EV_RUNRIGHT:
-		run(Direction::RIGHT);
+		if (dynamic_cast<RunRightEvent*>(e)->getTargetID() == m_ID)
+			run(Direction::RIGHT);
 		break;
 	}
 }

@@ -27,28 +27,28 @@ void Input::analyze(GameState state) {
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
 
-			run ? eventPtr = std::make_unique<RunUpEvent>() : eventPtr = std::make_unique<WalkUpEvent>();
+			run ? eventPtr = std::make_unique<RunUpEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkUpEvent>(Player::get().getID());
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 
-			run ? eventPtr = std::make_unique<RunLeftEvent>() : eventPtr = std::make_unique<WalkLeftEvent>();
+			run ? eventPtr = std::make_unique<RunLeftEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkLeftEvent>(Player::get().getID());
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
 
-			run ? eventPtr = std::make_unique<RunDownEvent>() : eventPtr = std::make_unique<WalkDownEvent>();
+			run ? eventPtr = std::make_unique<RunDownEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkDownEvent>(Player::get().getID());
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
 
-			run ? eventPtr = std::make_unique<RunRightEvent>() : eventPtr = std::make_unique<WalkRightEvent>();
+			run ? eventPtr = std::make_unique<RunRightEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkRightEvent>(Player::get().getID());
 
 			EventBus::get().postEvent(eventPtr);
 		}
