@@ -710,8 +710,11 @@ void TileMap::handleEvent(Event* const e)
             switch(dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().first)
             {
                 case 92:
+                    _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width-1]->canopy->setGrowID(_map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width-1]->canopy->getID());
                     _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width-1]->canopy->setID(-3);
+                    _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width]->canopy->setGrowID(_map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width]->canopy->getID());
                     _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width]->canopy->setID(-3);
+                    _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width+1]->canopy->setGrowID(_map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width+1]->canopy->getID());
                     _map[dynamic_cast<InteractableConnectorEvent*>(e)->getWorkingTile().second-_width+1]->canopy->setID(-3);
                     break;
             }

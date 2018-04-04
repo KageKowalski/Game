@@ -2,7 +2,7 @@
 
 Tile::Tile() : _properties(0), _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
-Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _mapKeyID(mapKeyID), _properties(properties), _soundFilename(soundFilename)
+Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _mapKeyID(mapKeyID), _properties(properties), _soundFilename(soundFilename), _growID(0)
 {
     if(_properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
     if(_properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
@@ -23,7 +23,7 @@ void Tile::handleEvent(Event* const e)
     switch (e->getType())
     {
         case Event::EV_RADIALSOUND:
-            if(std::abs(Player::get().getCenterPosition().x - _centerPosition.x) < 512 && std::abs(Player::get().getCenterPosition().y - _centerPosition.y) < 512 )TileSoundHandler::get().attachTileSounds(_centerPosition, _properties, _soundFilename);
+            if(std::abs(Player::get().getCenterPosition().x - _centerPosition.x) < 512 && std::abs(Player::get().getCenterPosition().y - _centerPosition.y) < 512 ) TileSoundHandler::get().attachTileSounds(_centerPosition, _properties, _soundFilename);
             break;
         case Event::EV_INTERACT:
             if(((abs(Player::get().getCenterPosition().x - _centerPosition.x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::LEFT) || ((abs(_centerPosition.x - Player::get().getCenterPosition().x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::RIGHT))
@@ -35,9 +35,10 @@ void Tile::handleEvent(Event* const e)
                         std::pair<int, int> j(_tileID,_mapKeyID);
                         eventPtr = std::make_unique<InteractableConnectorEvent>(j);
                         EventBus::get().postEvent(eventPtr);
+                        _growID = _tileID;
+                        _tileID = -3;
                         break;
                 }
-                _tileID = -3;
             }
             break;
     }
@@ -51,6 +52,19 @@ void Tile::update()
         _animate.update(Chrono::get().getDeltaTime());
         _step = _animate.getCurrAnimStep();
     }
+    if(_growID != 0)
+    {
+        //switch(_growID)
+        //{
+            //case 92:
+                if(Sun::get().getHour() == 5)
+                {
+                    _tileID = _growID;
+                    _growID = 0;
+                }
+               // break;
+        //}
+    }
 }
 void Tile::setAnimStep(unsigned int step)
 {
@@ -60,9 +74,11 @@ void Tile::setAnimStep(unsigned int step)
         _step = step;
     }
 }
-int  Tile::getID()        { return _tileID; }
-void Tile::setID(int ID)  { _tileID = ID;   }
-int  Tile::getAnimStep()  { return _step;   }
+int  Tile::getID()          { return _tileID; }
+void Tile::setID(int ID)    { _tileID = ID;   }
+int  Tile::getGrowID()      { return _growID; }
+void Tile::setGrowID(int ID){ _growID = ID;   }
+int  Tile::getAnimStep()    { return _step;   }
 const sf::Vector2f& Tile::getPosition()       const
 {
     return _position;

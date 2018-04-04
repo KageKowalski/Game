@@ -24,6 +24,7 @@ private:
     
     //id that correlates to the position in the tilemap
     int _tileID;
+    int _growID;
     
     //current animation step
     int _step;
@@ -52,6 +53,7 @@ private:
     //  bit 0 is set if you can't walk on a tile
     uint8_t _properties;
     
+    
     std::string _soundFilename;
     
 public:
@@ -78,6 +80,11 @@ public:
     
     //changes a tiles id
     void setID(int ID);
+    
+    int  getGrowID();
+    
+    //changes a tile so it 
+    void setGrowID(int ID);
     
     //returns the current animation step
     int getAnimStep();

@@ -6,7 +6,6 @@ TileSoundHandler::TileSoundHandler()
 }
 TileSoundHandler::~TileSoundHandler(){}
 bool TileSoundHandler::attachTileSounds(sf::Vector2f tilePos, char properties, std::string name)
-//sf::Time deltaTime, sf::FloatRect cameraView, TileMap& tilemap, sf::Vector2f pposition
 {
     _elapsedTime += Chrono::get().getDeltaTime();
     if(name.length())
@@ -32,11 +31,14 @@ bool TileSoundHandler::attachTileSounds(sf::Vector2f tilePos, char properties, s
                 int count = 0;
                 while(_sounds[count].isPlaying()) count++;
                 float radius = sqrt(pow(Player::get().getCenterPosition().x-tilePos.x,2)+pow(Player::get().getCenterPosition().y-tilePos.y,2));
-                _tileProperties[count] = properties;
-                _sounds[count].setRadiusFromPlayer(radius);
-                _soundsPosition[count].x = tilePos.x;
-                _soundsPosition[count].y = tilePos.y;
-                _sounds[count].setBuffer(name);
+                if((*_volume - *_volume * .015*radius) > -80.0f)
+                {
+                    _tileProperties[count] = properties;
+                    _sounds[count].setRadiusFromPlayer(radius);
+                    _soundsPosition[count].x = tilePos.x;
+                    _soundsPosition[count].y = tilePos.y;
+                    _sounds[count].setBuffer(name);
+                }
             }
         }
         if(properties & 0x02)
@@ -70,17 +72,26 @@ void TileSoundHandler::playSounds(sf::Vector2f tilePos, char properties, std::st
 {
     for(int i = 0; i < 32; i++)
     {
-//        if(!(_sounds[i].isPlaying()) && _elapsedTime.asSeconds() > 5.0f && _sounds[i].getFilename().length() > 1)
-//        {
-//            _sounds[i].resetBuffer();
-//            _soundsPosition[i].x = 0;
-//            _soundsPosition[i].y = 0;
-//            _tileProperties[i]   = 0;
-//            _elapsedTime = sf::Time::Zero;
-//        }
-        if(_tileProperties[i] & 0x04 && *_volume - 1.2f*_sounds[i].getRadiusFromPlayer() > -80.0f)
+        if(_tileProperties[i] & 0x04 && *_volume - *_volume * .015*_sounds[i].getRadiusFromPlayer() < -80.0f)
         {
-            _sounds[i].setVolume(*_volume - *_volume * .015 *_sounds[i].getRadiusFromPlayer());
+            _sounds[i] = Sound();
+            _soundsPosition[i].x = 0;
+            _soundsPosition[i].y = 0;
+            _tileProperties[i]   = 0;
+            _elapsedTime = sf::Time::Zero;
+            _sounds[i].setRadiusFromPlayer(0);
+        }
+        if(_tileProperties[i] & 0x02 && !(_sounds[i].isPlaying()) && (_elapsedTime.asSeconds() > 5.0f) && (_sounds[i].getFilename().length() > 5))
+        {
+            _sounds[i] = Sound();
+            _soundsPosition[i].x = 0;
+            _soundsPosition[i].y = 0;
+            _tileProperties[i]   = 0;
+            _elapsedTime = sf::Time::Zero;
+        }
+        if(_tileProperties[i] & 0x04 && *_volume - *_volume * 0.015f *_sounds[i].getRadiusFromPlayer() > -80.0f)
+        {
+            _sounds[i].setVolume(*_volume - *_volume * 0.01f *_sounds[i].getRadiusFromPlayer());
             _sounds[i].playSound(Chrono::get().getDeltaTime());
         }
         if(_tileProperties[i] & 0x02 && Player::get().getCenterPosition() != _prevPposition && abs(Player::get().getCenterPosition().x-_soundsPosition[i].x) <= 8 && abs(Player::get().getCenterPosition().y+8.0f-_soundsPosition[i].y) <= 8)
