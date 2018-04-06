@@ -44,7 +44,7 @@ bool TileSoundHandler::attachTileSounds(sf::Vector2f tilePos, char properties, s
         if(properties & 0x02)
         {
             if(abs(Player::get().getCenterPosition().x-tilePos.x) <= 8 && abs(Player::get().getCenterPosition().y+8.0f-tilePos.y) <= 8)
-                {
+            {
                 if(findSound(name) > -1)
                 {
                     _soundsPosition[findSound(name)].x = tilePos.x;
@@ -102,13 +102,3 @@ void TileSoundHandler::playSounds(sf::Vector2f tilePos, char properties, std::st
     }
     _prevPposition = Player::get().getCenterPosition();
 }
-
-
-
-
-
-
-
-
-
-

@@ -15,8 +15,9 @@
 #include "Chrono.h"
 #include "Settings.h"
 #include "TileSoundHandler.h"
+#include "Collidable.h"
 
-class Tile : public EventListener
+class Tile : public EventListener//, public Collidable
 {
 private:
     //handles animation for tiles
@@ -101,7 +102,11 @@ public:
     //returns the sound file that this tile plays
     const std::string& getSoundFilename() const;
     
-    virtual void handleEvent(Event* const e) override;
+    void handleEvent(Event* const e) override;
+    
+    //bool collision(const Collidable& obj) const override;
+    
+    //sf::FloatRect getGlobalBounds() const override;
     
 };
 

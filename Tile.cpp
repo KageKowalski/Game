@@ -9,8 +9,8 @@ Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties,
     _volume = Settings::get().getEffectsVolume();
     //transposed position for correct tile position
     //tile position is incorrect
-    _centerPosition.y = _position.x * 16 + 8;
-    _centerPosition.x = _position.y * 16 + 8;
+    _centerPosition.x = _position.y * 16.0f + 8;
+    _centerPosition.y = _position.x * 16.0f + 8;
 }
 Tile::~Tile()
 {

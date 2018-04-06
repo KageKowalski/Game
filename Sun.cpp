@@ -3,7 +3,7 @@
 Sun::Sun()
 {
     //makes a 25 minute day
-    _hourChangeTime = sf::seconds(0.3f);
+    _hourChangeTime = sf::seconds(25.0f);
     _hour = 4;
     _currPos = TimeOfDay::DAWN;
 }
@@ -35,7 +35,7 @@ void Sun::update()
 }
 int Sun::getHour() const
 {
-    return _hour;
+    return (_hour*4)/10;
 }
 Sun::TimeOfDay Sun::getTimeOfDay() const
 {

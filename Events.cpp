@@ -209,7 +209,7 @@ Event::EventType TurnRightEvent::getType() const {
 	return _type;
 }
 
-LoadMapEvent::LoadMapEvent(int** movementMap) {
+LoadMapEvent::LoadMapEvent() {
 	_type = EV_LOADMAP;
 }
 LoadMapEvent::~LoadMapEvent() {}

@@ -30,7 +30,9 @@ const std::string& Sound::getFilename() const
 }
 void Sound::setVolume(float volume)
 {
-    _sound.setVolume(volume);
+    if(volume <= 0.0f)_sound.setVolume(0.0f);
+    else if(volume >= 100.0f) _sound.setVolume(100.0f);
+    else _sound.setVolume(volume);
 }
 float Sound::getVolume()
 {

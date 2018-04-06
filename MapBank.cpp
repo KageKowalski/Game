@@ -118,7 +118,7 @@ bool MapBank::loadMap(int mapID) {
 		pair.second = spriteMap;
 		m_Maps.push_back(pair);
 
-		std::unique_ptr<Event> eventPtr = std::make_unique<LoadMapEvent>(testMap->getMovementMap());
+		std::unique_ptr<Event> eventPtr = std::make_unique<LoadMapEvent>();
 		EventBus::get().postEvent(eventPtr);
 
 		return true;

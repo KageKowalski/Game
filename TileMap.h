@@ -22,7 +22,6 @@ private:
     //layer 4 and 5 are sprite sheets
     //these layers are loaded from top to bottom meaning that canopy will be displayed above ground
     TileSet _tileset;
-    int**   _movementMap;
     
     std::map<int, LayeredTile*> _map;
     
@@ -60,8 +59,6 @@ public:
     
     //updates all animated tiles in the map
     void updateMap();
-    
-    int ** getMovementMap() const;
     
     //returns the vertexarrays from the corresponding layer
     const sf::VertexArray& getGroundVertices()     const;
