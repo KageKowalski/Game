@@ -70,9 +70,7 @@ int Application::run() {
 		m_Renderer.updateVerticies(verticies.at(4), 5);
 		m_Renderer.updateVerticies(verticies.at(5), 6);
 		m_Renderer.updateVerticies(verticies.at(6), 7);
-		m_Window->m_RenderWindow.clear(sf::Color(255, 0, 255));
-		m_Window->m_RenderWindow.draw(m_Renderer);
-		m_Window->m_RenderWindow.display();
+		draw();
 	}
 
 	return EXIT_SUCCESS;
@@ -81,11 +79,17 @@ int Application::run() {
 bool Application::init() {
     m_Settings = &Settings::get();
 
-	MapBank::get().soundInit(m_Settings->getEffectsVolume());
-
 	sf::VideoMode initMode = m_Settings->getCurrVideoMode();
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
 	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
+
+	FullLoading loadScreen;
+	loadScreen.load("Loading_Screen.png");
+	m_Renderer.updateTexture(loadScreen.getTexture(), 0);
+	m_Renderer.updateVerticies(loadScreen.getVerticies(), 0);
+	draw();
+
+	MapBank::get().soundInit(m_Settings->getEffectsVolume());
 
 	if (!MapBank::get().loadMap(0)) return false;
 

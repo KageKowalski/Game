@@ -4,7 +4,9 @@ Input::Input() {
 	EventBus::get().registerListener(Event::EventType::EV_LOADMAP, this);
 }
 
-Input::~Input() {}
+Input::~Input() {
+	EventBus::get().removeListener(Event::EventType::EV_LOADMAP, this);
+}
 
 void Input::analyze(GameState state) {
 	std::unique_ptr<Event> eventPtr;

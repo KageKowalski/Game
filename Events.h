@@ -6,7 +6,7 @@
 class FullscreenEvent : public Event {
 public:
 	FullscreenEvent();
-	~FullscreenEvent();
+	virtual ~FullscreenEvent();
 
 private:
 	Event::EventType _type;
@@ -16,7 +16,7 @@ private:
 class RunDownEvent : public Event {
 public:
 	RunDownEvent(unsigned int targetID);
-	~RunDownEvent();
+	virtual ~RunDownEvent();
 
 	unsigned int getTargetID() const;
 
@@ -30,7 +30,7 @@ private:
 class RunUpEvent : public Event {
 public:
 	RunUpEvent(unsigned int targetID);
-	~RunUpEvent();
+	virtual ~RunUpEvent();
 
 	unsigned int getTargetID() const;
 
@@ -44,7 +44,7 @@ private:
 class RunLeftEvent : public Event {
 public:
 	RunLeftEvent(unsigned int targetID);
-	~RunLeftEvent();
+	virtual ~RunLeftEvent();
 
 	unsigned int getTargetID() const;
 
@@ -58,7 +58,7 @@ private:
 class RunRightEvent : public Event {
 public:
 	RunRightEvent(unsigned int targetID);
-	~RunRightEvent();
+	virtual ~RunRightEvent();
 
 	unsigned int getTargetID() const;
 
@@ -72,7 +72,7 @@ private:
 class WalkDownEvent : public Event {
 public:
 	WalkDownEvent(unsigned int targetID);
-	~WalkDownEvent();
+	virtual ~WalkDownEvent();
 
 	unsigned int getTargetID() const;
 
@@ -86,7 +86,7 @@ private:
 class WalkUpEvent : public Event {
 public:
 	WalkUpEvent(unsigned int targetID);
-	~WalkUpEvent();
+	virtual ~WalkUpEvent();
 
 	unsigned int getTargetID() const;
 
@@ -100,7 +100,7 @@ private:
 class WalkLeftEvent : public Event {
 public:
 	WalkLeftEvent(unsigned int targetID);
-	~WalkLeftEvent();
+	virtual ~WalkLeftEvent();
 
 	unsigned int getTargetID() const;
 
@@ -114,7 +114,7 @@ private:
 class WalkRightEvent : public Event {
 public:
 	WalkRightEvent(unsigned int targetID);
-	~WalkRightEvent();
+	virtual ~WalkRightEvent();
 
 	unsigned int getTargetID() const;
 
@@ -128,7 +128,7 @@ private:
 class InteractEvent : public Event {
 public:
     InteractEvent();
-    ~InteractEvent();
+	virtual ~InteractEvent();
 private:
     Event::EventType _type;
     virtual Event::EventType getType() const;
@@ -137,7 +137,7 @@ private:
 class InteractableConnectorEvent : public Event {
 public:
     InteractableConnectorEvent(std::pair<int, int> workingTile);
-    ~InteractableConnectorEvent();
+	virtual ~InteractableConnectorEvent();
     
     const std::pair<int, int>& getWorkingTile() const;
 private:
@@ -150,7 +150,7 @@ private:
 class RadialSoundEvent : public Event {
 public:
 	RadialSoundEvent();
-	~RadialSoundEvent();
+	virtual ~RadialSoundEvent();
 
 private:
 	Event::EventType _type;
@@ -160,7 +160,7 @@ private:
 class TurnDownEvent : public Event {
 public:
 	TurnDownEvent(unsigned int targetID);
-	~TurnDownEvent();
+	virtual ~TurnDownEvent();
 
 	unsigned int getTargetID() const;
 
@@ -174,7 +174,7 @@ private:
 class TurnUpEvent : public Event {
 public:
 	TurnUpEvent(unsigned int targetID);
-	~TurnUpEvent();
+	virtual ~TurnUpEvent();
 
 	unsigned int getTargetID() const;
 
@@ -188,7 +188,7 @@ private:
 class TurnLeftEvent : public Event {
 public:
 	TurnLeftEvent(unsigned int targetID);
-	~TurnLeftEvent();
+	virtual ~TurnLeftEvent();
 
 	unsigned int getTargetID() const;
 
@@ -202,7 +202,7 @@ private:
 class TurnRightEvent : public Event {
 public:
 	TurnRightEvent(unsigned int targetID);
-	~TurnRightEvent();
+	virtual ~TurnRightEvent();
 
 	unsigned int getTargetID() const;
 
@@ -216,7 +216,7 @@ private:
 class LoadMapEvent : public Event {
 public:
 	LoadMapEvent(int** movementMap);
-	~LoadMapEvent();
+	virtual ~LoadMapEvent();
 
 	unsigned int getTargetID() const;
 

@@ -14,6 +14,7 @@
 #include "EventBus.h"
 #include "GameState.h"
 #include "Input.h"
+#include "FullLoading.h"
 
 class Application : public EventListener {
 

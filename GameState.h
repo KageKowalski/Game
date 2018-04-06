@@ -2,7 +2,8 @@
 #define GAMESTATE_H
 
 enum class GameState {
-	FREEROAM
+	FREEROAM,
+	LOADING
 };
 
 #endif
