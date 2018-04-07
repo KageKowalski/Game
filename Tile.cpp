@@ -7,10 +7,6 @@ Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties,
     if(_properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
     if(_properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
     _volume = Settings::get().getEffectsVolume();
-    //transposed position for correct tile position
-    //tile position is incorrect
-    _centerPosition.x = _position.y * 16.0f + 8;
-    _centerPosition.y = _position.x * 16.0f + 8;
 }
 Tile::~Tile()
 {
@@ -94,6 +90,19 @@ uint8_t Tile::getProperties() const
 const std::string& Tile::getSoundFilename() const
 {
     return _soundFilename;
+}
+bool Tile::collision(const Collidable& obj) const
+{
+    
+}
+sf::FloatRect Tile::getGlobalBounds() const
+{
+    sf::FloatRect globalBounds;
+    switch(_tileID)
+    {
+        case 92:
+            break;
+    }
 }
 
 /************************

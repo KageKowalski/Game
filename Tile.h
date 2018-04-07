@@ -17,7 +17,7 @@
 #include "TileSoundHandler.h"
 #include "Collidable.h"
 
-class Tile : public EventListener//, public Collidable
+class Tile : public EventListener, public Collidable
 {
 private:
     //handles animation for tiles
@@ -104,9 +104,9 @@ public:
     
     void handleEvent(Event* const e) override;
     
-    //bool collision(const Collidable& obj) const override;
+    bool collision(const Collidable& obj) const override;
     
-    //sf::FloatRect getGlobalBounds() const override;
+    sf::FloatRect getGlobalBounds() const override;
     
 };
 
