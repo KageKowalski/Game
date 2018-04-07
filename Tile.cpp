@@ -7,6 +7,8 @@ Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties,
     if(_properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
     if(_properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
     _volume = Settings::get().getEffectsVolume();
+    _centerPosition.x = _position.x * 16 + 8;
+    _centerPosition.y = _position.y * 16 + 8;
 }
 Tile::~Tile()
 {
