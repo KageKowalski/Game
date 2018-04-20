@@ -9,12 +9,12 @@
 #include "Character.h"
 #include "Player.h"
 
-class SpriteMap {
+class SpriteMap : EventListener {
 
 public:
 
 	SpriteMap();
-	~SpriteMap();
+	virtual ~SpriteMap();
 
 	bool build(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
 		const std::vector<Character*>& characters);
@@ -27,13 +27,14 @@ public:
 	const sf::VertexArray& getLocalSpriteVerticies() const;
 	const std::vector<Character*>& getCharacters() const;
 
-	Character* getPlayer() const;
 	std::vector<Character*> getReachableCharacters() const;
 	bool isTouching(Character const * const curr, Direction facing) const;
 
 private:
 
 	void vertexFill(const Character* const character, size_t offset);
+
+	void handleEvent(Event* const e) override;
 
 private:
 

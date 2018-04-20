@@ -125,10 +125,18 @@ void Character::update(sf::Time deltaTime) {
 	else {
 		m_Moving = true;
 
+		bool runHorizontal = fabs(m_Velocity.x) == m_RUN_VELOCITY;
+		bool runVertical = fabs(m_Velocity.y) == m_RUN_VELOCITY;
+
+		if (runHorizontal && runVertical) {
+			//float pythagoreanDiagonal = sqrtf(m_RUN_VELOCITY);
+			//m_Velocity.x = pythagoreanDiagonal;
+			//m_Velocity.y = pythagoreanDiagonal;
+		}
+		if (runHorizontal || runVertical) useWalkSequence = false;
+
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		m_CenterPosition += m_Velocity * deltaTime.asSeconds();
-
-		if(fabs(m_Velocity.x) == m_RUN_VELOCITY || fabs(m_Velocity.y) == m_RUN_VELOCITY) useWalkSequence = false;
 
 		m_Velocity = sf::Vector2f(0.0f, 0.0f);
 

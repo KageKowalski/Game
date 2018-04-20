@@ -5,9 +5,27 @@
 SpriteMap::SpriteMap() {
 	m_UniversalSpriteVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 	m_LocalSpriteVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
+
+	EventBus::get().registerListener(Event::EventType::EV_RUNDOWN, this);
+	EventBus::get().registerListener(Event::EventType::EV_RUNUP, this);
+	EventBus::get().registerListener(Event::EventType::EV_RUNLEFT, this);
+	EventBus::get().registerListener(Event::EventType::EV_RUNRIGHT, this);
+	EventBus::get().registerListener(Event::EventType::EV_WALKDOWN, this);
+	EventBus::get().registerListener(Event::EventType::EV_WALKUP, this);
+	EventBus::get().registerListener(Event::EventType::EV_WALKLEFT, this);
+	EventBus::get().registerListener(Event::EventType::EV_WALKRIGHT, this);
 }
 
-SpriteMap::~SpriteMap() {}
+SpriteMap::~SpriteMap() {
+	EventBus::get().removeListener(Event::EventType::EV_RUNDOWN, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNUP, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNLEFT, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUNRIGHT, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKDOWN, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKUP, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKLEFT, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALKRIGHT, this);
+}
 
 bool SpriteMap::build(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
 	const std::vector<Character*>& characters)
@@ -64,19 +82,10 @@ const std::vector<Character*>& SpriteMap::getCharacters() const {
 	return m_Characters;
 }
 
-Character* SpriteMap::getPlayer() const {
-	for (Character* const character : m_Characters)
-		if (character == &Player::get())
-			return character;
-
-	return nullptr;
-}
-
 std::vector<Character*> SpriteMap::getReachableCharacters() const {
 	std::vector<Character*> reachables;
 
-	Character* player = getPlayer();
-	if (player == nullptr) return reachables;
+	Player const * const player = &Player::get();
 
 	for (Character* character : m_Characters)
 		if (sqrt(pow(character->getCenterPosition().x - player->getCenterPosition().x, 2)
@@ -121,4 +130,10 @@ void SpriteMap::vertexFill(const Character* const character, size_t offset) {
 	quad++;
 	quad->position = sf::Vector2f(j, i + height);
 	quad->texCoords = sf::Vector2f(texCoords.x, texCoords.y + height + (animStep * height));
+}
+
+void SpriteMap::handleEvent(Event* const e) {
+	switch (e->getType()) {
+		
+	}
 }

@@ -3,6 +3,9 @@
 FullLoading::FullLoading() {
 	m_Verticies.setPrimitiveType(sf::PrimitiveType::Quads);
 	m_Verticies.resize(4);
+
+	std::unique_ptr<Event> eventPtr = std::make_unique<FullLoadingEvent>();
+	EventBus::get().postEvent(eventPtr);
 }
 
 FullLoading::~FullLoading() {}

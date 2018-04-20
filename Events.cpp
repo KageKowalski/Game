@@ -217,3 +217,12 @@ LoadMapEvent::~LoadMapEvent() {}
 Event::EventType LoadMapEvent::getType() const {
 	return _type;
 }
+
+FullLoadingEvent::FullLoadingEvent() {
+	_type = EV_FULLLOADING;
+}
+FullLoadingEvent::~FullLoadingEvent() {}
+
+Event::EventType FullLoadingEvent::getType() const {
+	return _type;
+}

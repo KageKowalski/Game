@@ -225,4 +225,14 @@ private:
     virtual Event::EventType getType() const;
 };
 
+class FullLoadingEvent : public Event {
+public:
+	FullLoadingEvent();
+	virtual ~FullLoadingEvent();
+
+private:
+	Event::EventType _type;
+	virtual Event::EventType getType() const;
+};
+
 #endif

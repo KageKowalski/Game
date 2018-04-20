@@ -28,7 +28,8 @@ public:
 		EV_TURNUP,
 		EV_TURNLEFT,
 		EV_TURNRIGHT,
-		EV_LOADMAP
+		EV_LOADMAP,
+		EV_FULLLOADING
 	};
 	virtual ~Event() {};
 	virtual EventType getType() const = 0;

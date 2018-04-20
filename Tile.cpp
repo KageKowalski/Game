@@ -95,7 +95,7 @@ const std::string& Tile::getSoundFilename() const
 }
 bool Tile::collision(const Collidable& obj) const
 {
-    
+	return false;
 }
 sf::FloatRect Tile::getGlobalBounds() const
 {
@@ -105,6 +105,7 @@ sf::FloatRect Tile::getGlobalBounds() const
         case 92:
             break;
     }
+	return globalBounds;
 }
 
 /************************

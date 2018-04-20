@@ -4,12 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-class FullLoading {
+#include "Events.h"
+
+class FullLoading : public EventListener {
 
 public:
 
 	FullLoading();
-	~FullLoading();
+	virtual ~FullLoading();
 
 	bool load(const std::string& backgroundFileName);
 
@@ -19,6 +21,8 @@ public:
 private:
 
 	void vertexFill();
+
+	void handleEvent(Event* const e) override {}
 
 private:
 

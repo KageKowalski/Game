@@ -15,6 +15,7 @@
 #include "GameState.h"
 #include "Input.h"
 #include "FullLoading.h"
+#include "TextBank.h"
 
 class Application : public EventListener {
 
