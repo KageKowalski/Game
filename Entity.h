@@ -31,6 +31,14 @@ public:
 	// Retrieves this entity's unique ID value.
 	unsigned int getID() const;
 
+	// Sets the entity's position.
+	// Automatically readjusts center position according to new position.
+	void setPosition(const sf::Vector2f& position);
+
+	// Sets the entity's center position.
+	// Automatically readjusts position according to new center position.
+	void setCenterPosition(const sf::Vector2f position);
+
 protected:
 
 	// Position in pixel units. Often will be used for converting sprite to verticies.

@@ -38,3 +38,11 @@ const sf::Vector2f& Entity::getTextureCoords() const {
 unsigned int Entity::getID() const {
 	return m_ID;
 }
+
+void Entity::setPosition(const sf::Vector2f& position) {
+	m_Position = position;
+}
+
+void Entity::setCenterPosition(const sf::Vector2f position) {
+	m_CenterPosition = position;
+}
