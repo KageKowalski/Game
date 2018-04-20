@@ -8,6 +8,18 @@
 class Player : public Character {
 private:
     Player();
+    
+    int      _currStamina;
+    int      _maxStamina;
+    sf::Time _elapsedTimeDecrement;
+    sf::Time _elapsedTimeIncrement;
+public:
+    int  getStamina() const;
+    bool decrementStamina();
+    bool incrementStamina();
+    void setStamina(int value);
+    
+    void update(sf::Time deltaTime) override;
 public:
     Player(Player const&)        = delete;
     void operator=(Player const&)  = delete;

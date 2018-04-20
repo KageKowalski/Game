@@ -30,7 +30,7 @@ void Tile::handleEvent(Event* const e)
                 switch(_tileID)
                 {
                     case 92:
-                        std::pair<int, int> j(_tileID,_mapKeyID);
+                        std::pair<int, sf::Vector2f> j(_tileID,_position);
                         eventPtr = std::make_unique<InteractableConnectorEvent>(j);
                         EventBus::get().postEvent(eventPtr);
                         _growID = _tileID;
@@ -103,6 +103,21 @@ sf::FloatRect Tile::getGlobalBounds() const
     switch(_tileID)
     {
         case 92:
+            globalBounds.left   = _position.x * 16.0f + 3;
+            globalBounds.top    = _position.y * 16.0f;
+            globalBounds.width  = 9;
+            globalBounds.height = 16;
+            break;
+        case -1:
+            globalBounds.left   = 0;
+            globalBounds.top    = 0;
+            globalBounds.width  = 0;
+            globalBounds.height = 0;
+        default:
+            globalBounds.left   = _position.x * 16.0f;
+            globalBounds.top    = _position.y * 16.0f;
+            globalBounds.width  = 16;
+            globalBounds.height = 16;
             break;
     }
 	return globalBounds;

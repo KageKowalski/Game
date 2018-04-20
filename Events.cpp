@@ -130,13 +130,13 @@ Event::EventType InteractEvent::getType() const {
     return _type;
 }
 
-InteractableConnectorEvent::InteractableConnectorEvent(std::pair<int, int> workingTile) : _workingTile(workingTile)
+InteractableConnectorEvent::InteractableConnectorEvent(std::pair<int, sf::Vector2f> workingTile) : _workingTile(workingTile)
 {
     _type = EV_INTERACTABLECONNECTOR;
 }
 InteractableConnectorEvent::~InteractableConnectorEvent() {}
 
-const std::pair<int, int>& InteractableConnectorEvent::getWorkingTile() const
+const std::pair<int, sf::Vector2f>& InteractableConnectorEvent::getWorkingTile() const
 {
     return _workingTile;
 }
@@ -225,4 +225,15 @@ FullLoadingEvent::~FullLoadingEvent() {}
 
 Event::EventType FullLoadingEvent::getType() const {
 	return _type;
+}
+
+CollisionEvent::CollisionEvent()
+{
+    _type = EV_COLLISION;
+}
+CollisionEvent::~CollisionEvent(){}
+
+Event::EventType CollisionEvent::getType() const
+{
+    return _type;
 }

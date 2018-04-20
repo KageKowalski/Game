@@ -115,7 +115,7 @@ void Character::run(Direction direction) {
 }
 
 void Character::update(sf::Time deltaTime) {
-	bool useWalkSequence = true;
+	m_Walking = true;
 
 	if (m_Velocity == sf::Vector2f(0.0f, 0.0f)) {
 		m_Moving = false;
@@ -125,24 +125,23 @@ void Character::update(sf::Time deltaTime) {
 	else {
 		m_Moving = true;
 
-		bool runHorizontal = fabs(m_Velocity.x) == m_RUN_VELOCITY;
-		bool runVertical = fabs(m_Velocity.y) == m_RUN_VELOCITY;
-
-		if (runHorizontal && runVertical) {
-			//float pythagoreanDiagonal = sqrtf(m_RUN_VELOCITY);
-			//m_Velocity.x = pythagoreanDiagonal;
-			//m_Velocity.y = pythagoreanDiagonal;
-		}
-		if (runHorizontal || runVertical) useWalkSequence = false;
-
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		m_CenterPosition += m_Velocity * deltaTime.asSeconds();
+        
+        m_Position.x = std::round(m_Position.x * 30) / 30;
+        m_Position.y = std::round(m_Position.y * 30) / 30;
+        m_CenterPosition.x = std::round(m_CenterPosition.x * 30) / 30;
+        m_CenterPosition.y = std::round(m_CenterPosition.y * 30) / 30;
+
+        if(fabs(m_Velocity.x) == m_RUN_VELOCITY || fabs(m_Velocity.y) == m_RUN_VELOCITY) {
+            m_Walking = false;
+        }
 
 		m_Velocity = sf::Vector2f(0.0f, 0.0f);
 
 		m_ElapsedTime += deltaTime;
 
-		if (m_ElapsedTime >= (useWalkSequence ? sf::seconds(0.25f) : sf::seconds(0.11f))) {
+		if (m_ElapsedTime >= (m_Walking ? sf::seconds(0.25f) : sf::seconds(0.11f))) {
 			m_ElapsedTime = sf::Time::Zero;
 			m_SequenceStep = (m_SequenceStep + 1) % 4;
 		}
@@ -150,16 +149,16 @@ void Character::update(sf::Time deltaTime) {
 
 	switch (m_DirectionFacing) {
 	case Direction::DOWN:
-		m_CurrAnimStep = useWalkSequence ? m_WALK_DOWN_SEQUENCE[m_SequenceStep] : m_RUN_DOWN_SEQUENCE[m_SequenceStep];
+		m_CurrAnimStep = m_Walking ? m_WALK_DOWN_SEQUENCE[m_SequenceStep] : m_RUN_DOWN_SEQUENCE[m_SequenceStep];
 		break;
 	case Direction::UP:
-		m_CurrAnimStep = useWalkSequence ? m_WALK_UP_SEQUENCE[m_SequenceStep] : m_RUN_UP_SEQUENCE[m_SequenceStep];
+		m_CurrAnimStep = m_Walking ? m_WALK_UP_SEQUENCE[m_SequenceStep] : m_RUN_UP_SEQUENCE[m_SequenceStep];
 		break;
 	case Direction::LEFT:
-		m_CurrAnimStep = useWalkSequence ? m_WALK_LEFT_SEQUENCE[m_SequenceStep] : m_RUN_LEFT_SEQUENCE[m_SequenceStep];
+		m_CurrAnimStep = m_Walking ? m_WALK_LEFT_SEQUENCE[m_SequenceStep] : m_RUN_LEFT_SEQUENCE[m_SequenceStep];
 		break;
 	case Direction::RIGHT:
-		m_CurrAnimStep = useWalkSequence ? m_WALK_RIGHT_SEQUENCE[m_SequenceStep] : m_RUN_RIGHT_SEQUENCE[m_SequenceStep];
+		m_CurrAnimStep = m_Walking ? m_WALK_RIGHT_SEQUENCE[m_SequenceStep] : m_RUN_RIGHT_SEQUENCE[m_SequenceStep];
 		break;
 	}
 }
@@ -216,11 +215,11 @@ bool Character::collision(const Collidable& obj) const {
 sf::FloatRect Character::getGlobalBounds() const {
 	sf::FloatRect globalBounds;
 
-	globalBounds.left = getPosition().x;
-	globalBounds.top = getPosition().y;
+	globalBounds.left   = getPosition().x;
+	globalBounds.top    = getPosition().y  + 20;
 
-	globalBounds.width = getFrameWidth();
-	globalBounds.height = getFrameHeight();
+	globalBounds.width  = getFrameWidth();
+	globalBounds.height = getFrameHeight() - 20;
 
 	return globalBounds;
 }

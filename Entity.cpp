@@ -7,8 +7,7 @@ unsigned int Entity::m_TotalEntities = 0;
 Entity::Entity(const sf::Vector2f& position) {
 	m_TotalEntities++;
 
-	static unsigned int IDGenValue = 0;
-	m_ID = IDGenValue++;
+    m_ID = Utility::unique_id();
 
 	m_Position = position;
 	m_CenterPosition = position;

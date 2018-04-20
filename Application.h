@@ -51,7 +51,7 @@ public:
         TileSoundHandler*    thisHandler;
         const sf::Time*              deltaTime;
         const sf::FloatRect*  cameraView;
-        TileMap*                 tilemap;
+        Map*                 tilemap;
     };
     struct DrawThreadInfo
     {

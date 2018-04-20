@@ -48,15 +48,15 @@ int Application::run() {
 		m_Input.analyze(m_State);
 
 		update();
-		std::vector<Character*> reachables = MapBank::get().getCurrMap().second->getReachableCharacters();
-		bool touching = MapBank::get().getCurrMap().second->isTouching(&Player::get(), Player::get().getDirection());
+        std::vector<Character*> reachables = MapBank::get().getCurrMap()->getReachableCharacters();
+        bool touching = MapBank::get().getCurrMap()->isTouching(&Player::get(), Player::get().getDirection());
 		if (reachables.size() > 0)
 			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + reachables.at(reachables.size() - 1)->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
-		else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + MapBank::get().getCurrMap().first->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
+        else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + MapBank::get().getCurrMap()->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		MapBank::get().update(Chrono::get().getDeltaTime(), Player::get().getCenterPosition(), m_Camera->getBounds());
+		MapBank::get().update(m_Camera->getBounds());
 		Sun::get().update();
 		background.startMusic();
 		background.setVolume(m_Settings->getMusicVolume());

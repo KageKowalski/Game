@@ -6,8 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "TileMap.h"
-#include "SpriteMap.h"
+#include "Map.h"
 #include "Player.h"
 #include "NPC.h"
 #include "TileSoundHandler.h"
@@ -32,11 +31,11 @@ public:
 
 	bool loadMap(int mapID);
 
-	void update(sf::Time deltaTime, const sf::Vector2f& pposition, sf::FloatRect cameraView);
+	void update(sf::FloatRect cameraView);
 
 	void setCurrMapID(int mapID);
 
-	std::pair<TileMap*, SpriteMap*>& getCurrMap();
+	Map* getCurrMap();
 	const sf::Transform& getTransform() const;
 	const std::vector<sf::VertexArray>& getVerticies() const;
 	const std::vector<sf::Texture>& getTextures() const;
@@ -46,7 +45,7 @@ public:
 
 private:
 
-	std::vector<std::pair<TileMap*, SpriteMap*>> m_Maps;
+	std::vector<Map*> _map;
 
 	std::vector<std::string> m_TileSetFileNames;
 	std::string m_UniversalSpriteSheetFileName;

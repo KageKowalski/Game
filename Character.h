@@ -153,6 +153,8 @@ protected:
 
 	// Indicates whether the character is moving.
 	bool m_Moving;
+    
+    bool m_Walking;
 
 	// Random number generator.
 	// Needed for randomization tasks, especially in NPC movement.

@@ -4,6 +4,8 @@
 #define ENTITY_H
 
 #include <SFML/Graphics.hpp>
+#include "Chrono.h"
+#include "Utility.h"
 
 // An entity is any object that may have an influence on some other object on a tile map.
 // For example, darting arrows, characters, and loot drops are all entities.

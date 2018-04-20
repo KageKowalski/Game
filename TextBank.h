@@ -3,7 +3,7 @@
 #ifndef TEXTBANK_H
 #define TEXTBANK_H
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <map>
 
 class TextBank {

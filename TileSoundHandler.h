@@ -20,7 +20,6 @@ public:
         return        instance;
     }
     bool attachTileSounds(sf::Vector2f tilePos, char properties, std::string name);
-    bool checkThreadSemaphore();
 private:
     TileSoundHandler();
     ~TileSoundHandler();

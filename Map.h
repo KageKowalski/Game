@@ -38,7 +38,7 @@ private:
 	TileSet _tileset;
 
 	// the structure of this Map
-	std::map<int, LayeredTile*> _map;
+	LayeredTile** _map;
 
 	// width and height of this Map
 	int _width;
@@ -57,6 +57,9 @@ private:
 
 	// background music for this Map
 	std::string _music;
+    
+    //True if you are under a roof
+    bool _underRoof;
 
 	// name of this Map
 	std::string _name;
@@ -80,7 +83,11 @@ public:
 
 	Map(const std::string& name);
 	virtual ~Map();
-
+    
+    bool buildTileMap(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName);
+    bool buildSpriteMap(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
+                        const std::vector<Character*>& characters);
+    void update();
 	//
 	//			GETTER FUNCTIONS
 	//
@@ -96,7 +103,7 @@ public:
 	const sf::Texture& getTileSet() const;
 
 	// gets layered tile map
-	const std::map<int, LayeredTile*>& getLayeredMaps() const;
+	const LayeredTile* const * const getLayeredMaps() const;
 
 	// gets dimensions
 	int getWidth() const;
@@ -131,7 +138,7 @@ private:
 	//
 
 	// converts the tiles and sprites to vertices
-	void tileVertexFill(std::map<int, LayeredTile*>::iterator it);
+	void tileVertexFill(int x, int y);
 	void spriteVertexFill(const Character* const character, size_t offset);
 
 	// handles events

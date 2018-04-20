@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include <memory>
+#include <SFML/Graphics.hpp>
 
 class Event
 {
@@ -29,7 +30,8 @@ public:
 		EV_TURNLEFT,
 		EV_TURNRIGHT,
 		EV_LOADMAP,
-		EV_FULLLOADING
+		EV_FULLLOADING,
+        EV_COLLISION
 	};
 	virtual ~Event() {};
 	virtual EventType getType() const = 0;

@@ -136,13 +136,13 @@ private:
 
 class InteractableConnectorEvent : public Event {
 public:
-    InteractableConnectorEvent(std::pair<int, int> workingTile);
+    InteractableConnectorEvent(std::pair<int, sf::Vector2f> workingTile);
     virtual ~InteractableConnectorEvent();
     
-    const std::pair<int, int>& getWorkingTile() const;
+    const std::pair<int, sf::Vector2f>& getWorkingTile() const;
 private:
     //first is the tile id. second is map key
-    std::pair<int, int> _workingTile;
+    std::pair<int, sf::Vector2f> _workingTile;
     Event::EventType _type;
     virtual Event::EventType getType() const;
 };
@@ -233,6 +233,16 @@ public:
 private:
 	Event::EventType _type;
 	virtual Event::EventType getType() const;
+};
+
+class CollisionEvent : public Event {
+public:
+    CollisionEvent();
+    virtual ~CollisionEvent();
+    
+private:
+    Event::EventType _type;
+    virtual Event::EventType getType() const;
 };
 
 #endif
