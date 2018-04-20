@@ -51,8 +51,8 @@ int Application::run() {
         std::vector<Character*> reachables = MapBank::get().getCurrMap()->getReachableCharacters();
         bool touching = MapBank::get().getCurrMap()->isTouching(&Player::get(), Player::get().getDirection());
 		if (reachables.size() > 0)
-			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + reachables.at(reachables.size() - 1)->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
-        else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + MapBank::get().getCurrMap()->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching));
+			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + reachables.at(reachables.size() - 1)->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching) + " | Stamina: " + std::to_string(Player::get().getStamina()));
+        else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + MapBank::get().getCurrMap()->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching) + " | Stamina: " + std::to_string(Player::get().getStamina()));
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
