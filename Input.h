@@ -7,7 +7,7 @@
 #include <memory>
 #include "MapBank.h"
 
-class Input : EventListener {
+class Input {
 
 public:
 
@@ -15,8 +15,6 @@ public:
 	virtual ~Input();
 
 	void analyze(GameState state);
-
-	void handleEvent(Event* const e) override;
 
 };
 

@@ -1,12 +1,8 @@
 #include "Input.h"
 
-Input::Input() {
-	EventBus::get().registerListener(Event::EventType::EV_LOADMAP, this);
-}
+Input::Input() {}
 
-Input::~Input() {
-	EventBus::get().removeListener(Event::EventType::EV_LOADMAP, this);
-}
+Input::~Input() {}
 
 void Input::analyze(GameState state) {
 	std::unique_ptr<Event> eventPtr;
@@ -43,16 +39,16 @@ void Input::analyze(GameState state) {
 			EventBus::get().postEvent(eventPtr);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
 
-			run ? eventPtr = std::make_unique<RunLeftEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkLeftEvent>(Player::get().getID());
+			run ? eventPtr = std::make_unique<RunDownEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkDownEvent>(Player::get().getID());
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 
-			run ? eventPtr = std::make_unique<RunDownEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkDownEvent>(Player::get().getID());
+			run ? eventPtr = std::make_unique<RunLeftEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkLeftEvent>(Player::get().getID());
 
 			EventBus::get().postEvent(eventPtr);
 		}
@@ -63,12 +59,5 @@ void Input::analyze(GameState state) {
 
 			EventBus::get().postEvent(eventPtr);
 		}
-	}
-}
-
-void Input::handleEvent(Event* const e) {
-	switch (e->getType()) {
-	case Event::EventType::EV_LOADMAP:
-		break;
 	}
 }

@@ -22,7 +22,6 @@ MapBank::~MapBank() {
 
 bool MapBank::loadMap(int mapID) {
 	if (mapID == 0) {
-		Map* testMap = new Map("Piglet Hamlet");
 		int blank[1] = { -2 };
 		int layerOne[484] =
 		{
@@ -127,19 +126,16 @@ bool MapBank::loadMap(int mapID) {
 
         };
 
-		if (!testMap->buildTileMap(layerOne, layerTwo, blank, roof, canopy, 22, 22, "Game_Test.wav", "Tileset_1.png"))
-			return false;
-		
 		std::vector<Character*> characters;
-        characters.push_back(&Player::get());
+		characters.push_back(&Player::get());
 		characters.push_back(new NPC(sf::Vector2f(60.0f, 60.0f), 0, 24, 16, 32, Behavior::WALK_AROUND, "Near a walking NPC"));
 		characters.push_back(new NPC(sf::Vector2f(100.0f, 20.0f), 0, 24, 16, 32, Behavior::LOOK_AROUND_RANDOMLY, "Near a looking NPC"));
-		if (!testMap->buildSpriteMap("UniversalSpriteSheet.png", "UniversalSpriteSheet.png", characters))
-			return false;
-		_map.push_back(testMap);
 
-		std::unique_ptr<Event> eventPtr = std::make_unique<LoadMapEvent>();
-		EventBus::get().postEvent(eventPtr);
+		if (!_mapBuilder.build(layerOne, layerTwo, blank, roof, canopy, 22, 22, "Tileset_1.png",
+			"UniversalSpriteSheet.png", "UniversalSpriteSheet.png", characters, "Game_Test.wav"))
+			return false;
+
+		_map.push_back(_mapBuilder.produce());
 
 		return true;
 	}

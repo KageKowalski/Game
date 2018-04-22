@@ -10,8 +10,14 @@
 #include "Tile.h"
 #include "Utility.h"
 
+// forward declarations
+class MapBuilder;
+
 class Map : public EventListener
 {
+
+	// friends
+	friend MapBuilder;
 
 public:
 
@@ -81,13 +87,11 @@ public:
 	//			CONSTRUCTION FUNCTIONS
 	//
 
-	Map(const std::string& name);
+	Map();
 	virtual ~Map();
     
-    bool buildTileMap(int* ground, int* layerTwo, int* layerThree, int* layerSix, int* canopy, int width, int height, std::string Music, std::string tilesetFileName);
-    bool buildSpriteMap(const std::string& universalSpriteSheetFileName, const std::string& localSpriteSheetFileName,
-                        const std::vector<Character*>& characters);
     void update();
+
 	//
 	//			GETTER FUNCTIONS
 	//

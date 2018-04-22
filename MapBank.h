@@ -13,6 +13,7 @@
 #include <thread>
 #include "EventBus.h"
 #include "Events.h"
+#include "MapBuilder.h"
 #include <memory>
 #include <thread>
 
@@ -59,6 +60,8 @@ private:
 
 	std::vector<sf::VertexArray> m_CurrMapVerticies;
 	std::vector<sf::Texture> m_CurrMapTextures;
+
+	MapBuilder _mapBuilder;
 
 };
 
