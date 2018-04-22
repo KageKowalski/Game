@@ -2,6 +2,7 @@
 #define Event_hpp
 
 #include "EventBus.h"
+#include "Direction.h"
 
 class FullscreenEvent : public Event {
 public:
@@ -13,116 +14,36 @@ private:
     virtual Event::EventType getType() const;
 };
 
-class RunDownEvent : public Event {
+class RunEvent : public Event {
 public:
-    RunDownEvent(unsigned int targetID);
-    virtual ~RunDownEvent();
+    RunEvent(unsigned int targetID, Direction direction);
+    virtual ~RunEvent();
     
     unsigned int getTargetID() const;
+	Direction getDirection() const;
     
 private:
     Event::EventType _type;
     virtual Event::EventType getType() const;
     
     unsigned int _targetID;
+	Direction _direction;
 };
 
-class RunUpEvent : public Event {
+class WalkEvent : public Event {
 public:
-    RunUpEvent(unsigned int targetID);
-    virtual ~RunUpEvent();
+    WalkEvent(unsigned int targetID, Direction direction);
+    virtual ~WalkEvent();
     
     unsigned int getTargetID() const;
+	Direction getDirection() const;
     
 private:
     Event::EventType _type;
     virtual Event::EventType getType() const;
     
     unsigned int _targetID;
-};
-
-class RunLeftEvent : public Event {
-public:
-    RunLeftEvent(unsigned int targetID);
-    virtual ~RunLeftEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class RunRightEvent : public Event {
-public:
-    RunRightEvent(unsigned int targetID);
-    virtual ~RunRightEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class WalkDownEvent : public Event {
-public:
-    WalkDownEvent(unsigned int targetID);
-    virtual ~WalkDownEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class WalkUpEvent : public Event {
-public:
-    WalkUpEvent(unsigned int targetID);
-    virtual ~WalkUpEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class WalkLeftEvent : public Event {
-public:
-    WalkLeftEvent(unsigned int targetID);
-    virtual ~WalkLeftEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class WalkRightEvent : public Event {
-public:
-    WalkRightEvent(unsigned int targetID);
-    virtual ~WalkRightEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
+	Direction _direction;
 };
 
 class InteractEvent : public Event {
@@ -157,60 +78,20 @@ private:
     virtual Event::EventType getType() const;
 };
 
-class TurnDownEvent : public Event {
+class TurnEvent : public Event {
 public:
-    TurnDownEvent(unsigned int targetID);
-    virtual ~TurnDownEvent();
+    TurnEvent(unsigned int targetID, Direction direction);
+    virtual ~TurnEvent();
     
     unsigned int getTargetID() const;
+	Direction getDirection() const;
     
 private:
     Event::EventType _type;
     virtual Event::EventType getType() const;
     
     unsigned int _targetID;
-};
-
-class TurnUpEvent : public Event {
-public:
-    TurnUpEvent(unsigned int targetID);
-    virtual ~TurnUpEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class TurnLeftEvent : public Event {
-public:
-    TurnLeftEvent(unsigned int targetID);
-    virtual ~TurnLeftEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
-};
-
-class TurnRightEvent : public Event {
-public:
-    TurnRightEvent(unsigned int targetID);
-    virtual ~TurnRightEvent();
-    
-    unsigned int getTargetID() const;
-    
-private:
-    Event::EventType _type;
-    virtual Event::EventType getType() const;
-    
-    unsigned int _targetID;
+	Direction _direction;
 };
 
 class LoadMapEvent : public Event {

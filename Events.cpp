@@ -9,115 +9,41 @@ Event::EventType FullscreenEvent::getType() const {
 	return _type;
 }
 
-RunDownEvent::RunDownEvent(unsigned int targetID) {
-	_type = EV_RUNDOWN;
+RunEvent::RunEvent(unsigned int targetID, Direction direction) {
+	_type = EV_RUN;
 	_targetID = targetID;
+	_direction = direction;
 }
-RunDownEvent::~RunDownEvent() {}
+RunEvent::~RunEvent() {}
 
-unsigned int RunDownEvent::getTargetID() const {
+unsigned int RunEvent::getTargetID() const {
 	return _targetID;
 }
 
-Event::EventType RunDownEvent::getType() const {
+Direction RunEvent::getDirection() const {
+	return _direction;
+}
+
+Event::EventType RunEvent::getType() const {
 	return _type;
 }
 
-RunUpEvent::RunUpEvent(unsigned int targetID) {
-	_type = EV_RUNUP;
+WalkEvent::WalkEvent(unsigned int targetID, Direction direction) {
 	_targetID = targetID;
+	_type = EV_WALK;
+	_direction = direction;
 }
-RunUpEvent::~RunUpEvent() {}
+WalkEvent::~WalkEvent() {}
 
-unsigned int RunUpEvent::getTargetID() const {
+unsigned int WalkEvent::getTargetID() const {
 	return _targetID;
 }
 
-Event::EventType RunUpEvent::getType() const {
-	return _type;
+Direction WalkEvent::getDirection() const {
+	return _direction;
 }
 
-RunLeftEvent::RunLeftEvent(unsigned int targetID) {
-	_type = EV_RUNLEFT;
-	_targetID = targetID;
-}
-RunLeftEvent::~RunLeftEvent() {}
-
-unsigned int RunLeftEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType RunLeftEvent::getType() const {
-	return _type;
-}
-
-RunRightEvent::RunRightEvent(unsigned int targetID) {
-	_type = EV_RUNRIGHT;
-	_targetID = targetID;
-}
-RunRightEvent::~RunRightEvent() {}
-
-unsigned int RunRightEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType RunRightEvent::getType() const {
-	return _type;
-}
-
-WalkDownEvent::WalkDownEvent(unsigned int targetID) {
-	_targetID = targetID;
-	_type = EV_WALKDOWN;
-}
-WalkDownEvent::~WalkDownEvent() {}
-
-unsigned int WalkDownEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType WalkDownEvent::getType() const {
-	return _type;
-}
-
-WalkUpEvent::WalkUpEvent(unsigned int targetID) {
-	_targetID = targetID;
-	_type = EV_WALKUP;
-}
-WalkUpEvent::~WalkUpEvent() {}
-
-unsigned int WalkUpEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType WalkUpEvent::getType() const {
-	return _type;
-}
-
-WalkLeftEvent::WalkLeftEvent(unsigned int targetID) {
-	_targetID = targetID;
-	_type = EV_WALKLEFT;
-}
-WalkLeftEvent::~WalkLeftEvent() {}
-
-unsigned int WalkLeftEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType WalkLeftEvent::getType() const {
-	return _type;
-}
-
-WalkRightEvent::WalkRightEvent(unsigned int targetID) {
-	_type = EV_WALKRIGHT;
-	_targetID = targetID;
-}
-WalkRightEvent::~WalkRightEvent() {}
-
-unsigned int WalkRightEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType WalkRightEvent::getType() const {
+Event::EventType WalkEvent::getType() const {
 	return _type;
 }
 
@@ -154,59 +80,23 @@ Event::EventType RadialSoundEvent::getType() const {
     return _type;
 }
 
-TurnDownEvent::TurnDownEvent(unsigned int targetID) {
-	_type = EV_TURNDOWN;
-}
-TurnDownEvent::~TurnDownEvent() {}
-
-unsigned int TurnDownEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType TurnDownEvent::getType() const {
-	return _type;
-}
-
-TurnUpEvent::TurnUpEvent(unsigned int targetID) {
-	_type = EV_TURNUP;
+TurnEvent::TurnEvent(unsigned int targetID, Direction direction) {
+	_type = EV_TURN;
 	_targetID = targetID;
+	_direction = direction;
 }
-TurnUpEvent::~TurnUpEvent() {}
+TurnEvent::~TurnEvent() {}
 
-unsigned int TurnUpEvent::getTargetID() const {
+unsigned int TurnEvent::getTargetID() const {
 	return _targetID;
 }
 
-Event::EventType TurnUpEvent::getType() const {
+Event::EventType TurnEvent::getType() const {
 	return _type;
 }
 
-TurnLeftEvent::TurnLeftEvent(unsigned int targetID) {
-	_type = EV_TURNLEFT;
-	_targetID = targetID;
-}
-TurnLeftEvent::~TurnLeftEvent() {}
-
-unsigned int TurnLeftEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType TurnLeftEvent::getType() const {
-	return _type;
-}
-
-TurnRightEvent::TurnRightEvent(unsigned int targetID) {
-	_type = EV_TURNRIGHT;
-	_targetID = targetID;
-}
-TurnRightEvent::~TurnRightEvent() {}
-
-unsigned int TurnRightEvent::getTargetID() const {
-	return _targetID;
-}
-
-Event::EventType TurnRightEvent::getType() const {
-	return _type;
+Direction TurnEvent::getDirection() const {
+	return _direction;
 }
 
 LoadMapEvent::LoadMapEvent() {

@@ -26,33 +26,15 @@ Character::Character(const sf::Vector2f position, int initAnimStep, unsigned int
 	m_SequenceStep = 0;
 	m_DirectionFacing = Direction::DOWN;
 
-	EventBus::get().registerListener(Event::EventType::EV_TURNDOWN, this);
-	EventBus::get().registerListener(Event::EventType::EV_TURNUP, this);
-	EventBus::get().registerListener(Event::EventType::EV_TURNLEFT, this);
-	EventBus::get().registerListener(Event::EventType::EV_TURNRIGHT, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKDOWN, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKUP, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKLEFT, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKRIGHT, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNDOWN, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNUP, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNLEFT, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNRIGHT, this);
+	EventBus::get().registerListener(Event::EventType::EV_TURN, this);
+	EventBus::get().registerListener(Event::EventType::EV_WALK, this);
+	EventBus::get().registerListener(Event::EventType::EV_RUN, this);
 }
 
 Character::~Character() {
-	EventBus::get().removeListener(Event::EventType::EV_TURNDOWN, this);
-	EventBus::get().removeListener(Event::EventType::EV_TURNUP, this);
-	EventBus::get().removeListener(Event::EventType::EV_TURNLEFT, this);
-	EventBus::get().removeListener(Event::EventType::EV_TURNRIGHT, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKDOWN, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKUP, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKLEFT, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKRIGHT, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNDOWN, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNUP, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNLEFT, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNRIGHT, this);
+	EventBus::get().removeListener(Event::EventType::EV_TURN, this);
+	EventBus::get().removeListener(Event::EventType::EV_WALK, this);
+	EventBus::get().removeListener(Event::EventType::EV_RUN, this);
 }
 
 void Character::turn(Direction direction) {
@@ -226,53 +208,17 @@ sf::FloatRect Character::getGlobalBounds() const {
 
 void Character::handleEvent(Event* const e) {
 	switch (e->getType()) {
-	case Event::EventType::EV_TURNDOWN:
-		if (dynamic_cast<TurnDownEvent*>(e)->getTargetID() == m_ID)
-			turn(Direction::DOWN);
+	case Event::EventType::EV_TURN:
+		if (dynamic_cast<TurnEvent*>(e)->getTargetID() == m_ID)
+			turn(dynamic_cast<TurnEvent*>(e)->getDirection());
 		break;
-	case Event::EventType::EV_TURNUP:
-		if (dynamic_cast<TurnUpEvent*>(e)->getTargetID() == m_ID)
-			turn(Direction::UP);
+	case Event::EventType::EV_WALK:
+		if (dynamic_cast<WalkEvent*>(e)->getTargetID() == m_ID)
+			walk(dynamic_cast<WalkEvent*>(e)->getDirection());
 		break;
-	case Event::EventType::EV_TURNLEFT:
-		if (dynamic_cast<TurnLeftEvent*>(e)->getTargetID() == m_ID)
-			turn(Direction::LEFT);
-		break;
-	case Event::EventType::EV_TURNRIGHT:
-		if (dynamic_cast<TurnRightEvent*>(e)->getTargetID() == m_ID)
-			turn(Direction::RIGHT);
-		break;
-	case Event::EventType::EV_WALKDOWN:
-		if (dynamic_cast<WalkDownEvent*>(e)->getTargetID() == m_ID)
-			walk(Direction::DOWN);
-		break;
-	case Event::EventType::EV_WALKUP:
-		if (dynamic_cast<WalkUpEvent*>(e)->getTargetID() == m_ID)
-			walk(Direction::UP);
-		break;
-	case Event::EventType::EV_WALKLEFT:
-		if (dynamic_cast<WalkLeftEvent*>(e)->getTargetID() == m_ID)
-			walk(Direction::LEFT);
-		break;
-	case Event::EventType::EV_WALKRIGHT:
-		if (dynamic_cast<WalkRightEvent*>(e)->getTargetID() == m_ID)
-			walk(Direction::RIGHT);
-		break;
-	case Event::EventType::EV_RUNDOWN:
-		if (dynamic_cast<RunDownEvent*>(e)->getTargetID() == m_ID)
-			run(Direction::DOWN);
-		break;
-	case Event::EventType::EV_RUNUP:
-		if (dynamic_cast<RunUpEvent*>(e)->getTargetID() == m_ID)
-			run(Direction::UP);
-		break;
-	case Event::EventType::EV_RUNLEFT:
-		if (dynamic_cast<RunLeftEvent*>(e)->getTargetID() == m_ID)
-			run(Direction::LEFT);
-		break;
-	case Event::EventType::EV_RUNRIGHT:
-		if (dynamic_cast<RunRightEvent*>(e)->getTargetID() == m_ID)
-			run(Direction::RIGHT);
+	case Event::EventType::EV_RUN:
+		if (dynamic_cast<RunEvent*>(e)->getTargetID() == m_ID)
+			run(dynamic_cast<RunEvent*>(e)->getDirection());
 		break;
 	}
 }

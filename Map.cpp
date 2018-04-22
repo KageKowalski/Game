@@ -20,14 +20,6 @@ Map::Map()
 	_localSpriteVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
 
     EventBus::get().registerListener(Event::EventType::EV_INTERACTABLECONNECTOR, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNDOWN, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNUP, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNLEFT, this);
-	EventBus::get().registerListener(Event::EventType::EV_RUNRIGHT, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKDOWN, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKUP, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKLEFT, this);
-	EventBus::get().registerListener(Event::EventType::EV_WALKRIGHT, this);
 }
 
 // delete map and remove listeners
@@ -47,14 +39,6 @@ Map::~Map()
     delete[] _map;
 
     EventBus::get().removeListener(Event::EventType::EV_INTERACTABLECONNECTOR, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNDOWN, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNUP, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNLEFT, this);
-	EventBus::get().removeListener(Event::EventType::EV_RUNRIGHT, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKDOWN, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKUP, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKLEFT, this);
-	EventBus::get().removeListener(Event::EventType::EV_WALKRIGHT, this);
 }
 
 //

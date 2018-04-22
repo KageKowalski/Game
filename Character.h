@@ -9,6 +9,7 @@
 #include "Random.h"
 #include "Events.h"
 #include "Collidable.h"
+#include "Direction.h"
 
 // THIS CLASS ASSUMES THE FOLLOWING ANIMATION STEP VALUES:
 // 0 == Look down
@@ -35,16 +36,6 @@
 // 21 == Run left right food forward
 // 22 == Run right left foot forward
 // 23 == Run right left food forward
-
-// All possible directions in which a character can be moving.
-// Used internally to decide on velocity.
-// Used by other classes to tell Character which direction to move.
-enum class Direction {
-	DOWN,
-	UP,
-	LEFT,
-	RIGHT
-};
 
 // All characters share the following functionalities.
 // Characters aren't supposed to be instantiated without dynamically pointing to one of its

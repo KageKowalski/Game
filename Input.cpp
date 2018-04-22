@@ -15,16 +15,13 @@ void Input::analyze(GameState state) {
 
 	// HANDLE THE FOLLOWING <ON FREEROAM>:
 	if (state == GameState::FREEROAM) {
+
 		sf::Vector2f playerCenterPos = Player::get().getCenterPosition();
-        bool run;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && Player::get().getStamina())
-        {
+
+		bool run = false;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && Player::get().getStamina()) {
             run = true;
             Player::get().decrementStamina();
-        }
-        else
-        {
-            run = false;
         }
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) {
@@ -34,28 +31,32 @@ void Input::analyze(GameState state) {
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
 
-			run ? eventPtr = std::make_unique<RunUpEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkUpEvent>(Player::get().getID());
+			run ? eventPtr = std::make_unique<RunEvent>(Player::get().getID(), Direction::UP)
+				: eventPtr = std::make_unique<WalkEvent>(Player::get().getID(), Direction::UP);
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
 
-			run ? eventPtr = std::make_unique<RunDownEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkDownEvent>(Player::get().getID());
+			run ? eventPtr = std::make_unique<RunEvent>(Player::get().getID(), Direction::DOWN)
+				: eventPtr = std::make_unique<WalkEvent>(Player::get().getID(), Direction::DOWN);
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 
-			run ? eventPtr = std::make_unique<RunLeftEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkLeftEvent>(Player::get().getID());
+			run ? eventPtr = std::make_unique<RunEvent>(Player::get().getID(), Direction::LEFT)
+				: eventPtr = std::make_unique<WalkEvent>(Player::get().getID(), Direction::LEFT);
 
 			EventBus::get().postEvent(eventPtr);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
 
-			run ? eventPtr = std::make_unique<RunRightEvent>(Player::get().getID()) : eventPtr = std::make_unique<WalkRightEvent>(Player::get().getID());
+			run ? eventPtr = std::make_unique<RunEvent>(Player::get().getID(), Direction::RIGHT)
+				: eventPtr = std::make_unique<WalkEvent>(Player::get().getID(), Direction::RIGHT);
 
 			EventBus::get().postEvent(eventPtr);
 		}
