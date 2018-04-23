@@ -2,8 +2,8 @@
 
 Application::Application()  {
 	m_Window = nullptr;
-	m_Settings = nullptr;
 	m_Camera = nullptr;
+
 	m_State = GameState::FREEROAM;
 
 	EventBus::get().registerListener(Event::EventType::EV_FULLSCREEN, this);
@@ -15,7 +15,6 @@ Application::~Application() {
 	EventBus::get().removeListener(Event::EventType::EV_FULLLOADING, this);
 
 	delete m_Window;
-	delete m_Settings;
 	delete m_Camera;
 }
 
@@ -38,7 +37,7 @@ int Application::run() {
 				break;
 			case sf::Event::EventType::Resized:
 				sf::VideoMode updatedVideoMode(e.size.width, e.size.height);
-				m_Settings->setCurrentVideoMode(updatedVideoMode);
+				Settings::get().setCurrentVideoMode(updatedVideoMode);
 				m_Camera->resize(sf::Vector2f(static_cast<float>(e.size.width), static_cast<float>(e.size.height)));
 				m_Window->resize(m_Camera->getView());
 				break;
@@ -59,7 +58,7 @@ int Application::run() {
 		MapBank::get().update(m_Camera->getBounds());
 		Sun::get().update();
 		background.startMusic();
-		background.setVolume(m_Settings->getMusicVolume());
+		background.setVolume(Settings::get().getMusicVolume());
 
 		m_Renderer.updateTransform(MapBank::get().getTransform(), 1);
 		std::vector<sf::Texture> textures = MapBank::get().getTextures();
@@ -82,22 +81,14 @@ int Application::run() {
 }
 
 bool Application::init() {
-    m_Settings = &Settings::get();
-
 	if (!TextBank::get().init())
 		return false;
 
-	sf::VideoMode initMode = m_Settings->getCurrVideoMode();
+	sf::VideoMode initMode = Settings::get().getCurrVideoMode();
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
-	m_Window = new Window(initMode, m_Camera->getView(), m_Settings->isFullscreen());
+	m_Window = new Window(initMode, m_Camera->getView(), Settings::get().isFullscreen());
 
-	FullLoading loadScreen;
-	loadScreen.load("Loading_Screen.png");
-	m_Renderer.updateTexture(loadScreen.getTexture(), 0);
-	m_Renderer.updateVerticies(loadScreen.getVerticies(), 0);
-	draw();
-
-	MapBank::get().soundInit(m_Settings->getEffectsVolume());
+	MapBank::get().soundInit(Settings::get().getEffectsVolume());
 
 	if (!MapBank::get().loadMap(0)) return false;
 
@@ -119,11 +110,11 @@ void Application::draw() {
 }
 
 void Application::toggleFullscreen() {
-	m_Settings->toggleFullscreen();
+	Settings::get().toggleFullscreen();
 
-	sf::VideoMode mode = m_Settings->getCurrVideoMode();
+	sf::VideoMode mode = Settings::get().getCurrVideoMode();
 	m_Camera->resize(sf::Vector2f(static_cast<float>(mode.width), static_cast<float>(mode.height)));
-	m_Window->toggleFullscreen(m_Settings->getCurrVideoMode(), m_Camera->getView(), m_Settings->isFullscreen());
+	m_Window->toggleFullscreen(Settings::get().getCurrVideoMode(), m_Camera->getView(), Settings::get().isFullscreen());
 }
 
 void Application::handleEvent(Event* const e) {

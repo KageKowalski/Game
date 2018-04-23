@@ -55,7 +55,7 @@ const sf::VertexArray& Map::getLayerSixVertices() const {return _layerSixVertici
 const sf::VertexArray& Map::getCanopyVertices() const {return _canopyVerticies;}
 
 // gets TileSet
-const sf::Texture& Map::getTileSet() const {return _tileset.getTexture();}
+const sf::Texture& Map::getTileSet() const { return _tileset; }
 
 // gets dimensions
 int Map::getWidth() const {return _width;}
@@ -145,17 +145,19 @@ void Map::tileVertexFill(int x, int y)
     int canopyTileID = _map[x][y].canopy->getID();
     float i = x;
     float j = y;
+
+	int tilesetWidth = static_cast<int>(_tileset.getSize().x);
     
-    int groundTilePosX = groundTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int groundTilePosY = (groundTileID / (_tileset.getWidth() / 16));
-    int layTwoTilePosX = layerTwoTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int layTwoTilePosY = (layerTwoTileID / (_tileset.getWidth() / 16));
-    int layThreeTilePosX = layerThreeTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int layThreeTilePosY = (layerThreeTileID / (_tileset.getWidth() / 16));
-    int laySixTilePosX = layerSixTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int laySixTilePosY = (layerSixTileID / (_tileset.getWidth() / 16));
-    int canopyTilePosX = canopyTileID % static_cast<int>(_tileset.getWidth() / 16);
-    int canopyTilePosY = (canopyTileID / (_tileset.getWidth() / 16));
+    int groundTilePosX = groundTileID % (tilesetWidth / 16);
+    int groundTilePosY = groundTileID / (tilesetWidth / 16);
+	int layTwoTilePosX = layerTwoTileID % (tilesetWidth / 16);
+	int layTwoTilePosY = layerTwoTileID / (tilesetWidth / 16);
+	int layThreeTilePosX = layerThreeTileID % (tilesetWidth / 16);
+	int layThreeTilePosY = layerThreeTileID / (tilesetWidth / 16);
+    int laySixTilePosX = layerSixTileID % (tilesetWidth / 16);
+    int laySixTilePosY = layerSixTileID / (tilesetWidth / 16);
+    int canopyTilePosX = canopyTileID % (tilesetWidth / 16);
+    int canopyTilePosY = canopyTileID / (tilesetWidth / 16);
     
     // Get a pointer to tile's top-left corner in vertex array
     sf::Vertex* quadGro = &_groundVerticies[(size_t)  ((i * _width + j) * 4 )];

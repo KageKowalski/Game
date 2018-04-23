@@ -14,7 +14,6 @@
 #include "EventBus.h"
 #include "GameState.h"
 #include "Input.h"
-#include "FullLoading.h"
 #include "TextBank.h"
 
 class Application : public EventListener {
@@ -64,9 +63,6 @@ private:
 
 	// Physical window
 	Window* m_Window;
-
-	// Settings
-	Settings* m_Settings;
 
 	// Viewable area
 	Camera* m_Camera;

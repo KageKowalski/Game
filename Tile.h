@@ -7,7 +7,6 @@
 #include <stdint.h>
 
 #include "AutoAnimation.h"
-#include "TileSet.h"
 #include "Sound.h"
 #include "Sun.h"
 #include "EventBus.h"

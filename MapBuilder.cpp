@@ -19,10 +19,11 @@ bool MapBuilder::build(int* groundLayer, int* layerTwo, int* layerThree, int* la
 
 	_currMap = new Map;
 
+	const std::string tilesetFilePath = tilesetFileName;
 	const std::string universalSpriteSheetFilePath = universalSpriteSheetFileName;
 	const std::string localSpriteSheetFilePath = localSpriteSheetFileName;
 
-	if (!_currMap->_tileset.load(tilesetFileName))
+	if (!_currMap->_tileset.loadFromFile(tilesetFilePath))
 		return false;
 	if (!_currMap->_universalSpriteSheet.loadFromFile(universalSpriteSheetFilePath))
 		return false;

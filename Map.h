@@ -41,7 +41,7 @@ private:
 	//
 
 	// this Map's TileSet
-	TileSet _tileset;
+	sf::Texture _tileset;
 
 	// the structure of this Map
 	LayeredTile** _map;

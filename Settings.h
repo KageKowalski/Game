@@ -1,5 +1,3 @@
-// Klayton Kowalski
-
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
@@ -65,6 +63,7 @@ private:
 	// Volume level of sound effects [0.0f, 100.0f]
 	float m_EffectsVolume;
     
+	// --- SINGLETON IMPLEMENTATION ---
 public:
     
     Settings(Settings const&)        = delete;
@@ -75,8 +74,11 @@ public:
         static Settings instance;
         return        instance;
     }
+
 private:
+
     Settings();
+
 };
 
 #endif
