@@ -10,4 +10,14 @@ enum class Direction {
 	RIGHT
 };
 
+// All diagonal directions.
+// May be used to deal with that fact that multiple cardinal directions can be
+// in play in a single instance.
+enum class DiagonalDirection {
+	DOWN_LEFT,
+	DOWN_RIGHT,
+	UP_LEFT,
+	UP_RIGHT
+};
+
 #endif

@@ -39,7 +39,7 @@ public:
 
 	// Sets the entity's center position.
 	// Automatically readjusts position according to new center position.
-	void setCenterPosition(const sf::Vector2f position);
+	void setCenterPosition(const sf::Vector2f centerPosition);
 
 protected:
 

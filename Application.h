@@ -2,7 +2,6 @@
 #define APPLICATION_H
 
 #include <SFML/System.hpp>
-#include <thread>
 
 #include "Window.h"
 #include "Settings.h"
@@ -10,7 +9,7 @@
 #include "Chrono.h"
 #include "Renderer.h"
 #include "Music.h"
-#include "MapBank.h"
+#include "MapDirector.h"
 #include "EventBus.h"
 #include "GameState.h"
 #include "Input.h"
@@ -42,22 +41,6 @@ private:
 
 	// Toggle fullscreen mode
 	void toggleFullscreen();
-    
-public:
-
-    struct SoundThreadInfo
-    {
-        TileSoundHandler*    thisHandler;
-        const sf::Time*              deltaTime;
-        const sf::FloatRect*  cameraView;
-        Map*                 tilemap;
-    };
-    struct DrawThreadInfo
-    {
-        Window*     window;
-        Renderer* renderer;
-        MapBank*   mapBank;
-    };
 
 private:
 

@@ -10,11 +10,7 @@ class MapBuilder {
 
 public:
 
-	// Constructor takes nothing--initializes next map's values.
-	MapBuilder();
-	~MapBuilder();
-
-	// Builds a map using the following arguments:
+	// Stores the required components to build a map:
 	// 1) Integer array of ground tiles
 	// 2) Integer array of layer two tiles
 	// 3) Integer array of layer three tiles
@@ -27,12 +23,36 @@ public:
 	// 10) String containing local sprite sheet file name, including file extension
 	// 11) Vector of pointers to valid Characters
 	// 12) String containing background music file name, including file extension
-	// --- Optional arguments downward ---
 	// 13) String containing name of the map
-	bool build(int* groundLayer, int* layerTwo, int* layerThree, int* layerSix, int* canopyLayer,
-		int width, int height, const std::string& tilesetFileName, const std::string& universalSpriteSheetFileName,
-		const std::string& localSpriteSheetFileName, const std::vector<Character*>& characters,
-		const std::string& musicFileName, const std::string& mapName = "DEFAULT");
+	struct Componets {
+		int const * _groundLayer = nullptr;
+		int const * _layerTwo = nullptr;
+		int const * _layerThree = nullptr;
+		int const * _layerSix = nullptr;
+		int const * _canopyLayer = nullptr;
+		int _width = 0;
+		int _height = 0;
+		std::string const * _tilesetFileName = nullptr;
+		std::string const * _universalSpriteSheetFileName = nullptr;
+		std::string const * _localSpriteSheetFileName = nullptr;
+		std::vector<Character*> const * _characters = nullptr;
+		std::string const * _musicFileName = nullptr;
+		std::string const * _mapName = nullptr;
+
+		// Verifies all components have been provided.
+		// Does not check for component legitimacy.
+		// If components are not legit, build() will fail.
+		bool ready() const;
+	};
+
+public:
+
+	// Constructor takes nothing--initializes next map's values.
+	MapBuilder();
+	~MapBuilder();
+
+	// Builds a map and stores it for future production.
+	bool build(const MapBuilder::Componets& components);
 
 	// Produces the constructed map, returning it to the client.
 	Map* produce();

@@ -39,9 +39,15 @@ unsigned int Entity::getID() const {
 }
 
 void Entity::setPosition(const sf::Vector2f& position) {
+	sf::Vector2f centerPosOffset = position - m_Position;
+
 	m_Position = position;
+	m_CenterPosition = position + centerPosOffset;
 }
 
-void Entity::setCenterPosition(const sf::Vector2f position) {
-	m_CenterPosition = position;
+void Entity::setCenterPosition(const sf::Vector2f centerPosition) {
+	sf::Vector2f positionOffset = centerPosition - m_CenterPosition;
+
+	m_CenterPosition = centerPosition;
+	m_Position = centerPosition + positionOffset;
 }

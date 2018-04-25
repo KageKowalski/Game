@@ -30,6 +30,8 @@ int Application::run() {
 		Chrono::get().tick();
 		EventBus::get().update();
 
+		m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())));
+
 		while (m_Window->m_RenderWindow.pollEvent(e)) {
 			switch (e.type) {
 			case sf::Event::EventType::Closed:
@@ -47,25 +49,18 @@ int Application::run() {
 		m_Input.analyze(m_State);
 
 		update();
-        std::vector<Character*> reachables = MapBank::get().getCurrMap()->getReachableCharacters();
-        bool touching = MapBank::get().getCurrMap()->isTouching(&Player::get(), Player::get().getDirection());
-		if (reachables.size() > 0)
-			m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + reachables.at(reachables.size() - 1)->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching) + " | Stamina: " + std::to_string(Player::get().getStamina()));
-        else m_Window->m_RenderWindow.setTitle(sf::String(std::to_string(Chrono::get().getFPS())) + " | " + MapBank::get().getCurrMap()->getName() + " | Touching (1) Yes (0) No: " + std::to_string(touching) + " | Stamina: " + std::to_string(Player::get().getStamina()));
 
 		m_Window->m_RenderWindow.setView(m_Camera->getView());
 
-		MapBank::get().update(m_Camera->getBounds());
-		Sun::get().update();
 		background.startMusic();
 		background.setVolume(Settings::get().getMusicVolume());
 
-		m_Renderer.updateTransform(MapBank::get().getTransform(), 1);
-		std::vector<sf::Texture> textures = MapBank::get().getTextures();
+		m_Renderer.updateTransform(MapDirector::get().getCurrTransform(), 1);
+		std::vector<sf::Texture> textures = MapDirector::get().getCurrTextures();
 		m_Renderer.updateTexture(textures.at(0), 1);
 		m_Renderer.updateTexture(textures.at(1), 4);
 		m_Renderer.updateTexture(textures.at(2), 5);
-		std::vector<sf::VertexArray> verticies = MapBank::get().getVerticies();
+		std::vector<sf::VertexArray> verticies = MapDirector::get().getCurrVerticies();
 		m_Renderer.updateVerticies(verticies.at(0), 1);
 		m_Renderer.updateVerticies(verticies.at(1), 2);
 		m_Renderer.updateVerticies(verticies.at(2), 3);
@@ -73,8 +68,8 @@ int Application::run() {
 		m_Renderer.updateVerticies(verticies.at(4), 5);
 		m_Renderer.updateVerticies(verticies.at(5), 6);
 		m_Renderer.updateVerticies(verticies.at(6), 7);
+
 		draw();
-		m_State = GameState::FREEROAM;
 	}
 
 	return EXIT_SUCCESS;
@@ -88,9 +83,10 @@ bool Application::init() {
 	m_Camera = new Camera(sf::Vector2f(static_cast<float>(initMode.width), static_cast<float>(initMode.height)));
 	m_Window = new Window(initMode, m_Camera->getView(), Settings::get().isFullscreen());
 
-	MapBank::get().soundInit(Settings::get().getEffectsVolume());
+	TileSoundHandler::get().setVolume(Settings::get().getEffectsVolume());
 
-	if (!MapBank::get().loadMap(0)) return false;
+	MapBank::get().init();
+	if (!MapDirector::get().loadMap(0)) return false;
 
 	return true;
 }
@@ -99,6 +95,9 @@ void Application::update() {
     std::unique_ptr<Event> eventPtr = std::make_unique<RadialSoundEvent>();
     EventBus::get().postEvent(eventPtr);
 	m_Camera->update();
+
+	MapDirector::get().update();
+	Sun::get().update();
 }
 
 void Application::draw() {

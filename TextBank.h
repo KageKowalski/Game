@@ -10,6 +10,18 @@ class TextBank {
 
 public:
 
+	bool init();
+
+	const sf::Text& getText(size_t index) const;
+
+private:
+
+	sf::Text m_TextBank[1];
+	sf::Font m_FontDependencies[1];
+
+	// SINGLETON IMPLEMENTATION
+public:
+
 	TextBank();
 
 	TextBank(const TextBank&) = delete;
@@ -21,17 +33,6 @@ public:
 	}
 
 	~TextBank();
-
-public:
-
-	bool init();
-
-	const sf::Text& getText(size_t index) const;
-
-private:
-
-	sf::Text m_TextBank[1];
-	sf::Font m_FontDependencies[1];
 
 };
 

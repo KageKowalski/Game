@@ -1,67 +1,87 @@
-// Klayton Kowalski
-
 #ifndef MAPBANK_H
 #define MAPBANK_H
 
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "Map.h"
+
 #include "Player.h"
 #include "NPC.h"
-#include "TileSoundHandler.h"
-#include <thread>
-#include "EventBus.h"
-#include "Events.h"
 #include "MapBuilder.h"
-#include <memory>
-#include <thread>
 
+// MapBank holds all map source data and performs no functions other than giving
+// access to this map information. Only a single map is actually built and loaded
+// at any time (build() call performed by MapDirector), but all map source data
+// are available in MapBank on program startup.
 class MapBank : public sf::Transformable {
 
 public:
-    MapBank(MapBank const&)        = delete;
-    void operator=(MapBank const&)  = delete;
-    
-    static MapBank& get()
-    {
-        static MapBank instance;
-        return        instance;
-    }
-	~MapBank();
 
-	bool loadMap(int mapID);
+	// Initializes and stores all map source data.
+	bool init();
 
-	void update(sf::FloatRect cameraView);
+	// Compiles the specified map's components into a Components structure
+	// and returns the bundle. Useful for passing bundle into MapBuilder's build().
+	const MapBuilder::Componets getMapComponents(unsigned int ID) const;
 
-	void setCurrMapID(int mapID);
-
-	Map* getCurrMap();
+	// Retrives the universal tilemap and spritemap transform.
 	const sf::Transform& getTransform() const;
-	const std::vector<sf::VertexArray>& getVerticies() const;
-	const std::vector<sf::Texture>& getTextures() const;
-
-	int getCurrMapID() const;
-    void soundInit(const float& volume);
 
 private:
 
-	std::vector<Map*> _map;
+	// All ground layers ordered by map ID.
+	std::vector<int*> _groundLayerCollection;
 
-	std::vector<std::string> m_TileSetFileNames;
-	std::string m_UniversalSpriteSheetFileName;
-	std::vector<std::string> m_LocalSpriteSheetFileNames;
-	std::vector<std::string> m_BackgroundMusicFileNames;
-    MapBank();
-    
-	int m_CurrMap;
-    
-    TileSoundHandler* m_SoundHandler;
+	// All second layers ordered by map ID.
+	std::vector<int*> _layerTwoCollection;
 
-	std::vector<sf::VertexArray> m_CurrMapVerticies;
-	std::vector<sf::Texture> m_CurrMapTextures;
+	// All third layers ordered by map ID.
+	std::vector<int*> _layerThreeCollection;
 
-	MapBuilder _mapBuilder;
+	// All sixth layers ordered by map ID.
+	std::vector<int*> _layerSixCollection;
+
+	// All canopy layers ordered by map ID.
+	std::vector<int*> _canopyLayerCollection;
+
+	// All map widths ordered by map ID.
+	std::vector<int> _widthCollection;
+
+	// All map heights ordered by map ID.
+	std::vector<int> _heightCollection;
+
+	// All tileset file names ordered by map ID.
+	std::vector<std::string> _tilesetFileNameCollection;
+
+	// Universal sprite sheet file name.
+	std::string _universalSpriteSheetFileName;
+
+	// All local sprite sheet file names ordered by map ID.
+	std::vector<std::string> _localSpriteSheetFileNameCollection;
+
+	// All characters ordered by map ID.
+	std::vector<std::vector<Character*>> _charactersCollection;
+
+	// All music file names ordered by map ID.
+	std::vector<std::string> _musicFileNameCollection;
+
+	// All map names ordered by map ID.
+	std::vector<std::string> _mapNameCollection;
+
+	// --- SINGLETON IMPLEMENTATION ---
+public:
+
+	MapBank(MapBank const&) = delete;
+	void operator=(MapBank const&) = delete;
+
+	static MapBank& get() {
+		static MapBank instance;
+		return        instance;
+	}
+
+private:
+
+	MapBank();
+	~MapBank();
 
 };
 
