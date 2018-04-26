@@ -26,6 +26,9 @@ int Application::run() {
 	Music background("Game_Test.wav");
     m_Camera->setTarget(Player::get().getCenterPosition(), MapBank::get().getScale());
 
+	Log::get().print("This is a test of the Log system.");
+	Log::get().print("This is a test of the Log system, but without a time stamp.", false);
+
 	while (m_Window->m_RenderWindow.isOpen()) {
 		Chrono::get().tick();
 		EventBus::get().update();
