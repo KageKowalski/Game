@@ -16,7 +16,7 @@
 #include "TileSoundHandler.h"
 #include "Collidable.h"
 
-class Tile : public EventListener, public Collidable
+class Tile
 {
 private:
     //handles animation for tiles
@@ -29,18 +29,10 @@ private:
     //current animation step
     int _step;
     
-    //position of tile on the map
-    sf::Vector2f _position;
-    
-    //center position of the tile
-    sf::Vector2f _centerPosition;
-    
     //function gets the correct tile animation for each tile
     AutoAnimation getTileAnimation(int ID);
     
     float _volume;
-    
-    int _mapKeyID;
     
     //contains all tile properties in bits
     //  bit 7 is unused
@@ -62,7 +54,7 @@ public:
     //constructs a tile with its correct id starts animation
     //starts the animation on step one if you want to start on another step call setAnimStep after initialization
     //sets the position on map
-    Tile(int ID, const sf::Vector2f& position, int mapKeyID, char properties = 0, std::string soundFilename = "");
+    Tile(int ID, char properties = 0, std::string soundFilename = "");
     
     virtual ~Tile();
     
@@ -76,36 +68,25 @@ public:
     void setAnimStep(unsigned int step);
     
     //returns the tile Id for the current tile
-    int  getID();
+    int  getID() const;
     
     //changes a tiles id
     void setID(int ID);
     
-    int  getGrowID();
+    int  getGrowID() const;
     
     //changes a tile so it 
     void setGrowID(int ID);
     
     //returns the current animation step
-    int getAnimStep();
-    
-    //returns the position of the tile
-    const sf::Vector2f& getPosition()       const;
-    
-    //returns center position
-    const sf::Vector2f& getCenterPosition() const;
+    int getAnimStep() const;
     
     //return properties
     uint8_t getProperties() const;
     
     //returns the sound file that this tile plays
     const std::string& getSoundFilename() const;
-    
-    void handleEvent(Event* const e) override;
-    
-    bool collision(const Collidable& obj) const override;
-    
-    sf::FloatRect getGlobalBounds() const override;
+
     
 };
 

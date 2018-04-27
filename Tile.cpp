@@ -2,45 +2,12 @@
 
 Tile::Tile() : _properties(0), _tileID(-1), _step(0), _animate(AutoAnimation(0,0,0,0,sf::seconds(.3f)))
 {}
-Tile::Tile(int ID, const sf::Vector2f& postition, int mapKeyID, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _position(postition), _mapKeyID(mapKeyID), _properties(properties), _soundFilename(soundFilename), _growID(0)
+Tile::Tile(int ID, char properties, std::string soundFilename) : _tileID(ID), _step(0), _animate(getTileAnimation(ID)), _properties(properties), _soundFilename(soundFilename), _growID(0)
 {
-    if(_properties & 0x08) EventBus::get().registerListener(Event::EventType::EV_INTERACT,    this);
-    if(_properties & 0x04) EventBus::get().registerListener(Event::EventType::EV_RADIALSOUND, this);
     _volume = Settings::get().getEffectsVolume();
-    _centerPosition.x = _position.x * 16 + 8;
-    _centerPosition.y = _position.y * 16 + 8;
 }
 Tile::~Tile()
-{
-    if(_properties & 0x04) EventBus::get().removeListener(Event::EventType::EV_RADIALSOUND, this);
-    if(_properties & 0x08) EventBus::get().removeListener(Event::EventType::EV_INTERACT, this);
-}
-
-void Tile::handleEvent(Event* const e)
-{
-    switch (e->getType())
-    {
-        case Event::EV_RADIALSOUND:
-            if(std::abs(Player::get().getCenterPosition().x - _centerPosition.x) < 512 && std::abs(Player::get().getCenterPosition().y - _centerPosition.y) < 512 ) TileSoundHandler::get().attachTileSounds(_centerPosition, _properties, _soundFilename);
-            break;
-        case Event::EV_INTERACT:
-            if(((abs(Player::get().getCenterPosition().x - _centerPosition.x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::LEFT) || ((abs(_centerPosition.x - Player::get().getCenterPosition().x) < 12 && abs(Player::get().getCenterPosition().y - _centerPosition.y) < 3) && Player::get().getDirection() == Direction::RIGHT))
-            {
-                std::unique_ptr<Event> eventPtr;
-                switch(_tileID)
-                {
-                    case 92:
-                        std::pair<int, sf::Vector2f> j(_tileID,_position);
-                        eventPtr = std::make_unique<InteractableConnectorEvent>(j);
-                        EventBus::get().postEvent(eventPtr);
-                        _growID = _tileID;
-                        _tileID = -3;
-                        break;
-                }
-            }
-            break;
-    }
-}
+{}
 
 //Moves the animation step forward one if the the time exceeds that last and deals with the sound
 void Tile::update()
@@ -72,19 +39,11 @@ void Tile::setAnimStep(unsigned int step)
         _step = step;
     }
 }
-int  Tile::getID()          { return _tileID; }
+int  Tile::getID() const    { return _tileID; }
 void Tile::setID(int ID)    { _tileID = ID;   }
-int  Tile::getGrowID()      { return _growID; }
+int  Tile::getGrowID() const{ return _growID; }
 void Tile::setGrowID(int ID){ _growID = ID;   }
-int  Tile::getAnimStep()    { return _step;   }
-const sf::Vector2f& Tile::getPosition()       const
-{
-    return _position;
-}
-const sf::Vector2f& Tile::getCenterPosition() const
-{
-    return _centerPosition;
-}
+int  Tile::getAnimStep() const   { return _step;   }
 uint8_t Tile::getProperties() const
 {
     return _properties;
@@ -92,35 +51,6 @@ uint8_t Tile::getProperties() const
 const std::string& Tile::getSoundFilename() const
 {
     return _soundFilename;
-}
-bool Tile::collision(const Collidable& obj) const
-{
-	return false;
-}
-sf::FloatRect Tile::getGlobalBounds() const
-{
-    sf::FloatRect globalBounds;
-    switch(_tileID)
-    {
-        case 92:
-            globalBounds.left   = _position.x * 16.0f + 3;
-            globalBounds.top    = _position.y * 16.0f;
-            globalBounds.width  = 9;
-            globalBounds.height = 16;
-            break;
-        case -1:
-            globalBounds.left   = 0;
-            globalBounds.top    = 0;
-            globalBounds.width  = 0;
-            globalBounds.height = 0;
-        default:
-            globalBounds.left   = _position.x * 16.0f;
-            globalBounds.top    = _position.y * 16.0f;
-            globalBounds.width  = 16;
-            globalBounds.height = 16;
-            break;
-    }
-	return globalBounds;
 }
 
 /************************

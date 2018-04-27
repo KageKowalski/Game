@@ -109,14 +109,14 @@ void Renderer::draw(sf::RenderTarget& target, sf::RenderStates) const {
 		backgroundStates.texture = m_BackgroundTexture;
 		target.draw(m_Background, backgroundStates);
 	}
-	if (m_Tileset != nullptr) {
-		sf::RenderStates tilesStates;
-		tilesStates.transform *= m_MapTransform;
-		tilesStates.texture = m_Tileset;
-		target.draw(m_Ground, tilesStates);
-		target.draw(m_Z2, tilesStates);
-		target.draw(m_Z3, tilesStates);
-	}
+    if (m_Tileset != nullptr) {
+        sf::RenderStates tilesStates;
+        tilesStates.transform *= m_MapTransform;
+        tilesStates.texture = m_Tileset;
+        target.draw(m_Ground, tilesStates);
+        target.draw(m_Z2, tilesStates);
+        target.draw(m_Z3, tilesStates);
+    }
 	if (m_UniversalSpriteSheet != nullptr || m_LocalSpriteSheet != nullptr) {
 		sf::RenderStates spritesStates;
 		spritesStates.transform *= m_MapTransform;

@@ -82,99 +82,35 @@ bool MapBuilder::build(const MapBuilder::Componets& components) {
 	for (int i = 0; i < components._height; i++) {
 		for (int j = 0; j < components._width; j++) {
 
-			Map::LayeredTile* layeredTile = new Map::LayeredTile;
-
-			if (components._groundLayer[0] != -2) {
-				switch (components._groundLayer[i * components._width + j]) {
-				case 0:
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-				case 6:
-				case 7:
-				case 8:
-				case 9:
-				case 10:
-				case 11:
-				case 12:
-					layeredTile->ground = new Tile(components._groundLayer[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter, 0x05, "waves.wav");
-					break;
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 17:
-				case 18:
-				case 19:
-				case 20:
-				case 21:
-				case 22:
-				case 23:
-				case 24:
-				case 25:
-					layeredTile->ground = new Tile(components._groundLayer[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter, 0x02, "grass_foot.wav");
-					break;
-				default:
-					layeredTile->ground = new Tile(components._groundLayer[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter);
-					break;
-				}
-			}
-			else layeredTile->ground = new Tile();
-
-			if (components._layerTwo[0] != -2) {
-				switch (components._layerTwo[i * components._width + j]) {
-				case 28:
-					layeredTile->layerTwo = new Tile(components._layerTwo[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter, 0x01);
-					break;
-				case 92:
-					layeredTile->layerTwo = new Tile(components._layerTwo[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter, 0x09);
-					break;
-				default:
-					layeredTile->layerTwo = new Tile(components._layerTwo[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter);
-					break;
-				}
-			}
-			else layeredTile->layerTwo = new Tile();
-
-			if (components._layerThree[0] != -2)
-				layeredTile->layerThree = new Tile(components._layerThree[i * components._width + j],
-					sf::Vector2f(j, i), tileCounter);
-
-			else layeredTile->layerThree = new Tile();
-
-			if (components._layerSix[0] != -2)
-				layeredTile->layerSix = new Tile(components._layerSix[i * components._width + j],
-					sf::Vector2f(j, i), tileCounter);
-
-			else layeredTile->layerSix = new Tile();
-
-			if (components._canopyLayer[0] != -2) {
-				switch (components._canopyLayer[i * components._width + j]) {
-				case 52:
-				case 53:
-				case 54:
-					layeredTile->canopy = new Tile(components._canopyLayer[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter, 0x10);
-					break;
-				default:
-					layeredTile->canopy = new Tile(components._canopyLayer[i * components._width + j],
-						sf::Vector2f(j, i), tileCounter);
-					break;
-				}
-			}
-			else layeredTile->canopy = new Tile();
+            Map::LayeredTile* layeredTile = new Map::LayeredTile;
+            
+            if (components._groundLayer[0] != -2) {
+                
+                layeredTile->ground = new TileInstance(*_currMap->getTileCollection().getTileFromID(components._groundLayer[i * components._width + j]), sf::Vector2f(j, i));
+            }
+            else layeredTile->ground = new TileInstance();
+            if (components._layerTwo[0] != -2) {
+                Log::get().print(std::to_string(components._layerTwo[i * components._width + j]));
+                layeredTile->layerTwo = new TileInstance(*_currMap->getTileCollection().getTileFromID(components._layerTwo[i * components._width + j]), sf::Vector2f(j, i));
+            }
+            else layeredTile->layerTwo = new TileInstance();
+            if (components._layerThree[0] != -2) {
+                layeredTile->layerThree = new TileInstance(*_currMap->getTileCollection().getTileFromID(components._layerThree[i * components._width + j]), sf::Vector2f(j, i));
+            }
+            else layeredTile->layerThree = new TileInstance();
+            if (components._layerSix[0] != -2) {
+                layeredTile->layerSix = new TileInstance(*_currMap->getTileCollection().getTileFromID(components._layerSix[i * components._width + j]), sf::Vector2f(j, i));;
+            }
+            else layeredTile->layerSix = new TileInstance();
+            
+            if (components._canopyLayer[0] != -2) {
+                
+                layeredTile->canopy = new TileInstance(*_currMap->getTileCollection().getTileFromID(components._canopyLayer[i * components._width + j]), sf::Vector2f(j, i));
+            }
+            else layeredTile->canopy = new TileInstance();
 
 			_currMap->_map[i][j] = *layeredTile;
 			_currMap->tileVertexFill(i, j);
-			tileCounter++;
 		}
 	}
 

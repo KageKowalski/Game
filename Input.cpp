@@ -16,8 +16,6 @@ void Input::analyze(GameState state) {
 	// HANDLE THE FOLLOWING <ON FREEROAM>:
 	if (state == GameState::FREEROAM) {
 
-		sf::Vector2f playerCenterPos = Player::get().getCenterPosition();
-
 		bool run = false;
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) && Player::get().getStamina()) {
             run = true;

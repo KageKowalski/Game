@@ -150,6 +150,8 @@ protected:
 	// Random number generator.
 	// Needed for randomization tasks, especially in NPC movement.
 	Random m_Generator;
+    
+    sf::Vector2f m_NextPostion;
 
 };
 

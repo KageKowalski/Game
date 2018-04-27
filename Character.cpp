@@ -110,10 +110,10 @@ void Character::update(sf::Time deltaTime) {
 		m_Position += m_Velocity * deltaTime.asSeconds();
 		m_CenterPosition += m_Velocity * deltaTime.asSeconds();
         
-        m_Position.x = std::round(m_Position.x * 30) / 30;
-        m_Position.y = std::round(m_Position.y * 30) / 30;
-        m_CenterPosition.x = std::round(m_CenterPosition.x * 30) / 30;
-        m_CenterPosition.y = std::round(m_CenterPosition.y * 30) / 30;
+        m_Position.x = std::round(m_Position.x * 10) / 10;
+        m_Position.y = std::round(m_Position.y * 10) / 10;
+        m_CenterPosition.x = std::round(m_CenterPosition.x * 10) / 10;
+        m_CenterPosition.y = std::round(m_CenterPosition.y * 10) / 10;
 
         if(fabs(m_Velocity.x) == m_RUN_VELOCITY || fabs(m_Velocity.y) == m_RUN_VELOCITY) {
             m_Walking = false;
@@ -197,8 +197,8 @@ bool Character::collision(const Collidable& obj) const {
 sf::FloatRect Character::getGlobalBounds() const {
 	sf::FloatRect globalBounds;
 
-	globalBounds.left   = getPosition().x;
-	globalBounds.top    = getPosition().y  + 20;
+    globalBounds.left   = getPosition().x;
+    globalBounds.top    = getPosition().y  + 20;
 
 	globalBounds.width  = getFrameWidth();
 	globalBounds.height = getFrameHeight() - 20;

@@ -11,6 +11,8 @@ Map::Map()
 {
     static int mapCounter = Utility::unique_id();
 
+    _tileCollection = TileCollection();
+    
 	_groundVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerTwoVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
     _layerThreeVerticies.setPrimitiveType(sf::PrimitiveType::Quads);
@@ -53,6 +55,9 @@ const sf::VertexArray& Map::getLayerTwoVertices() const {return _layerTwoVertici
 const sf::VertexArray& Map::getLayerThreeVertices() const {return _layerThreeVerticies;}
 const sf::VertexArray& Map::getLayerSixVertices() const {return _layerSixVerticies;}
 const sf::VertexArray& Map::getCanopyVertices() const {return _canopyVerticies;}
+
+
+const TileCollection& Map::getTileCollection() const{ return _tileCollection;}
 
 // gets TileSet
 const sf::Texture& Map::getTileSet() const { return _tileset; }
@@ -138,11 +143,11 @@ bool Map::isTouching(Character const * const curr, Direction facing) const {
 void Map::tileVertexFill(int x, int y)
 {
     // Sets up random tile, Cache ID, y position, and x position
-    int groundTileID = _map[x][y].ground->getID();
-    int layerTwoTileID = _map[x][y].layerTwo->getID();
-    int layerThreeTileID = _map[x][y].layerThree->getID();
-    int layerSixTileID = _map[x][y].layerSix->getID();
-    int canopyTileID = _map[x][y].canopy->getID();
+    int groundTileID = _map[x][y].ground->getTile()->getID();
+    int layerTwoTileID = _map[x][y].layerTwo->getTile()->getID();
+    int layerThreeTileID = _map[x][y].layerThree->getTile()->getID();
+    int layerSixTileID = _map[x][y].layerSix->getTile()->getID();
+    int canopyTileID = _map[x][y].canopy->getTile()->getID();
     float i = x;
     float j = y;
 
@@ -169,95 +174,95 @@ void Map::tileVertexFill(int x, int y)
     if(groundTileID != -1)
     {
         quadGro->position  = sf::Vector2f(j * 16.0f,i * 16.0f);
-        quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _map[x][y].ground->getAnimStep()) * 16.0f);
+        quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + _map[x][y].ground->getTile()->getAnimStep()) * 16.0f);
         
         quadGro++;
         quadGro->position  = sf::Vector2f((j + 1) *16.0f, i * 16.0f);
-        quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _map[x][y].ground->getAnimStep())* 16.0f);
+        quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + _map[x][y].ground->getTile()->getAnimStep())* 16.0f);
         
         quadGro++;
         quadGro->position  = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _map[x][y].ground->getAnimStep()) * 16.0f);
+        quadGro->texCoords = sf::Vector2f((groundTilePosX + 1) * 16.0f, (groundTilePosY + 1 + _map[x][y].ground->getTile()->getAnimStep()) * 16.0f);
         
         quadGro++;
         quadGro->position  = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _map[x][y].ground->getAnimStep()) * 16.0f);
+        quadGro->texCoords = sf::Vector2f(groundTilePosX * 16.0f, (groundTilePosY + 1 + _map[x][y].ground->getTile()->getAnimStep()) * 16.0f);
     }
     if(layerTwoTileID != -1)
     {
         quadTwo->position  = sf::Vector2f(j * 16.0f,i * 16.0f);
-        quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _map[x][y].layerTwo->getAnimStep()) * 16.0f);
+        quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + _map[x][y].layerTwo->getTile()->getAnimStep()) * 16.0f);
         
         quadTwo++;
         quadTwo->position  = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + _map[x][y].layerTwo->getAnimStep())* 16.0f);
+        quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + _map[x][y].layerTwo->getTile()->getAnimStep())* 16.0f);
         
         quadTwo++;
         quadTwo->position  = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + 1 + _map[x][y].layerTwo->getAnimStep()) * 16.0f);
+        quadTwo->texCoords = sf::Vector2f((layTwoTilePosX + 1) * 16.0f, (layTwoTilePosY + 1 + _map[x][y].layerTwo->getTile()->getAnimStep()) * 16.0f);
         
         quadTwo++;
         quadTwo->position  = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + 1 + _map[x][y].layerTwo->getAnimStep()) * 16.0f);
+        quadTwo->texCoords = sf::Vector2f(layTwoTilePosX * 16.0f, (layTwoTilePosY + 1 + _map[x][y].layerTwo->getTile()->getAnimStep()) * 16.0f);
     }
     if(layerThreeTileID != -1)
     {
         quadThree->position  = sf::Vector2f(j * 16.0f,i * 16.0f);
-        quadThree->texCoords = sf::Vector2f(layThreeTilePosX * 16.0f, (layThreeTilePosY + _map[x][y].layerThree->getAnimStep()) * 16.0f);
+        quadThree->texCoords = sf::Vector2f(layThreeTilePosX * 16.0f, (layThreeTilePosY + _map[x][y].layerThree->getTile()->getAnimStep()) * 16.0f);
         
         quadThree++;
         quadThree->position  = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quadThree->texCoords = sf::Vector2f((layThreeTilePosX + 1) * 16.0f, (layThreeTilePosY + _map[x][y].layerThree->getAnimStep())* 16.0f);
+        quadThree->texCoords = sf::Vector2f((layThreeTilePosX + 1) * 16.0f, (layThreeTilePosY + _map[x][y].layerThree->getTile()->getAnimStep())* 16.0f);
         
         quadThree++;
         quadThree->position  = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quadThree->texCoords = sf::Vector2f((layThreeTilePosX + 1) * 16.0f, (layThreeTilePosY + 1 + _map[x][y].layerThree->getAnimStep()) * 16.0f);
+        quadThree->texCoords = sf::Vector2f((layThreeTilePosX + 1) * 16.0f, (layThreeTilePosY + 1 + _map[x][y].layerThree->getTile()->getAnimStep()) * 16.0f);
         
         quadThree++;
         quadThree->position  = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quadThree->texCoords = sf::Vector2f(layThreeTilePosX * 16.0f, (layThreeTilePosY + 1 + _map[x][y].layerThree->getAnimStep()) * 16.0f);
+        quadThree->texCoords = sf::Vector2f(layThreeTilePosX * 16.0f, (layThreeTilePosY + 1 + _map[x][y].layerThree->getTile()->getAnimStep()) * 16.0f);
     }
     if(layerSixTileID != -1)
     {
         quadSix->position  = sf::Vector2f(j * 16.0f,i * 16.0f);
-        quadSix->texCoords = sf::Vector2f(laySixTilePosX * 16.0f, (laySixTilePosY + _map[x][y].layerSix->getAnimStep()) * 16.0f);
+        quadSix->texCoords = sf::Vector2f(laySixTilePosX * 16.0f, (laySixTilePosY + _map[x][y].layerSix->getTile()->getAnimStep()) * 16.0f);
         if(_underRoof) quadSix->color.a = 75;
         else          quadSix->color.a = 255;
         
         quadSix++;
         quadSix->position  = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quadSix->texCoords = sf::Vector2f((laySixTilePosX + 1) * 16.0f, (laySixTilePosY + _map[x][y].layerSix->getAnimStep())* 16.0f);
+        quadSix->texCoords = sf::Vector2f((laySixTilePosX + 1) * 16.0f, (laySixTilePosY + _map[x][y].layerSix->getTile()->getAnimStep())* 16.0f);
         if(_underRoof) quadSix->color.a = 75;
         else          quadSix->color.a = 255;
         
         quadSix++;
         quadSix->position  = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quadSix->texCoords = sf::Vector2f((laySixTilePosX + 1) * 16.0f, (laySixTilePosY + 1 + _map[x][y].layerSix->getAnimStep()) * 16.0f);
+        quadSix->texCoords = sf::Vector2f((laySixTilePosX + 1) * 16.0f, (laySixTilePosY + 1 + _map[x][y].layerSix->getTile()->getAnimStep()) * 16.0f);
         if(_underRoof) quadSix->color.a = 75;
         else          quadSix->color.a = 255;
         
         quadSix++;
         quadSix->position  = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quadSix->texCoords = sf::Vector2f(laySixTilePosX * 16.0f, (laySixTilePosY + 1 + _map[x][y].layerSix->getAnimStep()) * 16.0f);
+        quadSix->texCoords = sf::Vector2f(laySixTilePosX * 16.0f, (laySixTilePosY + 1 + _map[x][y].layerSix->getTile()->getAnimStep()) * 16.0f);
         if(_underRoof) quadSix->color.a = 75;
         else          quadSix->color.a = 255;
     }
     if(canopyTileID != -1)
     {
         quadCanopy->position  = sf::Vector2f(j * 16.0f,i * 16.0f);
-        quadCanopy->texCoords = sf::Vector2f(canopyTilePosX * 16.0f, (canopyTilePosY + _map[x][y].canopy->getAnimStep()) * 16.0f);
+        quadCanopy->texCoords = sf::Vector2f(canopyTilePosX * 16.0f, (canopyTilePosY + _map[x][y].canopy->getTile()->getAnimStep()) * 16.0f);
         
         quadCanopy++;
         quadCanopy->position  = sf::Vector2f((j + 1) * 16.0f, i * 16.0f);
-        quadCanopy->texCoords = sf::Vector2f((canopyTilePosX + 1) * 16.0f, (canopyTilePosY + _map[x][y].canopy->getAnimStep())* 16.0f);
+        quadCanopy->texCoords = sf::Vector2f((canopyTilePosX + 1) * 16.0f, (canopyTilePosY + _map[x][y].canopy->getTile()->getAnimStep())* 16.0f);
         
         quadCanopy++;
         quadCanopy->position  = sf::Vector2f((j + 1) * 16.0f, (i + 1) * 16.0f);
-        quadCanopy->texCoords = sf::Vector2f((canopyTilePosX + 1) * 16.0f, (canopyTilePosY + 1 + _map[x][y].canopy->getAnimStep()) * 16.0f);
+        quadCanopy->texCoords = sf::Vector2f((canopyTilePosX + 1) * 16.0f, (canopyTilePosY + 1 + _map[x][y].canopy->getTile()->getAnimStep()) * 16.0f);
         
         quadCanopy++;
         quadCanopy->position  = sf::Vector2f(j * 16.0f, (i + 1) * 16.0f);
-        quadCanopy->texCoords = sf::Vector2f(canopyTilePosX * 16.0f, (canopyTilePosY + 1 + _map[x][y].canopy->getAnimStep()) * 16.0f);
+        quadCanopy->texCoords = sf::Vector2f(canopyTilePosX * 16.0f, (canopyTilePosY + 1 + _map[x][y].canopy->getTile()->getAnimStep()) * 16.0f);
     }
 }
 
@@ -289,29 +294,93 @@ void Map::spriteVertexFill(const Character* const character, size_t offset) {
 }
 
 void Map::update() {
-    for (size_t i = 0; i < _characters.size(); i++) {
-        _characters.at(i)->update(Chrono::get().getDeltaTime());
-        spriteVertexFill(_characters.at(i), i * 4);
-    }
     bool roof = false;
+    
+    _tileCollection.update();
+    
     for(int i = 0 ; i < _width; i++)
     {
         for(int j = 0; j < _height; j++)
         {
-            if(_map[i][j].layerSix->getGlobalBounds().contains(Player::get().getCenterPosition()) && _map[i][j].layerSix->getID() != -1)
+            for (size_t k = 0; k < _characters.size(); k++)
+            {
+                if(i == 0 && j == 0)
+                {
+                    _characters.at(k)->update(Chrono::get().getDeltaTime());
+                    spriteVertexFill(_characters.at(k), k * 4);
+                }
+                if(_map[i][j].ground->getGlobalBounds().intersects(_characters.at(k)->getGlobalBounds()) && (_map[i][j].ground->getTile()->getProperties() & 0x01))
+                {
+                    switch(_characters.at(k)->getDirection())
+                    {
+                        case Direction::DOWN:
+                            _characters.at(k)->setPosition(sf::Vector2f(_characters.at(k)->getPosition().x, _map[i][j].layerTwo->getGlobalBounds().top - 32));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_characters.at(k)->getCenterPosition().x, _map[i][j].layerTwo->getGlobalBounds().top-8));
+                            break;
+                        case Direction::UP:
+                            _characters.at(k)->setPosition(sf::Vector2f(_characters.at(k)->getPosition().x, _map[i][j].layerTwo->getGlobalBounds().top - 4));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_characters.at(k)->getCenterPosition().x, _map[i][j].layerTwo->getGlobalBounds().top+20));
+                            break;
+                        case Direction::LEFT:
+                            _characters.at(k)->setPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left + _map[i][j].layerTwo->getGlobalBounds().width, _characters.at(k)->getPosition().y));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left + _map[i][j].layerTwo->getGlobalBounds().width + 8, _characters.at(k)->getPosition().y + 24));
+                            break;
+                        case Direction::RIGHT:
+                            _characters.at(k)->setPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left - 16, _characters.at(k)->getPosition().y));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left - 8, _characters.at(k)->getPosition().y + 24));
+                            break;
+                    }
+                }
+                if(_map[i][j].layerTwo->getGlobalBounds().intersects(_characters.at(k)->getGlobalBounds()) && (_map[i][j].layerTwo->getTile()->getProperties() & 0x01))
+                {
+                    switch(_characters.at(k)->getDirection())
+                    {
+                        case Direction::DOWN:
+                            _characters.at(k)->setPosition(sf::Vector2f(_characters.at(k)->getPosition().x, _map[i][j].layerTwo->getGlobalBounds().top - 32));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_characters.at(k)->getCenterPosition().x, _map[i][j].layerTwo->getGlobalBounds().top-8));
+                            break;
+                        case Direction::UP:
+                            _characters.at(k)->setPosition(sf::Vector2f(_characters.at(k)->getPosition().x, _map[i][j].layerTwo->getGlobalBounds().top - 4));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_characters.at(k)->getCenterPosition().x, _map[i][j].layerTwo->getGlobalBounds().top+20));
+                            break;
+                        case Direction::LEFT:
+                            _characters.at(k)->setPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left + _map[i][j].layerTwo->getGlobalBounds().width, _characters.at(k)->getPosition().y));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left + _map[i][j].layerTwo->getGlobalBounds().width + 8, _characters.at(k)->getPosition().y + 24));
+                            break;
+                        case Direction::RIGHT:
+                            _characters.at(k)->setPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left - 16, _characters.at(k)->getPosition().y));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left - 8, _characters.at(k)->getPosition().y + 24));
+                            break;
+                    }
+                }
+                if(_map[i][j].layerThree->getGlobalBounds().intersects(_characters.at(k)->getGlobalBounds()) && (_map[i][j].layerThree->getTile()->getProperties() & 0x01))
+                   
+                {
+                    switch(_characters.at(k)->getDirection())
+                    {
+                        case Direction::DOWN:
+                            _characters.at(k)->setPosition(sf::Vector2f(_characters.at(k)->getPosition().x, _map[i][j].layerTwo->getGlobalBounds().top - 32));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_characters.at(k)->getCenterPosition().x, _map[i][j].layerTwo->getGlobalBounds().top-8));
+                            break;
+                        case Direction::UP:
+                            _characters.at(k)->setPosition(sf::Vector2f(_characters.at(k)->getPosition().x, _map[i][j].layerTwo->getGlobalBounds().top - 4));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_characters.at(k)->getCenterPosition().x, _map[i][j].layerTwo->getGlobalBounds().top+20));
+                            break;
+                        case Direction::LEFT:
+                            _characters.at(k)->setPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left + _map[i][j].layerTwo->getGlobalBounds().width, _characters.at(k)->getPosition().y));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left + _map[i][j].layerTwo->getGlobalBounds().width + 8, _characters.at(k)->getPosition().y + 24));
+                            break;
+                        case Direction::RIGHT:
+                            _characters.at(k)->setPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left - 16, _characters.at(k)->getPosition().y));
+                            _characters.at(k)->setCenterPosition(sf::Vector2f(_map[i][j].layerTwo->getGlobalBounds().left - 8, _characters.at(k)->getPosition().y + 24));
+                            break;
+                    }
+                }
+            }
+            if(_map[i][j].layerSix->getGlobalBounds().contains(Player::get().getCenterPosition()) && _map[i][j].layerSix->getTile()->getID() != -1)
             {
                 roof = true;
             }
-            if((_map[i][j].layerTwo->getGlobalBounds().intersects(Player::get().getGlobalBounds()) || _map[i][j].layerThree->getGlobalBounds().intersects(Player::get().getGlobalBounds())) && (_map[i][j].layerTwo->getID() != -1 || _map[i][j].layerThree->getID() != -1))
-            {
-                std::unique_ptr<Event> e = std::make_unique<CollisionEvent>();
-                EventBus::get().postEvent(e);
-            }
-            _map[i][j].ground->update();
-            _map[i][j].layerTwo->update();
-            _map[i][j].layerThree->update();
-            _map[i][j].layerSix->update();
-            _map[i][j].canopy->update();
             tileVertexFill(i, j);
         }
     }

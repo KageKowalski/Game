@@ -2,6 +2,7 @@
 #define MAPBUILDER_H
 
 #include "Map.h"
+#include "Log.h"
 
 // MapBuilder contains the build process of a Map.
 // This class is analogous to a typical machine--give it a list of arguments

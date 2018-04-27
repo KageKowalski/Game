@@ -7,8 +7,9 @@
 
 #include "Character.h"
 #include "Player.h"
-#include "Tile.h"
+#include "TileCollection.h"
 #include "Utility.h"
+#include "TileInstance.h"
 
 // forward declarations
 class MapBuilder;
@@ -27,11 +28,11 @@ public:
 
 	struct LayeredTile
 	{
-		Tile* ground;
-		Tile* layerTwo;
-		Tile* layerThree;
-		Tile* layerSix;
-		Tile* canopy;
+		TileInstance* ground;
+		TileInstance* layerTwo;
+		TileInstance* layerThree;
+		TileInstance* layerSix;
+		TileInstance* canopy;
 	};
 
 private:
@@ -63,6 +64,8 @@ private:
 
 	// background music for this Map
 	std::string _music;
+    
+    TileCollection _tileCollection;
     
     //True if you are under a roof
     bool _underRoof;
@@ -103,6 +106,8 @@ public:
 	const sf::VertexArray& getLayerSixVertices() const;
 	const sf::VertexArray& getCanopyVertices() const;
 
+    const TileCollection& getTileCollection() const;
+    
 	// gets TileSet
 	const sf::Texture& getTileSet() const;
 
